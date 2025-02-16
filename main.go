@@ -1,22 +1,18 @@
-/*
- * @Author: liaosijie
- * @Date: 2025-02-16 10:16:07
- * @Last Modified by:   liaosijie
- * @Last Modified time: 2025-02-16 13:16:07
- */
-
 package main
 
 import (
 	"database/sql"
 	"gomall/biz/dal/queries/order"
 	"gomall/biz/service/order"
+	"gomall/handler/order"
+
 	"net"
 
-	"github.com/cloudwego/kitex-examples/kitex_gen/order"
+	"github.com/cloudwego/hertz/pkg/server"
+	"github.com/cloudwego/kitex-contrib/consul-resolver"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
-	"github.com/kitex-contrib/consul-resolver"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -28,7 +24,21 @@ func main() {
 
     orderQuery := order.NewOrderQuery(db)
     orderService := order.NewOrderService(orderQuery)
+    orderHandler := order.NewOrderHandler(orderService)
 
+    // HTTP 服务
+    r := server.New(server.WithHostPorts(":8000"))
+    r.POST("/order/place", orderHandler.PlaceOrder)
+    r.GET("/order/list", orderHandler.ListOrder)
+    r.POST("/order/mark_paid", orderHandler.MarkOrderPaid)
+
+    go func() {
+        if err := r.Start(); err != nil {
+            panic(err)
+        }
+    }()
+
+    // Kitex 服务
     resolver, err := consul.NewConsulResolver("39.103.237.155:8500")
     if err != nil {
         panic(err)
@@ -41,8 +51,7 @@ func main() {
         ServiceName: "order_service",
     }))
 
-    err = svr.Run()
-    if err != nil {
+    if err := svr.Run(); err != nil {
         panic(err)
     }
 }
