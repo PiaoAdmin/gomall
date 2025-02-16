@@ -1,3 +1,10 @@
+/*
+ * @Author: liaosijie
+ * @Date: 2025-02-16 11:53:18
+ * @Last Modified by: liaosijie
+ * @Last Modified time: 2025-02-16 17:55:55
+ */
+
 package main
 
 import (
@@ -5,7 +12,7 @@ import (
 	"gomall/biz/dal/queries/order"
 	"gomall/biz/service/order"
 	"gomall/handler/order"
-
+	"log"
 	"net"
 
 	"github.com/cloudwego/hertz/pkg/server"
@@ -16,42 +23,36 @@ import (
 )
 
 func main() {
-    db, err := sql.Open("mysql", "root:jinitaimei114514@tcp(39.103.237.155:10112)/gomall")
-    if err != nil {
-        panic(err)
-    }
-    defer db.Close()
+	db, err := sql.Open("mysql", "root:jinitaimei114514@tcp(39.103.237.155:10112)/gomall")
+	if err != nil {
+		log.Fatalf("failed to connect to database: %v", err)
+	}
+	defer db.Close()
 
-    orderQuery := order.NewOrderQuery(db)
-    orderService := order.NewOrderService(orderQuery)
-    orderHandler := order.NewOrderHandler(orderService)
+	orderQuery := order.NewOrderQuery(db)
+	orderService := order.NewOrderService(orderQuery)
+	orderHandler := order.NewOrderHandler(orderService)
 
-    // HTTP 服务
-    r := server.New(server.WithHostPorts(":8000"))
-    r.POST("/order/place", orderHandler.PlaceOrder)
-    r.GET("/order/list", orderHandler.ListOrder)
-    r.POST("/order/mark_paid", orderHandler.MarkOrderPaid)
+	r := server.New(server.WithHostPorts(":8000"))
 
-    go func() {
-        if err := r.Start(); err != nil {
-            panic(err)
-        }
-    }()
+	// 注册订单相关的路由
+	r.POST("/order/place", orderHandler.PlaceOrder)
+	r.GET("/order/list", orderHandler.ListOrder)
+	r.POST("/order/mark_paid", orderHandler.MarkOrderPaid)
 
-    // Kitex 服务
-    resolver, err := consul.NewConsulResolver("39.103.237.155:8500")
-    if err != nil {
-        panic(err)
-    }
+	resolver, err := consul.NewConsulResolver("39.103.237.155:8500")
+	if err != nil {
+		log.Fatalf("failed to create consul resolver: %v", err)
+	}
 
-    svr := ordersvr.NewServer(orderService, server.WithServiceAddr(&net.TCPAddr{
-        IP:   net.ParseIP("0.0.0.0"),
-        Port: 8000,
-    }), server.WithRegistry(resolver), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
-        ServiceName: "order_service",
-    }))
+	svr := ordersvr.NewServer(orderService, server.WithServiceAddr(&net.TCPAddr{
+		IP:   net.ParseIP("0.0.0.0"),
+		Port: 8000,
+	}), server.WithRegistry(resolver), server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
+		ServiceName: "order_service",
+	}))
 
-    if err := svr.Run(); err != nil {
-        panic(err)
-    }
+	if err := svr.Run(); err != nil {
+		log.Fatalf("failed to run server: %v", err)
+	}
 }
