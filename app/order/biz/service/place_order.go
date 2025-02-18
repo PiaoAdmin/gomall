@@ -2,7 +2,7 @@
  * @Author: liaosijie
  * @Date: 2025-02-18 17:09:37
  * @Last Modified by: liaosijie
- * @Last Modified time: 2025-02-18 23:32:00
+ * @Last Modified time: 2025-02-18 23:37:37
  */
 
 package service
@@ -75,7 +75,7 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrde
 		resp = &order.PlaceOrderResp{
 			Order: &order.OrderResult(){
 				OrderId: orderId.String(),
-			}
+			},
 		}
 
 		return nil
