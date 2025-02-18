@@ -1,9 +1,18 @@
+/*
+ * @Author: liaosijie
+ * @Date: 2025-02-18 16:51:32
+ * @Last Modified by:   liaosijie
+ * @Last Modified time: 2025-02-18 16:51:32
+ */
+
 package main
 
 import (
 	"context"
-	order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
-	"douyin-gomall/gomall/app/order/biz/service"
+	// order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
+	// "douyin-gomall/gomall/app/order/biz/service"
+	"github.com/PiaoAdmin/gomall/app/order/biz/service"
+	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 )
 
 // OrderServiceImpl implements the last service interface defined in the IDL.
