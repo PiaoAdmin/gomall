@@ -73,7 +73,7 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrde
 		}
 
 		resp = &order.PlaceOrderResp{
-			Order: &order.OrderResult(){
+			Order: &order.OrderResult{
 				OrderId: orderId.String(),
 			},
 		}
