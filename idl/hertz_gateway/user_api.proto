@@ -1,0 +1,112 @@
+syntax = "proto3";
+
+package hertz_gateway.auth;
+
+import "api.proto";
+
+option go_package = "/hertz_gateway/user";
+
+message BaseUser {
+  int64 user_id = 1 [ (api.form) = "user_id" ];
+  string username = 2 [ (api.form) = "username" ];
+  string email = 3 [ (api.form) = "email" ];
+  string phone = 4 [ (api.form) = "phone" ];
+  string nickname = 5 [ (api.form) = "nickname" ];
+  string avatar = 6 [ (api.form) = "avatar" ];
+  int32 gender = 7 [ (api.form) = "gender" ];
+  string birth_date = 8 [ (api.form) = "birth_date" ];
+  int32 status = 9 [ (api.form) = "status" ];
+  double balance = 10 [ (api.form) = "balance" ];
+}
+
+message User {
+  BaseUser base_user = 1;
+  string password = 2 [(api.form) = "password"];
+}
+
+message CreateUserRequest { User user = 1; }
+
+message CreateUserResponse { BaseUser base_user = 1; }
+
+message DeleteUserRequest { int64 user_id = 1 [ (api.query) = "user_id" ]; }
+
+message DeleteUserResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateBaseUserRequest { BaseUser base_user = 1; }
+
+message UpdateBaseUserResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateUserPasswordRequest {
+  int64 user_id = 1;
+  string old_password = 2 [ (api.form) = "old_password" ];
+  string new_password = 3 [ (api.form) = "new_password" ];
+}
+
+message UpdateUserPasswordResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateUserBalanceRequest {
+  int64 user_id = 1;
+  double balance = 2 [ (api.form) = "balance" ];
+  int32 type = 3 [ (api.form) = "type" ];
+}
+
+message UpdateUserBalanceResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateUserStatusRequest {
+  int64 user_id = 1;
+  int32 status = 2 [ (api.form) = "status" ];
+}
+
+message UpdateUserStatusResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message GetUserInfoRequest { int64 user_id = 1; }
+
+message GetUserInfoResponse { BaseUser base_user = 1; }
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+    option (api.post) = "/user/create";
+  }
+
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (api.delete) = "/user/delete";
+  }
+
+  rpc UpdateBaseUser(UpdateBaseUserRequest) returns (UpdateBaseUserResponse) {
+    option (api.post) = "/user/update";
+  }
+
+  rpc UpdateUserPassword(UpdateUserPasswordRequest)
+      returns (UpdateUserPasswordResponse) {
+    option (api.post) = "/user/password";
+  }
+
+  rpc UpdateUserBalance(UpdateUserBalanceRequest)
+      returns (UpdateUserBalanceResponse) {
+    option (api.post) = "/user/balance";
+  }
+
+  rpc UpdateUserStatus(UpdateUserStatusRequest)
+      returns (UpdateUserStatusResponse) {
+    option (api.post) = "/user/status";
+  }
+
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse) {
+    option (api.get) = "/user/info";
+  }
+}
