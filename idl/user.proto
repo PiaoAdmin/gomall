@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "/user";
+
+message BaseUser{
+  int64 user_id = 1;
+  string username = 2;
+  string email = 3;
+  string phone = 4;
+  string nickname = 5;
+  string avatar = 6;
+  int32 gender = 7;
+  string birth_date = 8;  
+  int32 status = 9;
+  double balance = 10;
+}
+
+message User{
+  BaseUser base_user = 1;
+  string password = 2;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message CreateUserResponse {
+  BaseUser base_user = 1;
+  string msg = 2;
+}
+
+message DeleteUserRequest {
+  int64 user_id = 1;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateBaseUserRequest {
+  BaseUser base_user = 1;
+}
+
+message UpdateBaseUserResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateUserPasswordRequest {
+  int64 user_id = 1;
+  string old_password = 2;
+  string new_password = 3;
+}
+
+message UpdateUserPasswordResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateUserBalanceRequest {
+  int64 user_id = 1;
+  double balance = 2;
+  int32 type = 3;
+}
+
+message UpdateUserBalanceResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message UpdateUserStatusRequest {
+  int64 user_id = 1;
+  int32 status = 2;
+}
+
+message UpdateUserStatusResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message GetUserInfoRequest {
+  int64 user_id = 1;
+}
+
+message GetUserInfoResponse {
+  BaseUser base_user = 1;
+}
+
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+
+  rpc UpdateBaseUser(UpdateBaseUserRequest) returns (UpdateBaseUserResponse);
+
+  rpc UpdateUserPassword(UpdateUserPasswordRequest) returns (UpdateUserPasswordResponse);
+
+  rpc UpdateUserBalance(UpdateUserBalanceRequest) returns (UpdateUserBalanceResponse);
+
+  rpc UpdateUserStatus(UpdateUserStatusRequest) returns (UpdateUserStatusResponse);
+
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
+}

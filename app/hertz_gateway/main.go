@@ -8,6 +8,7 @@ import (
 
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/conf"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/app/server"
@@ -26,6 +27,7 @@ import (
 func main() {
 	// init dal
 	// dal.Init()
+	rpc.InitClient()
 	address := conf.GetConf().Hertz.Address
 	h := server.New(server.WithHostPorts(address))
 
