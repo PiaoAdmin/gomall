@@ -2,7 +2,7 @@
  * @Author: liaosijie
  * @Date: 2025-02-18 16:47:44
  * @Last Modified by: liaosijie
- * @Last Modified time: 2025-02-18 17:05:00
+ * @Last Modified time: 2025-02-18 22:14:53
  */
 
 package model
@@ -22,7 +22,7 @@ package model
 type OrderItem struct {
     SnowflakeBase
     ProductID    uint32 `gorm:"type:int(11)"`
-    OrderIdRefer int64  `gorm:"type:bigint;index"`
+    OrderIdRefer string  `gorm:"type:bigint;index"`
     Quantity     uint32 `gorm:"type:int(11)"`
-    Cost         float64 `gorm:"type:decimal(10,2)"`
+    Cost         float32 `gorm:"type:decimal(10,2)"`
 }
