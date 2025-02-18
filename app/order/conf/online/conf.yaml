@@ -9,15 +9,15 @@ kitex:
 
 registry:
   registry_address:
-    - 39.103.237.155:8500 # 修改为 consul 的实际地址
+    - 127.0.0.1:8500 # 修改为 consul 的实际地址
   username: "" # consul 的用户名，如果有的话请填写
   password: "" # consul 的密码，如果有的话请填写
 
 mysql:
-  dsn: "root:jinitaimei114514@tcp(39.103.237.155:10112)/order?charset=utf8mb4&parseTime=True&loc=Local" # 修改为 mysql 的实际地址和端口
+  dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local" # 修改为 mysql 的实际地址和端口
 
 redis:
-  address: "39.103.237.155:6379" # 修改为 redis 的实际地址和端口
+  address: "127.0.0.1:6379" # 修改为 redis 的实际地址和端口
   username: "" # redis 的用户名，如果有的话请填写
   password: "" # redis 的密码，如果有的话请填写
   db: 0
