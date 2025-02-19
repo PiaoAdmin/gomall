@@ -1,11 +1,14 @@
 package main
 
 import (
+	"github.com/PiaoAdmin/gomall/app/product/biz/dal"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
+	"github.com/joho/godotenv"
+	consul "github.com/kitex-contrib/registry-consul"
 	"net"
 	"time"
 
 	"github.com/PiaoAdmin/gomall/app/product/conf"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
@@ -15,6 +18,11 @@ import (
 )
 
 func main() {
+	err1 := godotenv.Load()
+	if err1 != nil {
+		return
+	}
+	dal.Init()
 	opts := kitexInit()
 
 	svr := productcatalogservice.NewServer(new(ProductCatalogServiceImpl), opts...)
@@ -38,6 +46,12 @@ func kitexInit() (opts []server.Option) {
 		ServiceName: conf.GetConf().Kitex.Service,
 	}))
 
+	register, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	if err != nil {
+		klog.Fatal(err)
+	}
+	opts = append(opts, server.WithRegistry(register))
+	//opts = append(opts, server.WithRegistry(conf.GetConf().Registry.RegistryAddress[0]))
 	// klog
 	logger := kitexlogrus.NewLogger()
 	klog.SetLogger(logger)
