@@ -1,0 +1,22 @@
+kitex:
+  service: "order"
+  address: ":8888"
+  log_level: info
+  log_file_name: "log/kitex.log"
+  log_max_size: 10
+  log_max_age: 3
+  log_max_backups: 50
+
+registry:
+  registry_address:
+    - 127.0.0.1:8500 # 修改为 consul 的实际地址
+  username: "" # consul 的用户名，如果有的话请填写
+  password: "" # consul 的密码，如果有的话请填写
+
+mysql: dsn:"gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local" # 修改为 mysql 的实际地址和端口
+
+redis:
+  address: "127.0.0.1:6379" # 修改为 redis 的实际地址和端口
+  username: "" # redis 的用户名，如果有的话请填写
+  password: "" # redis 的密码，如果有的话请填写
+  db: 0
