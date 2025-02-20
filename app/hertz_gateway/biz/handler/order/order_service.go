@@ -1,8 +1,8 @@
 /*
  * @Author: liaosijie
  * @Date: 2025-02-20 11:31:46
- * @Last Modified by:   liaosijie
- * @Last Modified time: 2025-02-20 11:31:46
+ * @Last Modified by: liaosijie
+ * @Last Modified time: 2025-02-20 20:47:46
  */
 
 package order
@@ -31,8 +31,7 @@ func OrderList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewOrderListService(ctx, c).Run(&req)
+	resp, err := service.NewOrderListService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
