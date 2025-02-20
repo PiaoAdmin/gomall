@@ -2,7 +2,8 @@
 package cartservice
 
 import (
-	cart "douyin-gomall/gomall/rpc_gen/kitex_gen/cart"
+	// cart "douyin-gomall/gomall/rpc_gen/kitex_gen/cart"
+	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	server "github.com/cloudwego/kitex/server"
 )
 
