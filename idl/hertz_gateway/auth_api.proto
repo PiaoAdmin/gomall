@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+package hertz_gateway.auth;
+
+import "api.proto";
+
+option go_package = "/hertz_gateway/auth";
+
+message LoginRequest {
+  string username = 1 [ (api.form) = "username" ];
+  string password = 2 [ (api.form) = "password" ];
+}
+
+message LoginResponse {
+  string token = 1 [ (api.form) = "token" ];
+  string refresh_token = 2 [ (api.form) = "refresh_token" ];
+  bool success = 3 [ (api.form) = "success" ];
+  string msg = 4 [ (api.form) = "msg" ];
+}
+
+message VerifyTokenRequest { string token = 1 [ (api.form) = "token" ]; }
+
+message VerifyTokenResponse {
+  bool is_valid = 1 [ (api.form) = "is_valid" ];
+  string msg = 2 [ (api.form) = "msg" ];
+}
+
+message RefreshTokenRequest {
+  string refresh_token = 1 [ (api.form) = "refresh_token" ];
+  string token = 2 [ (api.form) = "token" ];
+}
+
+message RefreshTokenResponse {
+  bool is_valid = 1 [ (api.form) = "is_valid" ];
+  string token = 2 [ (api.form) = "token" ];
+  string refresh_token = 3 [ (api.form) = "refresh_token" ];
+  string msg = 4 [ (api.form) = "msg" ];
+}
+
+message LogoutRequest {
+  string token = 1 [ (api.form) = "token" ];
+  string refresh_token = 2 [ (api.form) = "refresh_token" ];
+}
+
+message LogoutResponse {
+  bool success = 1 [ (api.form) = "success" ];
+  string msg = 2 [ (api.form) = "msg" ];
+}
+
+message PermissionCheckRequest {
+  string token = 1 [ (api.form) = "token" ];
+  string service_name = 2 [ (api.form) = "service_name" ];
+  string resource_name = 3 [ (api.form) = "resource_name" ];
+}
+
+message PermissionCheckResponse {
+  bool has_permission = 1 [ (api.form) = "has_permission" ];
+  string msg = 2 [ (api.form) = "msg" ];
+}
+
+message AddUserRoleRequest {
+  int64 user_id = 1 [ (api.form) = "user_id" ];
+  int32 role_code = 2 [ (api.form) = "role_code" ];
+  string role_name = 3 [ (api.form) = "role_name" ];
+}
+
+message AddUserRoleResponse {
+  bool success = 1 [ (api.form) = "success" ];
+  string msg = 2 [ (api.form) = "msg" ];
+}
+
+message RemoveUserRoleRequest {
+  int64 user_id = 1 [ (api.form) = "user_id" ];
+  int32 role_code = 2 [ (api.form) = "role_code" ];
+  string role_name = 3 [ (api.form) = "role_name" ];
+}
+
+message RemoveUserRoleResponse {
+  bool success = 1 [ (api.form) = "success" ];
+  string msg = 2 [ (api.form) = "msg" ];
+}
+
+message GetUserRoleRequest { int64 user_id = 1 [ (api.query) = "user_id" ]; }
+
+message GetUserRoleResponse {
+  repeated int32 role_code = 1 [ (api.form) = "role_code" ];
+  repeated string role_name = 2 [ (api.form) = "role_name" ];
+}
+
+service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (api.post) = "/auth/login";
+  }
+
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {
+    option (api.post) = "/auth/verify";
+  }
+
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {
+    option (api.post) = "/auth/refresh";
+  }
+
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {
+    option (api.post) = "/auth/logout";
+  }
+
+  rpc CheckPermission(PermissionCheckRequest)
+      returns (PermissionCheckResponse) {
+    option (api.post) = "/auth/permission/check";
+  }
+
+  rpc AddUserRole(AddUserRoleRequest) returns (AddUserRoleResponse) {
+    option (api.post) = "/auth/role/add";
+  }
+
+  rpc RemoveUserRole(RemoveUserRoleRequest) returns (RemoveUserRoleResponse) {
+    option (api.post) = "/auth/role/remove";
+  }
+
+  rpc GetUserRole(GetUserRoleRequest) returns (GetUserRoleResponse) {
+    option (api.get) = "/auth/role/get";
+  }
+}

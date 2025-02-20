@@ -26,32 +26,12 @@ func (h *CreateUserService) Run(req *user.CreateUserRequest) (resp *user.CreateU
 	}
 	res, err := rpc.UserClient.CreateUser(h.Context, &rpcuser.CreateUserRequest{
 		User: &newUser,
-		// BaseUser: &rpcuser.BaseUser{
-		// 	Username:  req.BaseUser.Username,
-		// 	Email:     req.BaseUser.Email,
-		// 	Phone:     req.BaseUser.Phone,
-		// 	Nickname:  req.BaseUser.Nickname,
-		// 	Avatar:    req.BaseUser.Avatar,
-		// 	Gender:    req.BaseUser.Gender,
-		// 	BirthDate: req.BaseUser.BirthDate,
-		// },
 	})
 	if err != nil {
 		return
 	}
 	resp = &user.CreateUserResponse{
-		BaseUser: &user.BaseUser{
-			// UserId: res.SafeUser.UserId,
-			// BaseUser: &user.BaseUser{
-			// 	Username:  res.SafeUser.BaseUser.Username,
-			// 	Email:     res.SafeUser.BaseUser.Email,
-			// 	Phone:     res.SafeUser.BaseUser.Phone,
-			// 	Nickname:  res.SafeUser.BaseUser.Nickname,
-			// 	Avatar:    res.SafeUser.BaseUser.Avatar,
-			// 	Gender:    res.SafeUser.BaseUser.Gender,
-			// 	BirthDate: res.SafeUser.BaseUser.BirthDate,
-			// },
-		},
+		BaseUser: &user.BaseUser{},
 	}
 	if err := copier.Copy(resp.BaseUser, res.BaseUser); err != nil {
 		return nil, err
