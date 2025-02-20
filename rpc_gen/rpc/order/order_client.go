@@ -2,9 +2,13 @@ package order
 
 import (
 	"context"
-	order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
+	// order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
 
-	"douyin-gomall/gomall/rpc_gen/kitex_gen/order/orderservice"
+	// "douyin-gomall/gomall/rpc_gen/kitex_gen/order/orderservice"
+
+	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
+
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/client/callopt"
 )

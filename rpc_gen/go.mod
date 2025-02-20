@@ -1,4 +1,4 @@
-module douyin-gomall/gomall/rpc_gen
+module github.com/PiaoAdmin/gomall/rpc_gen
 
 go 1.23.4
 

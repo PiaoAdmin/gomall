@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package hertz_gateway.order;
+
+option go_package = "hertz_gateway/order";
+
+import "api.proto";
+import "hertz_gateway/common.proto";
+
+
+message Empty {}
+
+service OrderService {
+    rpc OrderList(common.Empty) returns (common.Empty) { option (api.get) = "/"; }
+}

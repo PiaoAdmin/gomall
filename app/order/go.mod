@@ -1,4 +1,4 @@
-module douyin-gomall/gomall/app/order
+module github.com/PiaoAdmin/gomall/app/order
 
 go 1.24.0
 

@@ -3,7 +3,9 @@ package service
 import (
 	"context"
 	"testing"
-	order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
+
+	// order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
+	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 )
 
 func TestPlaceOrder_Run(t *testing.T) {

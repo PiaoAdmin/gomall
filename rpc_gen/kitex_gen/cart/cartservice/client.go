@@ -4,7 +4,8 @@ package cartservice
 
 import (
 	"context"
-	cart "douyin-gomall/gomall/rpc_gen/kitex_gen/cart"
+	// cart "douyin-gomall/gomall/rpc_gen/kitex_gen/cart"
+	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
 )

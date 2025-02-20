@@ -3,7 +3,8 @@
 package order
 
 import (
-	cart "douyin-gomall/gomall/rpc_gen/kitex_gen/cart"
+	// cart "douyin-gomall/gomall/rpc_gen/kitex_gen/cart"
+	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	fmt "fmt"
 	fastpb "github.com/cloudwego/fastpb"
 )
