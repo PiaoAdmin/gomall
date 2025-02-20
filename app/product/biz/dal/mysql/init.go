@@ -27,7 +27,11 @@ func Init() {
 	if err != nil {
 		panic(err)
 	}
-	err := DB.AutoMigrate(model.Product{})
+	err := DB.AutoMigrate(
+		model.Product{},
+		model.Sku{},
+		model.Category{},
+	)
 	if err != nil {
 		return
 	}

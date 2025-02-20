@@ -16,10 +16,14 @@ func TestGetProduct_Run(t *testing.T) {
 	mysql.Init()
 	ctx := context.Background()
 	s := NewGetProductService(ctx)
+	//l := NewListProductsService(ctx)
 	// init req and assert value
 
-	req := &product.GetProductReq{}
+	req := &product.GetProductReq{
+		Id: 1892154393032900608,
+	}
 	resp, err := s.Run(req)
+
 	t.Logf("err: %v", err)
 	t.Logf("resp: %v", resp)
 

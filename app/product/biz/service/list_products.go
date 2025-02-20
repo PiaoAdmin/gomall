@@ -23,7 +23,7 @@ func (s *ListProductsService) Run(req *product.ListProductsReq) (resp *product.L
 	resp.Products = make([]*product.Product, len(products))
 	for i, p := range products {
 		resp.Products[i] = &product.Product{
-			Id:          uint32(p.ID),
+			Id:          p.ID,
 			Name:        p.ProdName,
 			Description: p.Brief,
 			Picture:     p.MainImage,
