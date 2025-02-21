@@ -4,5 +4,6 @@ package hertz_gateway.common;
 
 option go_package = "hertz_gateway/common";
 
+
 message Empty {
 }
