@@ -2,7 +2,6 @@ package product
 
 import (
 	"context"
-	"github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/product"
 
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/service"
@@ -22,8 +21,7 @@ func GetProduct(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewGetProductService(ctx, c).Run(&req)
+	resp, err := service.NewGetProductService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -43,8 +41,7 @@ func SearchProducts(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewSearchProductsService(ctx, c).Run(&req)
+	resp, err := service.NewSearchProductsService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
