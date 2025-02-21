@@ -3,7 +3,8 @@
 package router
 
 import (
-	home "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/home"
+	cart "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/cart"
+	home "github.com/PiaoAdmin/gomall/app/hertz
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
@@ -11,4 +12,5 @@ import (
 func GeneratedRegister(r *server.Hertz) {
 	//INSERT_POINT: DO NOT DELETE THIS LINE!
 	home.Register(r)
+	cart.Register(r)
 }
