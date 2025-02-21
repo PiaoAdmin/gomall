@@ -4,18 +4,21 @@ import (
 	"net"
 	"time"
 
+	"github.com/PiaoAdmin/gomall/app/checkout/conf"
+	"github.com/PiaoAdmin/gomall/app/checkout/infra/rpc"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout/checkoutservice"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/server"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
-	"github.com/PiaoAdmin/gomall/app/checkout/conf"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout/checkoutservice"
+	consul "github.com/kitex-contrib/registry-consul"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func main() {
 	opts := kitexInit()
+	rpc.InitClient()
 
 	svr := checkoutservice.NewServer(new(CheckoutServiceImpl), opts...)
 
@@ -32,6 +35,12 @@ func kitexInit() (opts []server.Option) {
 		panic(err)
 	}
 	opts = append(opts, server.WithServiceAddr(addr))
+	//注册微服务
+	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
+	if err != nil {
+		panic(err)
+	}
+	opts = append(opts, server.WithRegistry(r))
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{

@@ -7,3 +7,7 @@ gen-payment:
 gen-checkout:
 	@cd rpc_gen && cwgo client --I ../idl --type RPC --service checkout --module github.com/PiaoAdmin/gomall/rpc_gen --idl ../idl/checkout.proto
 	@cd app/checkout && cwgo server -I ../../idl --type RPC --service checkout --module github.com/PiaoAdmin/gomall/app/checkout --idl ../../idl/checkout.proto --pass "-use github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen"
+
+.PHONY: gen-hertz_gateway-checkout
+gen-hertz_gateway-checkout:
+	@cd app/hertz_gateway && cwgo server -I ../../idl --type HTTP --service hertz_gateway --module github.com/PiaoAdmin/gomall/app/hertz_gateway --idl ../../idl/hertz_gateway/checkout_page.proto

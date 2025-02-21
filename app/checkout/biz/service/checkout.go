@@ -7,8 +7,11 @@ import (
 	"strconv"
 
 	"github.com/PiaoAdmin/gomall/app/checkout/infra/rpc"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	checkout "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/klog"
 )
 

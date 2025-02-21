@@ -10,12 +10,15 @@ import (
 	"sync"
 
 	"github.com/PiaoAdmin/gomall/app/checkout/conf"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment/paymentservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productservice"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
 	"github.com/cloudwego/kitex/transport"
-	"github.com/hertz-contrib/registry/consul"
+	consul "github.com/kitex-contrib/registry-consul"
 )
 
 //checkout需要用到一连串的rpc调用，需要用到其他微服务进行校验
@@ -47,7 +50,7 @@ func initPaymentClient() {
 		panic(err)
 	}
 	//获得对应的的客户端
-	opts = append(opts, client.WithRegistry(r))
+	opts = append(opts, client.WithResolver(r))
 	opts = append(opts,
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
 		client.WithTransportProtocol(transport.GRPC),
@@ -66,7 +69,7 @@ func initCartClient() {
 		panic(err)
 	}
 	//获得对应的的客户端
-	opts = append(opts, client.WithRegistry(r))
+	opts = append(opts, client.WithResolver(r))
 	opts = append(opts,
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
 		client.WithTransportProtocol(transport.GRPC),
