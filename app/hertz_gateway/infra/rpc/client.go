@@ -17,7 +17,7 @@ import (
 
 var (
 	ProductClient  productcatalogservice.Client
-	checkoutClient checkoutservice.Client
+	CheckoutClient checkoutservice.Client
 	once           sync.Once
 )
 
@@ -43,7 +43,7 @@ func initCheckoutClient() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	checkoutClient, err = productcatalogservice.NewClient("checkout", client.WithResolver(resolver))
+	CheckoutClient, err = checkoutservice.NewClient("checkout", client.WithResolver(resolver))
 	if err != nil {
 		log.Fatal(err)
 	}
