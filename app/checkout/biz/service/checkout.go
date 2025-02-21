@@ -6,12 +6,17 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/PiaoAdmin/gomall/app/checkout/infra/rpc"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/cart"
+	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/order"
+	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/product"
+
+	//TODO:修改为PiaoAdmin
+	//"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	checkout "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
+	//"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
+	//"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
+	"github.com/PiaoAdmin/gomall/app/checkout/infra/rpc"
 	"github.com/cloudwego/kitex/pkg/klog"
 )
 
@@ -26,7 +31,7 @@ func NewCheckoutService(ctx context.Context) *CheckoutService {
 func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.CheckoutResp, err error) {
 	// Finish your business logic.
 	//首先获取cart购物车信息,获取所有商品
-	cartResult, err := rpc.CartClient.GetCart(s.ctx, &cart.GetCartReq{UserId: req.UserId})
+	cartResult, err := rpc.CartClient.GetCart(s.ctx, &cart.GetCartReq{UserId: uint32(req.UserId)})
 	if err != nil {
 		klog.Error(err)
 		err = fmt.Errorf("GetCart.err:%v", err)

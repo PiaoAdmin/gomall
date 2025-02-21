@@ -10,10 +10,16 @@ import (
 	"sync"
 
 	"github.com/PiaoAdmin/gomall/app/checkout/conf"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
+	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/cart/cartservice"
+	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/order/orderservice"
+	productservice "github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
+
+	//TODO: 修改为PiaoAdmin
+	// "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
+	// "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
+	//productservice "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment/paymentservice"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productservice"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
@@ -75,7 +81,7 @@ func initCartClient() {
 		client.WithTransportProtocol(transport.GRPC),
 		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
 	)
-	CartClient, err = paymentservice.NewClient(conf.GetConf().Kitex.Service, opts...)
+	CartClient, err = cartservice.NewClient(conf.GetConf().Kitex.Service, opts...)
 	if err != nil {
 		panic(err)
 	}
@@ -94,7 +100,7 @@ func initProductClient() {
 		client.WithTransportProtocol(transport.GRPC),
 		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
 	)
-	ProductClient, err = paymentservice.NewClient(conf.GetConf().Kitex.Service, opts...)
+	ProductClient, err = productservice.NewClient(conf.GetConf().Kitex.Service, opts...)
 	if err != nil {
 		panic(err)
 	}
@@ -113,7 +119,7 @@ func initOrderClient() {
 		client.WithTransportProtocol(transport.GRPC),
 		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
 	)
-	OrderClient, err = paymentservice.NewClient(conf.GetConf().Kitex.Service, opts...)
+	OrderClient, err = orderservice.NewClient(conf.GetConf().Kitex.Service, opts...)
 	if err != nil {
 		panic(err)
 	}
