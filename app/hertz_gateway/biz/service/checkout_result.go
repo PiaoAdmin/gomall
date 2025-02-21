@@ -17,7 +17,7 @@ func NewCheckoutResultService(Context context.Context, RequestContext *app.Reque
 	return &CheckoutResultService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *CheckoutResultService) Run(req *common.Empty) (resp *common.Empty, err error) {
+func (h *CheckoutResultService) Run(req *common.Empty) (resp map[string]any, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)

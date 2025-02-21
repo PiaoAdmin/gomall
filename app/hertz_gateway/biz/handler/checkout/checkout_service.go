@@ -22,8 +22,7 @@ func Checkout(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewCheckoutService(ctx, c).Run(&req)
+	resp, err := service.NewCheckoutService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -43,8 +42,7 @@ func CheckoutWaiting(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewCheckoutWaitingService(ctx, c).Run(&req)
+	resp, err := service.NewCheckoutWaitingService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
@@ -64,8 +62,7 @@ func CheckoutResult(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := &common.Empty{}
-	resp, err = service.NewCheckoutResultService(ctx, c).Run(&req)
+	resp, err := service.NewCheckoutResultService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return
