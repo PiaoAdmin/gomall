@@ -6,6 +6,8 @@ import (
 	auth "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/auth"
 	home "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/home"
 	user "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/user"
+	category "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/category"
+	product "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/product"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
@@ -15,6 +17,10 @@ func GeneratedRegister(r *server.Hertz) {
 	auth.Register(r)
 
 	user.Register(r)
+	
+	category.Register(r)
+
+	product.Register(r)
 
 	home.Register(r)
 }

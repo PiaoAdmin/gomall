@@ -40,7 +40,6 @@ func main() {
 
 	router.GeneratedRegister(h)
 	h.LoadHTMLGlob("templates/*")
-
 	h.Spin()
 }
 

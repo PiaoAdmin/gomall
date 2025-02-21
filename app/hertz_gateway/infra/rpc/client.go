@@ -6,21 +6,24 @@ import (
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/conf"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth/authservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user/userservice"
 	"github.com/cloudwego/kitex/client"
 	consul "github.com/kitex-contrib/registry-consul"
 )
 
 var (
-	UserClient userservice.Client
-	AuthClient authservice.Client
-	once       sync.Once
+	UserClient    userservice.Client
+	AuthClient    authservice.Client
+	ProductClient productcatalogservice.Client
+	once          sync.Once
 )
 
 func InitClient() {
 	once.Do(func() {
 		initUserClient()
 		initAuthClient()
+		initProductClient()
 	})
 }
 
@@ -35,5 +38,12 @@ func initAuthClient() {
 	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
 	utils.MustHandleError(err)
 	AuthClient, err = authservice.NewClient("auth", client.WithResolver(r))
+	utils.MustHandleError(err)
+}
+
+func initProductClient() {
+	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
+	utils.MustHandleError(err)
+	ProductClient, err = productcatalogservice.NewClient("product", client.WithResolver(resolver))
 	utils.MustHandleError(err)
 }
