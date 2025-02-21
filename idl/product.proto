@@ -3,16 +3,35 @@ syntax = "proto3";
 package product;
 
 option go_package = "/product";
-
+import "google/protobuf/timestamp.proto";
 service ProductCatalogService {
   rpc ListProducts(ListProductsReq) returns (ListProductsResp) {}
   rpc GetProduct(GetProductReq) returns (GetProductResp) {}
   rpc SearchProducts(SearchProductsReq) returns (SearchProductsResp) {}
-//  rpc AddProduct(AddProductReq) returns (AddProductResp) {}
-//  rpc AddProductToCategory(AddProductToCategoryReq) returns (AddProductToCategoryResp) {}
-//  rpc AddCategory(AddCategoryReq) returns (AddCategoryResp) {}
+  rpc AddProduct(AddProductReq) returns (AddProductResp) {}
+  rpc AssociateProductWithCategory(AssociateProductWithCategoryReq) returns (AssociateProductWithCategoryResp) {}
+  rpc AddCategory(AddCategoryReq) returns (AddCategoryResp) {}
 }
 
+
+// 添加以下两个消息类型
+message AssociateProductWithCategoryReq {
+  int64 productId = 1;
+  int64 categoryId = 2;
+}
+
+message AssociateProductWithCategoryResp {
+  bool success = 1;
+}
+message AddCategoryReq {
+  Category category = 1;
+}
+message AddCategoryResp {
+  int64 id = 1;
+}
+message AddProductReq {
+  Product product = 1;
+}
 message ListProductsReq{
   int32 page = 1;
   int64 pageSize = 2;
@@ -22,14 +41,30 @@ message ListProductsReq{
 
 message Product {
   int64 id = 1;
-  string name = 2;
-  string description = 3;
-  string picture = 4;
-  float price = 5;
-
-  repeated string categories = 6;
+  string ProdName = 2;
+  int64 ShopId = 3;
+  float OriPrice = 4;
+  float Price = 5;
+  string Brief = 6;
+  string Content = 7;
+  string MainImage = 8;
+  string SecondaryImages = 9;
+  int32 Status = 10;
+  int32 SoldNum = 11;
+  int32 TotalStock = 12;
+  google.protobuf.Timestamp ListingTime  = 13;
+  repeated string categories = 14;
 }
-
+message Category {
+  int64 id = 1;
+  string categoryName = 2;
+  int32 status = 3;
+  repeated Product products = 4;
+  int64 parentId = 5;
+}
+message AddProductResp {
+  int64 id = 1;
+}
 message ListProductsResp {
   repeated Product products = 1;
 }

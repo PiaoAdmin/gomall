@@ -23,9 +23,9 @@ type Product struct {
 	SecondaryImages string     `gorm:"column:secondary_images" json:"SecondaryImages"` //type:string       comment:商品辅图;点开商品后的辅图列表，用','隔开   version:2025-01-19 17:09
 	Status          int        `gorm:"column:status" json:"Status"`                    //type:*int         comment:商品状态;-1:删除 0:下架 1:上架             version:2025-01-19 17:09
 	SoldNum         int        `gorm:"column:sold_num" json:"SoldNum"`                 //type:*int         comment:销量                                       version:2025-01-19 17:09
-	TotalStocks     int        `gorm:"column:total_stocks" json:"TotalStocks"`         //type:*int         comment:库存                                       version:2025-01-19 17:09
+	TotalStock      int        `gorm:"column:total_stocks" json:"TotalStock"`          //type:*int         comment:库存                                       version:2025-01-19 17:09
 	ListingTime     time.Time  `gorm:"column:listing_time" json:"ListingTime"`         //type:*time.Time   comment:商品上架时间                               version:2025-01-19 17:09
-	Categories      []Category `gorm:"many2many:prod_category;foreignKey:ID;joinForeignKey:ProdId;References:ID;JoinReferences:CategoryId" json:"Categories"`
+	Categories      []Category `gorm:"many2many:prod_category" json:"Categories"`
 }
 
 // TableName 表名:prod，商品表。
