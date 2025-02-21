@@ -88,7 +88,7 @@ func initProductClient() {
 		panic(err)
 	}
 	//获得对应的的客户端
-	opts = append(opts, client.WithRegistry(r))
+	opts = append(opts, client.WithResolver(r))
 	opts = append(opts,
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
 		client.WithTransportProtocol(transport.GRPC),
@@ -107,7 +107,7 @@ func initOrderClient() {
 		panic(err)
 	}
 	//获得对应的的客户端
-	opts = append(opts, client.WithRegistry(r))
+	opts = append(opts, client.WithResolver(r))
 	opts = append(opts,
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
 		client.WithTransportProtocol(transport.GRPC),
