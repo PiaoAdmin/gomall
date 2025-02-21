@@ -1,0 +1,109 @@
+// 认证鉴权服务
+syntax = "proto3";
+
+package auth;
+
+option go_package = "/auth";
+
+message IssueTokenRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message IssueTokenResponse {
+  string token = 1;
+  string refresh_token = 2;
+  bool success = 3;
+  string msg = 4;
+}
+
+message VerifyTokenRequest { string token = 1; }
+
+message VerifyTokenResponse {
+  bool is_valid = 1;
+  string msg = 2;
+}
+
+message RefreshTokenRequest { 
+  string refresh_token = 1; 
+  string token = 2;
+}
+
+message RefreshTokenResponse {
+  bool is_valid = 1;
+  string token = 2;
+  string refresh_token = 3;
+  string msg = 4;
+}
+
+message LogoutRequest {
+  string token = 1;
+  string refresh_token = 2;
+}
+
+message LogoutResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message PermissionCheckRequest {
+  string token = 1;
+  string service_name = 2;
+  string resource_name = 3;
+}
+
+message PermissionCheckResponse {
+  bool has_permission = 1;
+  string msg = 2;
+}
+
+message AddUserRoleRequest {
+  int64 user_id = 1;
+  int32 role_code = 2;
+  string role_name = 3;
+}
+
+message AddUserRoleResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message RemoveUserRoleRequest {
+  int64 user_id = 1;
+  int32 role_code = 2;
+  string role_name = 3;
+}
+
+message RemoveUserRoleResponse {
+  bool success = 1;
+  string msg = 2;
+}
+
+message GetUserRoleRequest { int64 user_id = 1; }
+
+message GetUserRoleResponse {
+  repeated int32 role_code = 1;
+  repeated string role_name = 2;
+}
+
+service AuthService {
+  rpc IssueToken(IssueTokenRequest) returns (IssueTokenResponse) {}
+
+  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {}
+
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {}
+
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+
+  rpc CheckPermission(PermissionCheckRequest)
+      returns (PermissionCheckResponse) {}
+
+  rpc AddUserRole(AddUserRoleRequest)
+      returns (AddUserRoleResponse) {}
+
+  rpc RemoveUserRole(RemoveUserRoleRequest)
+      returns (RemoveUserRoleResponse) {}
+
+  rpc GetUserRole(GetUserRoleRequest) returns (GetUserRoleResponse) {}
+
+}
