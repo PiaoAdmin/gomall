@@ -30,4 +30,4 @@ go.work.sum
 # custom
 .vscode/*
 Makefile
-tmp/*
+**/tmp/*
