@@ -5,7 +5,6 @@ import (
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
 	product "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type ListProductsService struct {
@@ -38,7 +37,7 @@ func (s *ListProductsService) Run(req *product.ListProductsReq) (resp *product.L
 			SecondaryImages: p.SecondaryImages,
 			SoldNum:         int32(p.SoldNum),
 			TotalStock:      int32(p.TotalStock),
-			ListingTime:     timestamppb.New(p.ListingTime),
+			ListingTime:     p.ListingTime.Unix(),
 		}
 	}
 	return resp, err

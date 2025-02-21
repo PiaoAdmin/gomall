@@ -5,7 +5,6 @@ package product
 import (
 	fmt "fmt"
 	fastpb "github.com/cloudwego/fastpb"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
 
 var (
@@ -349,13 +348,8 @@ func (x *Product) fastReadField12(buf []byte, _type int8) (offset int, err error
 }
 
 func (x *Product) fastReadField13(buf []byte, _type int8) (offset int, err error) {
-	var v timestamppb.Timestamp
-	offset, err = fastpb.ReadMessage(buf, _type, &v)
-	if err != nil {
-		return offset, err
-	}
-	x.ListingTime = &v
-	return offset, nil
+	x.ListingTime, offset, err = fastpb.ReadInt64(buf, _type)
+	return offset, err
 }
 
 func (x *Product) fastReadField14(buf []byte, _type int8) (offset int, err error) {
@@ -844,10 +838,10 @@ func (x *Product) fastWriteField12(buf []byte) (offset int) {
 }
 
 func (x *Product) fastWriteField13(buf []byte) (offset int) {
-	if x.ListingTime == nil {
+	if x.ListingTime == 0 {
 		return offset
 	}
-	offset += fastpb.WriteMessage(buf[offset:], 13, x.GetListingTime())
+	offset += fastpb.WriteInt64(buf[offset:], 13, x.GetListingTime())
 	return offset
 }
 
@@ -1256,10 +1250,10 @@ func (x *Product) sizeField12() (n int) {
 }
 
 func (x *Product) sizeField13() (n int) {
-	if x.ListingTime == nil {
+	if x.ListingTime == 0 {
 		return n
 	}
-	n += fastpb.SizeMessage(13, x.GetListingTime())
+	n += fastpb.SizeInt64(13, x.GetListingTime())
 	return n
 }
 
@@ -1502,5 +1496,3 @@ var fieldIDToName_SearchProductsReq = map[int32]string{
 var fieldIDToName_SearchProductsResp = map[int32]string{
 	1: "Results",
 }
-
-var _ = timestamppb.File_google_protobuf_timestamp_proto

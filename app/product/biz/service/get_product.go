@@ -6,7 +6,6 @@ import (
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type GetProductService struct {
@@ -44,7 +43,7 @@ func (s *GetProductService) Run(req *product.GetProductReq) (resp *product.GetPr
 			SecondaryImages: p.SecondaryImages,
 			SoldNum:         int32(p.SoldNum),
 			TotalStock:      int32(p.TotalStock),
-			ListingTime:     timestamppb.New(p.ListingTime),
+			ListingTime:     p.ListingTime.Unix(),
 		},
 	}
 

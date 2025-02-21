@@ -3,7 +3,6 @@ syntax = "proto3";
 package product;
 
 option go_package = "/product";
-import "google/protobuf/timestamp.proto";
 service ProductCatalogService {
   rpc ListProducts(ListProductsReq) returns (ListProductsResp) {}
   rpc GetProduct(GetProductReq) returns (GetProductResp) {}
@@ -52,7 +51,7 @@ message Product {
   int32 Status = 10;
   int32 SoldNum = 11;
   int32 TotalStock = 12;
-  google.protobuf.Timestamp ListingTime  = 13;
+  int64 ListingTime  = 13;
   repeated string categories = 14;
 }
 message Category {
