@@ -4,5 +4,9 @@ package hertz_gateway.common;
 
 option go_package = "hertz_gateway/common";
 
-message Empty {
+message Base {
+  string title = 1;
+  uint32 user_id = 2;
 }
+
+message Empty {}
