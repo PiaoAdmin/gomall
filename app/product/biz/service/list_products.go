@@ -16,20 +16,29 @@ func NewListProductsService(ctx context.Context) *ListProductsService {
 
 // Run create note info
 func (s *ListProductsService) Run(req *product.ListProductsReq) (resp *product.ListProductsResp, err error) {
-	// Finish your business logic.
 	categoryQuery := model.NewCategoryQuery(s.ctx, mysql.DB)
 	products, err := categoryQuery.GetProductsByCategoryName(req.CategoryName)
 	resp = &product.ListProductsResp{}
 	resp.Products = make([]*product.Product, len(products))
 	for i, p := range products {
+		categories := make([]string, len(p.Categories))
+		for i, category := range p.Categories {
+			categories[i] = category.Name
+		}
 		resp.Products[i] = &product.Product{
-			Id:          p.ID,
-			Name:        p.ProdName,
-			Description: p.Brief,
-			Picture:     p.MainImage,
-			Price:       float32(p.Price),
-			Categories:  nil,
+			Id:              p.ID,
+			ProdName:        p.ProdName,
+			Brief:           p.Brief,
+			MainImage:       p.MainImage,
+			Price:           float32(p.Price),
+			Status:          int32(p.Status),
+			Categories:      categories,
+			Content:         p.Content,
+			SecondaryImages: p.SecondaryImages,
+			SoldNum:         int32(p.SoldNum),
+			TotalStock:      int32(p.TotalStock),
+			ListingTime:     p.ListingTime.Unix(),
 		}
 	}
-	return resp, nil
+	return resp, err
 }

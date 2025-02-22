@@ -21,13 +21,24 @@ func (s *SearchProductsService) Run(req *product.SearchProductsReq) (resp *produ
 	products, err := productQuery.SearchProducts(req.Query)
 	var results []*product.Product
 	for _, p := range products {
+		// 把category结构体切片转成string切片
+		categories := make([]string, len(p.Categories))
+		for i, category := range p.Categories {
+			categories[i] = category.Name
+		}
 		results = append(results, &product.Product{
-			Id:          p.ID,
-			Name:        p.ProdName,
-			Description: p.Brief,
-			Picture:     p.MainImage,
-			Price:       float32(p.Price),
-			Categories:  nil,
+			Id:              p.ID,
+			ProdName:        p.ProdName,
+			Brief:           p.Brief,
+			MainImage:       p.MainImage,
+			Price:           float32(p.Price),
+			Status:          int32(p.Status),
+			Categories:      categories,
+			Content:         p.Content,
+			SecondaryImages: p.SecondaryImages,
+			SoldNum:         int32(p.SoldNum),
+			TotalStock:      int32(p.TotalStock),
+			ListingTime:     p.ListingTime.Unix(),
 		})
 	}
 	return &product.SearchProductsResp{

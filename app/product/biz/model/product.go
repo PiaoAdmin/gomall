@@ -7,12 +7,13 @@ package model
 
 import (
 	"context"
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Product struct {
-	CustomModel
+	Base
 	ProdName        string     `gorm:"column:prod_name" json:"ProdName"`               //type:string       comment:商品名称                                   version:2025-01-19 17:09
 	ShopId          int64      `gorm:"column:shop_id" json:"ShopId"`                   //type:BIGINT       comment:商铺ID                                     version:2025-01-19 17:09
 	OriPrice        float64    `gorm:"column:ori_price" json:"OriPrice"`               //type:*float64     comment:商品原价                                   version:2025-01-19 17:09
@@ -23,9 +24,9 @@ type Product struct {
 	SecondaryImages string     `gorm:"column:secondary_images" json:"SecondaryImages"` //type:string       comment:商品辅图;点开商品后的辅图列表，用','隔开   version:2025-01-19 17:09
 	Status          int        `gorm:"column:status" json:"Status"`                    //type:*int         comment:商品状态;-1:删除 0:下架 1:上架             version:2025-01-19 17:09
 	SoldNum         int        `gorm:"column:sold_num" json:"SoldNum"`                 //type:*int         comment:销量                                       version:2025-01-19 17:09
-	TotalStocks     int        `gorm:"column:total_stocks" json:"TotalStocks"`         //type:*int         comment:库存                                       version:2025-01-19 17:09
+	TotalStock      int        `gorm:"column:total_stocks" json:"TotalStock"`          //type:*int         comment:库存                                       version:2025-01-19 17:09
 	ListingTime     time.Time  `gorm:"column:listing_time" json:"ListingTime"`         //type:*time.Time   comment:商品上架时间                               version:2025-01-19 17:09
-	Categories      []Category `gorm:"many2many:prod_category;foreignKey:ID;joinForeignKey:ProdId;References:ID;JoinReferences:CategoryId" json:"Categories"`
+	Categories      []Category `gorm:"many2many:prod_category" json:"Categories"`
 }
 
 // TableName 表名:prod，商品表。
