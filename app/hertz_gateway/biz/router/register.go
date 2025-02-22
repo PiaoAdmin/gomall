@@ -3,9 +3,13 @@
 package router
 
 import (
+	cart "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/cart"
+
 	checkout "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/checkout"
 	category "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/category"
 	home "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/home"
+	product "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/product"
+
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
@@ -19,4 +23,5 @@ func GeneratedRegister(r *server.Hertz) {
 	product.Register(r)
 
 	home.Register(r)
+	cart.Register(r)
 }
