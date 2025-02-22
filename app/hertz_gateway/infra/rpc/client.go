@@ -1,51 +1,52 @@
 package rpc
 
 import (
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
-	consul "github.com/kitex-contrib/registry-consul"
 	"sync"
 
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/conf"
-	gateutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
 	"github.com/cloudwego/kitex/client"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout/checkoutservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
+	"github.com/cloudwego/kitex/client"
+	consul "github.com/kitex-contrib/registry-consul"
 )
 
 var (
-	CartClient    cartservice.Client
-	UserClient    userservice.Client
-	ProductClient productcatalogservice.Client
-	once          sync.Once
+	ProductClient  productcatalogservice.Client
+	CheckoutClient checkoutservice.Client
+  CartClient    cartservice.Client
+	once           sync.Once
 )
 
-func InitClient() {
+func Init() {
 	once.Do(func() {
-		initUserClient()
+    initCartClient()
 		initProductClient()
-		initCartClient()
+		initCheckoutClient()
 	})
 }
 
-func initUserClient() {
-	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
-	gateutils.MustHandleError(err)
-	UserClient, err = userservice.NewClient("user", client.WithResolver(r))
-	gateutils.MustHandleError(err)
-}
-
 func initProductClient() {
-	var opts []client.Option
-	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
-	gateutils.MustHandleError(err)
-	opts = append(opts, client.WithResolver(r))
-	ProductClient, err = productcatalogservice.NewClient("cart", opts...)
-	gateutils.MustHandleError(err)
+	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
+	utils.MustHandleError(err)
+	ProductClient, err = productcatalogservice.NewClient("product", client.WithResolver(resolver))
+	utils.MustHandleError(err)
 }
 
+func initCheckoutClient() {
+	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
+	utils.MustHandleError(err)
+	CheckoutClient, err = checkoutservice.NewClient("checkout", client.WithResolver(resolver))
+	utils.MustHandleError(err)
+}
+  
 func initCartClient() {
 	var opts []client.Option
 	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
-	gateutils.MustHandleError(err)
+	utils.MustHandleError(err)
 	opts = append(opts, client.WithResolver(r))
 	CartClient, err = cartservice.NewClient("cart", opts...)
-	gateutils.MustHandleError(err)
+	utils.MustHandleError(err)
 }

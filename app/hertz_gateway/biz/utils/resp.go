@@ -2,9 +2,13 @@ package utils
 
 import (
 	"context"
-	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
-	gateutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
+	frontendutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -20,8 +24,9 @@ func SendSuccessResponse(ctx context.Context, c *app.RequestContext, code int, d
 	c.JSON(code, data)
 }
 
+
 func WarpResponse(ctx context.Context, c *app.RequestContext, content map[string]any) map[string]any {
-	userId := gateutils.GetUserIdFromCtx(ctx)
+	userId := frontendutils.GetUserIdFromCtx(ctx)
 	content["userId"] = userId
 
 	if userId > 0 {
@@ -32,5 +37,16 @@ func WarpResponse(ctx context.Context, c *app.RequestContext, content map[string
 			content["cart_num"] = len(cartResp.Cart.Items)
 		}
 	}
+
+// func WarpResponse(ctx context.Context, c *app.RequestContext, content map[string]any) map[string]any {
+// 	var cartNum int
+// 	userId := frontendutils.GetUserIdFromCtx(ctx)
+// 	cartResp, _ := rpc.CartClient.GetCart(ctx, &cart.GetCartReq{UserId: userId})
+// 	if cartResp != nil && cartResp.Cart != nil {
+// 		cartNum = len(cartResp.Cart.Items)
+// 	}
+// 	content["user_id"] = ctx.Value(frontendutils.UserIdKey)
+// 	content["cart_num"] = cartNum
+
 	return content
 }
