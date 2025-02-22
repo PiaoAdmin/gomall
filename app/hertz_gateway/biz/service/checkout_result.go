@@ -5,7 +5,6 @@ import (
 
 	common "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
 	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/utils"
 )
 
 type CheckoutResultService struct {
@@ -23,5 +22,5 @@ func (h *CheckoutResultService) Run(req *common.Empty) (resp map[string]any, err
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-	return utils.H{}, nil
+	return
 }

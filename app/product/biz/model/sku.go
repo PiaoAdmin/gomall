@@ -6,7 +6,7 @@
 package model
 
 type Sku struct {
-	CustomModel
+	Base
 	ProdId   int64    `gorm:"column:prod_id" json:"ProdId"`     //type:BIGINT     comment:sku对应商品的id    version:2025-01-19 17:12
 	OriPrice *float64 `gorm:"column:ori_price" json:"OriPrice"` //type:*float64   comment:原价               version:2025-01-19 17:12
 	Price    *float64 `gorm:"column:price" json:"Price"`        //type:*float64   comment:现价               version:2025-01-19 17:12

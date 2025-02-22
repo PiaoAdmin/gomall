@@ -2,9 +2,10 @@ package mysql
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
 	"github.com/PiaoAdmin/gomall/app/product/conf"
-	"os"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -16,8 +17,7 @@ var (
 )
 
 func Init() {
-	dsn := fmt.Sprintf(conf.GetConf().MySQL.DSN, os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_HOST"), os.Getenv("MYSQL_PORT"))
-	fmt.Printf(dsn)
+	dsn := fmt.Sprintf(conf.GetConf().MySQL.DSN, os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_HOST"))
 	DB, err = gorm.Open(mysql.Open(dsn),
 		&gorm.Config{
 			PrepareStmt:            true,
@@ -33,10 +33,6 @@ func Init() {
 		model.Category{},
 	)
 	if err != nil {
-		return
-	}
-	err2 := DB.AutoMigrate(model.Sku{})
-	if err2 != nil {
 		return
 	}
 }

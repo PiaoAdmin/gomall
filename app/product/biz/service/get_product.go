@@ -22,38 +22,30 @@ func (s *GetProductService) Run(req *product.GetProductReq) (resp *product.GetPr
 		return nil, kerrors.NewBizStatusError(2004001, "Product id is required.")
 	}
 	productQuery := model.NewProductQuery(s.ctx, mysql.DB)
-	byId, err := productQuery.GetById(int64(id))
+	p, err := productQuery.GetById(int64(id))
 	if err != nil {
 		return nil, err
 	}
+	categories := make([]string, len(p.Categories))
+	for i, category := range p.Categories {
+		categories[i] = category.Name
+	}
 	resp = &product.GetProductResp{
 		Product: &product.Product{
-			Id:          byId.ID,
-			Name:        byId.ProdName,
-			Description: byId.Brief,
-			Picture:     byId.MainImage,
-			Price:       float32(byId.Price),
-			Categories:  nil,
+			Id:              p.ID,
+			ProdName:        p.ProdName,
+			Brief:           p.Brief,
+			MainImage:       p.MainImage,
+			Price:           float32(p.Price),
+			Status:          int32(p.Status),
+			Categories:      categories,
+			Content:         p.Content,
+			SecondaryImages: p.SecondaryImages,
+			SoldNum:         int32(p.SoldNum),
+			TotalStock:      int32(p.TotalStock),
+			ListingTime:     p.ListingTime.Unix(),
 		},
 	}
-	//// Finish your business logic.
-	//product1 := &model.Product{
-	//	ProdName:        "testName",
-	//	OriPrice:        114.5,
-	//	Price:           114.5,
-	//	Status:          1,
-	//	ShopId:          1,
-	//	TotalStocks:     114,
-	//	SoldNum:         0,
-	//	Brief:           "testBrief",
-	//	Content:         "testContent",
-	//	MainImage:       "testMainImage",
-	//	SecondaryImages: "testSecondaryImages",
-	//	ListingTime:     time.Now(),
-	//}
-	//err2 := model.CreateProduct(mysql.DB, product1)
-	//if err2 != nil {
-	//	return nil, err2
-	//}
+
 	return resp, nil
 }

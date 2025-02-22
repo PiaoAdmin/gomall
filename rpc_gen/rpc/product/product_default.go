@@ -33,3 +33,30 @@ func SearchProducts(ctx context.Context, req *product.SearchProductsReq, callOpt
 	}
 	return resp, nil
 }
+
+func AddProduct(ctx context.Context, req *product.AddProductReq, callOptions ...callopt.Option) (resp *product.AddProductResp, err error) {
+	resp, err = defaultClient.AddProduct(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "AddProduct call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func AssociateProductWithCategory(ctx context.Context, req *product.AssociateProductWithCategoryReq, callOptions ...callopt.Option) (resp *product.AssociateProductWithCategoryResp, err error) {
+	resp, err = defaultClient.AssociateProductWithCategory(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "AssociateProductWithCategory call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}
+
+func AddCategory(ctx context.Context, req *product.AddCategoryReq, callOptions ...callopt.Option) (resp *product.AddCategoryResp, err error) {
+	resp, err = defaultClient.AddCategory(ctx, req, callOptions...)
+	if err != nil {
+		klog.CtxErrorf(ctx, "AddCategory call failed,err =%+v", err)
+		return nil, err
+	}
+	return resp, nil
+}

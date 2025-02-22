@@ -1,18 +1,13 @@
 package rpc
 
 import (
-<<<<<<< HEAD
 	"sync"
 
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/conf"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth/authservice"
-=======
-	"log"
-	"sync"
 
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout/checkoutservice"
->>>>>>> upstream/dev
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user/userservice"
 	"github.com/cloudwego/kitex/client"
@@ -20,9 +15,9 @@ import (
 )
 
 var (
-	UserClient    userservice.Client
-	AuthClient    authservice.Client
-	ProductClient productcatalogservice.Client
+	UserClient     userservice.Client
+	AuthClient     authservice.Client
+	ProductClient  productcatalogservice.Client
 	CheckoutClient checkoutservice.Client
 	once           sync.Once
 )
@@ -59,11 +54,7 @@ func initProductClient() {
 
 func initCheckoutClient() {
 	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
-	if err != nil {
-		log.Fatal(err)
-	}
+	utils.MustHandleError(err)
 	CheckoutClient, err = checkoutservice.NewClient("checkout", client.WithResolver(resolver))
-	if err != nil {
-		log.Fatal(err)
-	}
+	utils.MustHandleError(err)
 }
