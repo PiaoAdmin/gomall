@@ -1,5 +1,5 @@
 // idl/api.proto; 注解拓展
-syntax = "proto2";
+syntax = "proto3";
 
 package api;
 
