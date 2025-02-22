@@ -7,7 +7,6 @@ import (
 
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	frontendutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 
 	"github.com/cloudwego/hertz/pkg/app"
 )
@@ -30,7 +29,7 @@ func WarpResponse(ctx context.Context, c *app.RequestContext, content map[string
 
 	if userId > 0 {
 		cartResp, err := rpc.CartClient.GetCart(ctx, &cart.GetCartReq{
-			UserId: uint32(gateutils.GetUserIdFromCtx(ctx)),
+			UserId: uint32(frontendutils.GetUserIdFromCtx(ctx)),
 		})
 		if err != nil && cartResp != nil {
 			content["cart_num"] = len(cartResp.Cart.Items)

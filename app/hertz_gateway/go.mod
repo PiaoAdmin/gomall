@@ -1,6 +1,6 @@
 module github.com/PiaoAdmin/gomall/app/hertz_gateway
 
-go 1.24.0
+go 1.23.6
 
 replace (
 	github.com/PiaoAdmin/gomall/rpc_gen => ../../rpc_gen
