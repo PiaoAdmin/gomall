@@ -30,10 +30,6 @@ func Init() {
 	if os.Getenv("GO_ENV") != "online" {
 		DB.AutoMigrate(
 			&model.User{},
-			&model.Permission{},
-			&model.Role{},
-			&model.UserRole{},
-			&model.RolePermission{},
 		)
 		DB = DB.Debug()
 	}

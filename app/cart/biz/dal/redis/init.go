@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/PiaoAdmin/gomall/app/cart/conf"
-	
+	"github.com/redis/go-redis/v9"
 )
 
 var (

@@ -2,10 +2,10 @@ package mysql
 
 import (
 	"fmt"
-	"github.com/PiaoAdmin/gomall/app/cart/biz/model"
-	"github.com/PiaoAdmin/gomall/app/cart/conf"
 	"os"
 
+	"github.com/PiaoAdmin/gomall/app/cart/biz/dal/model"
+	"github.com/PiaoAdmin/gomall/app/cart/conf"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -21,7 +21,7 @@ func Init() {
 		os.Getenv("MYSQL_PASSWORD"),
 		os.Getenv("MYSQL_HOST"),
 	)
-	//dsn := "root:jinitaimei114514@tcp(39.103.237.155:10112)/cart?charset=utf8mb4&parseTime=True&loc=Local"
+	//dsn := "root:jinitaimei114514@tcp(localhost:3306)/cart?charset=utf8mb4&parseTime=True&loc=Local"
 	DB, err = gorm.Open(mysql.Open(dsn),
 		&gorm.Config{
 			PrepareStmt:            true,
