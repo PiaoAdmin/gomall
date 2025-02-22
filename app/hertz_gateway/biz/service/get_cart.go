@@ -5,6 +5,7 @@ import (
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	gateutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"strconv"
 
@@ -36,16 +37,16 @@ func (h *GetCartService) Run(req *common.Empty) (resp map[string]any, err error)
 	var items []map[string]string
 	var total float64
 	for _, item := range cartResp.Cart.Items {
-		productResp, err := rpc.ProductClient.GetProduct(h.Context, &product.GetProductReq{Id: item.ProductId})
+		productResp, err := rpc.ProductClient.GetProduct(h.Context, &product.GetProductReq{Id: int64(item.ProductId)})
 		if err != nil {
 			continue
 		}
 		p := productResp.Product
 		items = append(items, map[string]string{
-			"Name":        p.Name,
-			"Description": p.Description,
+			"Name":        p.ProdName,
+			"Description": p.Brief,
 			"Price":       strconv.FormatFloat(float64(p.Price), 'f', 2, 64),
-			"Picture":     p.Picture,
+			"Picture":     p.MainImage,
 			"Qty":         strconv.Itoa(int(item.Quantity)),
 		})
 		total += float64(p.Price) * float64(item.Quantity)

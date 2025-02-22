@@ -37,13 +37,13 @@ func (h *CheckoutService) Run(req *checkout.CheckoutReq) (resp map[string]any, e
 	var items []map[string]string
 	userId := frontendutils.GetUserIdFromCtx(h.Context)
 
-	carts, err := rpc.CartClient.GetCart(h.Context, &rpccart.GetCartReq{UserId: userId})
+	carts, err := rpc.CartClient.GetCart(h.Context, &rpccart.GetCartReq{UserId: uint32(userId)})
 	if err != nil {
 		return nil, err
 	}
 	var total float32
 	for _, v := range carts.Cart.Items {
-		productResp, err := rpc.ProductClient.GetProduct(h.Context, &rpcproduct.GetProductReq{Id: v.ProductId})
+		productResp, err := rpc.ProductClient.GetProduct(h.Context, &rpcproduct.GetProductReq{Id: int64(v.ProductId)})
 		if err != nil {
 			return nil, err
 		}
@@ -52,9 +52,9 @@ func (h *CheckoutService) Run(req *checkout.CheckoutReq) (resp map[string]any, e
 		}
 		p := productResp.Product
 		items = append(items, map[string]string{
-			"Name":    p.Name,
+			"Name":    p.ProdName,
 			"Price":   strconv.FormatFloat(float64(p.Price), 'f', 2, 64),
-			"Picture": p.Picture,
+			"Picture": p.MainImage,
 			"Qty":     strconv.Itoa(int(v.Quantity)),
 		})
 		total += float32(v.Quantity) * p.Price

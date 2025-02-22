@@ -1,6 +1,8 @@
 module github.com/PiaoAdmin/gomall/app/payment
 
-go 1.22.3
+go 1.23.6
+
+toolchain go1.24.0
 
 replace (
 	github.com/PiaoAdmin/gomall/rpc_gen => ../../rpc_gen

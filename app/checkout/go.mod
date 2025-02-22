@@ -1,6 +1,8 @@
 module github.com/PiaoAdmin/gomall/app/checkout
 
-go 1.22.3
+go 1.23.6
+
+toolchain go1.24.0
 
 replace (
 	github.com/PiaoAdmin/gomall/rpc_gen => ../../rpc_gen
@@ -9,6 +11,7 @@ replace (
 
 require (
 	github.com/PiaoAdmin/gomall/rpc_gen v0.0.0-00010101000000-000000000000
+	github.com/cloudwego/biz-demo/gomall/rpc_gen v0.0.0-20250221030954-58f21ff9d9c9
 	github.com/cloudwego/kitex v0.12.2
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20241120035129-55da83caab1b
 	github.com/kitex-contrib/registry-consul v0.1.0
@@ -29,7 +32,6 @@ require (
 	github.com/bytedance/sonic/loader v0.2.2 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
-	github.com/cloudwego/biz-demo/gomall/rpc_gen v0.0.0-20250221030954-58f21ff9d9c9 // indirect
 	github.com/cloudwego/configmanager v0.2.2 // indirect
 	github.com/cloudwego/dynamicgo v0.5.2 // indirect
 	github.com/cloudwego/fastpb v0.0.5 // indirect
