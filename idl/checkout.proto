@@ -19,7 +19,7 @@ message Address {
 }
 
 message CheckoutReq {
-  uint32 user_id = 1;
+  int64 user_id = 1;
   string firstname = 2;
   string lastname = 3;
   string email = 4;
