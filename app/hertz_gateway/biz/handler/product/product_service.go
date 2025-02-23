@@ -49,3 +49,43 @@ func SearchProducts(ctx context.Context, c *app.RequestContext) {
 
 	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
 }
+
+// CreateProduct .
+// @router /product/create [POST]
+func CreateProduct(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req product.CreateProductReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := service.NewCreateProductService(ctx, c).Run(&req)
+
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}
+
+// AssociateProductWithCategory .
+// @router /product/associateProdWithCategory [POST]
+func AssociateProductWithCategory(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req product.AssociateProductWithCategoryReq
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+
+	resp, err := service.NewAssociateProductWithCategoryService(ctx, c).Run(&req)
+
+	if err != nil {
+		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
+		return
+	}
+	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
+}

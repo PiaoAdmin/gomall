@@ -26,6 +26,7 @@ var (
 
 func InitClient() {
 	once.Do(func() {
+		initCartClient()
 		initUserClient()
 		initAuthClient()
 		initCartClient()
@@ -61,7 +62,7 @@ func initCheckoutClient() {
 	CheckoutClient, err = checkoutservice.NewClient("checkout", client.WithResolver(resolver))
 	utils.MustHandleError(err)
 }
-
+  
 func initCartClient() {
 	var opts []client.Option
 	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)

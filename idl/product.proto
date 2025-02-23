@@ -3,6 +3,40 @@ syntax = "proto3";
 package product;
 
 option go_package = "/product";
+service ProductCatalogService {
+  rpc ListProducts(ListProductsReq) returns (ListProductsResp) {}
+  rpc GetProduct(GetProductReq) returns (GetProductResp) {}
+  rpc SearchProducts(SearchProductsReq) returns (SearchProductsResp) {}
+  rpc AddProduct(AddProductReq) returns (AddProductResp) {}
+  rpc AssociateProductWithCategory(AssociateProductWithCategoryReq) returns (AssociateProductWithCategoryResp) {}
+  rpc AddCategory(AddCategoryReq) returns (AddCategoryResp) {}
+}
+
+
+// 添加以下两个消息类型
+message AssociateProductWithCategoryReq {
+  int64 productId = 1;
+  int64 categoryId = 2;
+}
+
+message AssociateProductWithCategoryResp {
+  bool success = 1;
+}
+message AddCategoryReq {
+  Category category = 1;
+}
+message AddCategoryResp {
+  int64 id = 1;
+}
+message AddProductReq {
+  Product product = 1;
+}
+message ListProductsReq{
+  int32 page = 1;
+  int64 pageSize = 2;
+
+  string categoryName = 3;
+}
 
 message Product {
   int64 id = 1;
@@ -17,10 +51,9 @@ message Product {
   int32 Status = 10;
   int32 SoldNum = 11;
   int32 TotalStock = 12;
-  int64 ListingTime = 13;
+  int64 ListingTime  = 13;
   repeated string categories = 14;
 }
-
 message Category {
   int64 id = 1;
   string categoryName = 2;
@@ -28,46 +61,25 @@ message Category {
   repeated Product products = 4;
   int64 parentId = 5;
 }
-
-// 添加以下两个消息类型
-message AssociateProductWithCategoryReq {
-  int64 productId = 1;
-  int64 categoryId = 2;
+message AddProductResp {
+  int64 id = 1;
+}
+message ListProductsResp {
+  repeated Product products = 1;
 }
 
-message AssociateProductWithCategoryResp { bool success = 1; }
-
-message AddCategoryReq { Category category = 1; }
-
-message AddCategoryResp { int64 id = 1; }
-
-message AddProductReq { Product product = 1; }
-
-message AddProductResp { int64 id = 1; }
-
-message ListProductsReq {
-  int32 page = 1;
-  int64 pageSize = 2;
-
-  string categoryName = 3;
+message GetProductReq {
+  int64 id = 1;
 }
 
-message ListProductsResp { repeated Product products = 1; }
+message GetProductResp {
+  Product product = 1;
+}
 
-message GetProductReq { int64 id = 1; }
+message SearchProductsReq {
+  string query = 1;
+}
 
-message GetProductResp { Product product = 1; }
-
-message SearchProductsReq { string query = 1; }
-
-message SearchProductsResp { repeated Product results = 1; }
-
-service ProductCatalogService {
-  rpc ListProducts(ListProductsReq) returns (ListProductsResp) {}
-  rpc GetProduct(GetProductReq) returns (GetProductResp) {}
-  rpc SearchProducts(SearchProductsReq) returns (SearchProductsResp) {}
-  rpc AddProduct(AddProductReq) returns (AddProductResp) {}
-  rpc AssociateProductWithCategory(AssociateProductWithCategoryReq)
-      returns (AssociateProductWithCategoryResp) {}
-  rpc AddCategory(AddCategoryReq) returns (AddCategoryResp) {}
+message SearchProductsResp {
+  repeated Product results = 1;
 }

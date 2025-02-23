@@ -49,9 +49,9 @@ func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, e
 	}
 	//将信息插入数据库
 	err = model.CreatePaymentLog(mysql.DB, s.ctx, &model.PaymentLog{
-		UserId: int64(req.UserId),
+		UserId: req.UserId,
 		OrderId: func() int64 {
-			id, _ := strconv.ParseInt(req.OrderId, 10, 64)
+			id := req.OrderId
 			return id
 		}(),
 		TranscationId: func() int64 {
