@@ -26,6 +26,7 @@ var (
 
 func InitClient() {
 	once.Do(func() {
+		initCartClient()
 		initUserClient()
 		initAuthClient()
 		initCartClient()

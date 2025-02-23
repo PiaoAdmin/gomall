@@ -7,20 +7,16 @@
 package rpc
 
 import (
+	"github.com/cloudwego/kitex/client"
 	"sync"
 
 	"github.com/PiaoAdmin/gomall/app/checkout/conf"
-	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/cart/cartservice"
-	"github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/order/orderservice"
-	productservice "github.com/cloudwego/biz-demo/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 
-	//TODO: 修改为PiaoAdmin
-	// "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
-	// "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
-	//productservice "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment/paymentservice"
+	productservice "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 
-	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
 	"github.com/cloudwego/kitex/transport"

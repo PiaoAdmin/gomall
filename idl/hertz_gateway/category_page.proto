@@ -14,7 +14,20 @@ service CategoryService {
   rpc Category(CategoryReq) returns(common.Empty) {
   option (api.get) = "/category/:category";
       }
+  rpc AddCategory(AddCategoryReq) returns(common.Empty) {
+    option (api.post) = "/category/create";
+  }
 }
+message Category {
+  int64 id = 1;
+  string categoryName = 2;
+  int32 status = 3;
+  int64 parentId = 5;
+}
+message AddCategoryReq {
+  Category category = 1;
+}
+
 message CategoryReq {
   string category = 1 [(api.path) = "category"];
 }
