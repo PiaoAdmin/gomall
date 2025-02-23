@@ -8,7 +8,6 @@ import (
 	category "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/category"
 	checkout "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/checkout"
 	home "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/home"
-	user "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/user"
 	product "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/product"
 	user "github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router/user"
 

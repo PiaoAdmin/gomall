@@ -8,9 +8,15 @@ package service
 
 import (
 	"context"
+	"strconv"
 
 	checkout "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/checkout"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
+	frontendutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+	rpccart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+	rpcproduct "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 )
 
 type CheckoutService struct {
@@ -60,5 +66,4 @@ func (h *CheckoutService) Run(req *checkout.CheckoutReq) (resp map[string]any, e
 		"cart_num": len(items),
 		"total":    strconv.FormatFloat(float64(total), 'f', 2, 64),
 	}, nil
-	return
 }

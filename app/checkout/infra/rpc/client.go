@@ -7,8 +7,9 @@
 package rpc
 
 import (
-	"github.com/cloudwego/kitex/client"
 	"sync"
+
+	"github.com/cloudwego/kitex/client"
 
 	"github.com/PiaoAdmin/gomall/app/checkout/conf"
 
