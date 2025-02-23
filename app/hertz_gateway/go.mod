@@ -6,6 +6,8 @@ replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 replace github.com/PiaoAdmin/gomall/rpc_gen => ../../rpc_gen
 
+replace github.com/PiaoAdmin/gomall/rpc_gen/api => ../../rpc_gen/api
+
 require (
 	github.com/PiaoAdmin/gomall/rpc_gen v0.0.0-00010101000000-000000000000
 	github.com/cloudwego/hertz v0.9.5
