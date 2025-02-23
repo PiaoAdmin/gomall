@@ -7,8 +7,6 @@
 *.dll
 *.so
 *.dylib
-# 暂时不上传yaml文件
-conf.yaml
 
 # Test binary, built with `go test -c`
 *.test
@@ -31,4 +29,5 @@ go.work.sum
 
 # custom
 .vscode/*
+Makefile
 **/tmp/*

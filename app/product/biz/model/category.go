@@ -11,7 +11,7 @@ import (
 )
 
 type Category struct {
-	CustomModel
+	Base
 	Name     string     `gorm:"column:name" json:"Name"`
 	ParentId int64      `gorm:"column:parent_id" json:"ParentId"`
 	Status   int        `gorm:"column:status" json:"Status"`

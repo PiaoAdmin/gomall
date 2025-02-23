@@ -2,15 +2,15 @@ package service
 
 import (
 	"context"
-	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
-	gateutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
-	"github.com/cloudwego/hertz/pkg/common/utils"
 	"strconv"
 
 	common "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
+	gateutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+	rpcproduct "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 )
 
 type GetCartService struct {
@@ -37,7 +37,7 @@ func (h *GetCartService) Run(req *common.Empty) (resp map[string]any, err error)
 	var items []map[string]string
 	var total float64
 	for _, item := range cartResp.Cart.Items {
-		productResp, err := rpc.ProductClient.GetProduct(h.Context, &product.GetProductReq{Id: int64(item.ProductId)})
+		productResp, err := rpc.ProductClient.GetProduct(h.Context, &product.GetProductReq{Id: item.ProductId})
 		if err != nil {
 			continue
 		}

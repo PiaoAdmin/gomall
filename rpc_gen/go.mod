@@ -1,6 +1,5 @@
 module github.com/PiaoAdmin/gomall/rpc_gen
 
-
 go 1.23.6
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
@@ -8,7 +7,6 @@ replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 require (
 	github.com/cloudwego/fastpb v0.0.5
 	github.com/cloudwego/kitex v0.12.2
-
 	google.golang.org/protobuf v1.33.0
 )
 

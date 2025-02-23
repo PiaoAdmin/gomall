@@ -8,13 +8,14 @@ package model
 import (
 	"time"
 
+	"log"
+
 	"github.com/bwmarrin/snowflake"
 	"gorm.io/gorm"
-	"log"
 )
 
-// CustomModel 自定义模型结构体
-type CustomModel struct {
+// Base 自定义模型结构体
+type Base struct {
 	ID        int64          `gorm:"primaryKey;autoIncrement:false"`
 	CreatedAt time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
@@ -22,7 +23,7 @@ type CustomModel struct {
 }
 
 // BeforeCreate 在创建记录之前调用
-func (cm *CustomModel) BeforeCreate(tx *gorm.DB) (err error) {
+func (cm Base) BeforeCreate(tx *gorm.DB) (err error) {
 	cm.ID = CreateId(700) // 这里的1可以替换为实际的mark值
 	return
 }

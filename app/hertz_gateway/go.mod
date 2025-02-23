@@ -1,10 +1,9 @@
 module github.com/PiaoAdmin/gomall/app/hertz_gateway
 
-go 1.24.0
+go 1.23.6
 
 replace (
 	github.com/apache/thrift => github.com/apache/thrift v0.13.0
-
 )
 
 replace github.com/PiaoAdmin/gomall/rpc_gen => ../../rpc_gen
@@ -18,6 +17,7 @@ require (
 	github.com/hertz-contrib/logger/accesslog v0.0.0-20241107070745-e4ce8c54dd97
 	github.com/hertz-contrib/logger/logrus v1.0.1
 	github.com/hertz-contrib/pprof v0.1.2
+	github.com/jinzhu/copier v0.4.0
 	github.com/kitex-contrib/registry-consul v0.1.0
 	github.com/kr/pretty v0.3.1
 	github.com/redis/go-redis/v9 v9.7.0

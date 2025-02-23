@@ -7,12 +7,13 @@ package model
 
 import (
 	"context"
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Product struct {
-	CustomModel
+	Base
 	ProdName        string     `gorm:"column:prod_name" json:"ProdName"`               //type:string       comment:商品名称                                   version:2025-01-19 17:09
 	ShopId          int64      `gorm:"column:shop_id" json:"ShopId"`                   //type:BIGINT       comment:商铺ID                                     version:2025-01-19 17:09
 	OriPrice        float64    `gorm:"column:ori_price" json:"OriPrice"`               //type:*float64     comment:商品原价                                   version:2025-01-19 17:09

@@ -4,6 +4,8 @@ package main
 
 import (
 	"context"
+	"time"
+
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/router"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/conf"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
@@ -20,12 +22,12 @@ import (
 	"github.com/hertz-contrib/pprof"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
-	"time"
 )
 
 func main() {
 	// init dal
 	// dal.Init()
+	rpc.InitClient()
 	address := conf.GetConf().Hertz.Address
 	h := server.New(server.WithHostPorts(address))
 
@@ -38,7 +40,6 @@ func main() {
 
 	router.GeneratedRegister(h)
 	h.LoadHTMLGlob("templates/*")
-	rpc.Init()
 	h.Spin()
 }
 
