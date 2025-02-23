@@ -2,9 +2,7 @@ module github.com/PiaoAdmin/gomall/app/hertz_gateway
 
 go 1.23.6
 
-replace (
-	github.com/apache/thrift => github.com/apache/thrift v0.13.0
-)
+replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 replace github.com/PiaoAdmin/gomall/rpc_gen => ../../rpc_gen
 

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        v5.29.3
-// source: hertz_gateway/common.proto
+// source: common.proto
 
 package common
 
@@ -26,13 +26,13 @@ type Base struct {
 	unknownFields protoimpl.UnknownFields
 
 	Title  string `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty" form:"title" query:"title"`
-	UserId uint32 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" form:"user_id" query:"user_id"`
+	UserId int64  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty" form:"user_id" query:"user_id"`
 }
 
 func (x *Base) Reset() {
 	*x = Base{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_hertz_gateway_common_proto_msgTypes[0]
+		mi := &file_common_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -45,7 +45,7 @@ func (x *Base) String() string {
 func (*Base) ProtoMessage() {}
 
 func (x *Base) ProtoReflect() protoreflect.Message {
-	mi := &file_hertz_gateway_common_proto_msgTypes[0]
+	mi := &file_common_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *Base) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Base.ProtoReflect.Descriptor instead.
 func (*Base) Descriptor() ([]byte, []int) {
-	return file_hertz_gateway_common_proto_rawDescGZIP(), []int{0}
+	return file_common_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Base) GetTitle() string {
@@ -68,7 +68,7 @@ func (x *Base) GetTitle() string {
 	return ""
 }
 
-func (x *Base) GetUserId() uint32 {
+func (x *Base) GetUserId() int64 {
 	if x != nil {
 		return x.UserId
 	}
@@ -84,7 +84,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_hertz_gateway_common_proto_msgTypes[1]
+		mi := &file_common_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -97,7 +97,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_hertz_gateway_common_proto_msgTypes[1]
+	mi := &file_common_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -110,45 +110,44 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_hertz_gateway_common_proto_rawDescGZIP(), []int{1}
+	return file_common_proto_rawDescGZIP(), []int{1}
 }
 
-var File_hertz_gateway_common_proto protoreflect.FileDescriptor
+var File_common_proto protoreflect.FileDescriptor
 
-var file_hertz_gateway_common_proto_rawDesc = []byte{
-	0x0a, 0x1a, 0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2f,
-	0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x14, 0x68, 0x65,
-	0x72, 0x74, 0x7a, 0x5f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x63, 0x6f, 0x6d, 0x6d,
-	0x6f, 0x6e, 0x22, 0x35, 0x0a, 0x04, 0x42, 0x61, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x69,
-	0x74, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65,
-	0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x0d, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70,
-	0x74, 0x79, 0x42, 0x4e, 0x5a, 0x4c, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d,
-	0x2f, 0x50, 0x69, 0x61, 0x6f, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x2f, 0x67, 0x6f, 0x6d, 0x61, 0x6c,
-	0x6c, 0x2f, 0x61, 0x70, 0x70, 0x2f, 0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x61, 0x74, 0x65,
-	0x77, 0x61, 0x79, 0x2f, 0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x65, 0x6e, 0x2f, 0x68, 0x65,
-	0x72, 0x74, 0x7a, 0x5f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2f, 0x63, 0x6f, 0x6d, 0x6d,
-	0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+var file_common_proto_rawDesc = []byte{
+	0x0a, 0x0c, 0x63, 0x6f, 0x6d, 0x6d, 0x6f, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x14,
+	0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2e, 0x63, 0x6f,
+	0x6d, 0x6d, 0x6f, 0x6e, 0x22, 0x35, 0x0a, 0x04, 0x42, 0x61, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05,
+	0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x69, 0x74,
+	0x6c, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69, 0x64, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x03, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x22, 0x07, 0x0a, 0x05, 0x45,
+	0x6d, 0x70, 0x74, 0x79, 0x42, 0x4e, 0x5a, 0x4c, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
+	0x6f, 0x6d, 0x2f, 0x50, 0x69, 0x61, 0x6f, 0x41, 0x64, 0x6d, 0x69, 0x6e, 0x2f, 0x67, 0x6f, 0x6d,
+	0x61, 0x6c, 0x6c, 0x2f, 0x61, 0x70, 0x70, 0x2f, 0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x61,
+	0x74, 0x65, 0x77, 0x61, 0x79, 0x2f, 0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x65, 0x6e, 0x2f,
+	0x68, 0x65, 0x72, 0x74, 0x7a, 0x5f, 0x67, 0x61, 0x74, 0x65, 0x77, 0x61, 0x79, 0x2f, 0x63, 0x6f,
+	0x6d, 0x6d, 0x6f, 0x6e, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_hertz_gateway_common_proto_rawDescOnce sync.Once
-	file_hertz_gateway_common_proto_rawDescData = file_hertz_gateway_common_proto_rawDesc
+	file_common_proto_rawDescOnce sync.Once
+	file_common_proto_rawDescData = file_common_proto_rawDesc
 )
 
-func file_hertz_gateway_common_proto_rawDescGZIP() []byte {
-	file_hertz_gateway_common_proto_rawDescOnce.Do(func() {
-		file_hertz_gateway_common_proto_rawDescData = protoimpl.X.CompressGZIP(file_hertz_gateway_common_proto_rawDescData)
+func file_common_proto_rawDescGZIP() []byte {
+	file_common_proto_rawDescOnce.Do(func() {
+		file_common_proto_rawDescData = protoimpl.X.CompressGZIP(file_common_proto_rawDescData)
 	})
-	return file_hertz_gateway_common_proto_rawDescData
+	return file_common_proto_rawDescData
 }
 
-var file_hertz_gateway_common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_hertz_gateway_common_proto_goTypes = []interface{}{
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_common_proto_goTypes = []interface{}{
 	(*Base)(nil),  // 0: hertz_gateway.common.Base
 	(*Empty)(nil), // 1: hertz_gateway.common.Empty
 }
-var file_hertz_gateway_common_proto_depIdxs = []int32{
+var file_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -156,13 +155,13 @@ var file_hertz_gateway_common_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_hertz_gateway_common_proto_init() }
-func file_hertz_gateway_common_proto_init() {
-	if File_hertz_gateway_common_proto != nil {
+func init() { file_common_proto_init() }
+func file_common_proto_init() {
+	if File_common_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_hertz_gateway_common_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_common_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Base); i {
 			case 0:
 				return &v.state
@@ -174,7 +173,7 @@ func file_hertz_gateway_common_proto_init() {
 				return nil
 			}
 		}
-		file_hertz_gateway_common_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_common_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
@@ -191,18 +190,18 @@ func file_hertz_gateway_common_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_hertz_gateway_common_proto_rawDesc,
+			RawDescriptor: file_common_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_hertz_gateway_common_proto_goTypes,
-		DependencyIndexes: file_hertz_gateway_common_proto_depIdxs,
-		MessageInfos:      file_hertz_gateway_common_proto_msgTypes,
+		GoTypes:           file_common_proto_goTypes,
+		DependencyIndexes: file_common_proto_depIdxs,
+		MessageInfos:      file_common_proto_msgTypes,
 	}.Build()
-	File_hertz_gateway_common_proto = out.File
-	file_hertz_gateway_common_proto_rawDesc = nil
-	file_hertz_gateway_common_proto_goTypes = nil
-	file_hertz_gateway_common_proto_depIdxs = nil
+	File_common_proto = out.File
+	file_common_proto_rawDesc = nil
+	file_common_proto_goTypes = nil
+	file_common_proto_depIdxs = nil
 }

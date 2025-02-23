@@ -16,6 +16,18 @@ gen-payment:
 gen-checkout:
 	@cd rpc_gen && cwgo client --I ../idl --type RPC --service checkout --module github.com/PiaoAdmin/gomall/rpc_gen --idl ../idl/checkout.proto
 	@cd app/checkout && cwgo server -I ../../idl --type RPC --service checkout --module github.com/PiaoAdmin/gomall/app/checkout --idl ../../idl/checkout.proto --pass "-use github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen"
+.PHONY: gen-cart
+gen-cart:
+	@cd rpc_gen && cwgo client --I ../idl --type RPC --service cart --module github.com/PiaoAdmin/gomall/rpc_gen --idl ../idl/cart.proto
+	@cd app/cart && cwgo server -I ../../idl --type RPC --service cart --module github.com/PiaoAdmin/gomall/app/cart --idl ../../idl/cart.proto --pass "-use github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen"
+.PHONY:gen-cart-page
+gen-cart-page:
+	@cd app/hertz_gateway && cwgo server -I ../../idl --type HTTP --service hertz_gateway --module $(ROOT_MOD)/app/hertz_gateway --idl ../../idl/hertz_gateway/cart_page.proto
+.PHONY:gen-common-page
+gen-common-page:
+	@cd app/hertz_gateway && cwgo server -I ../../idl --type HTTP --service hertz_gateway --module $(ROOT_MOD)/app/hertz_gateway --idl ../../idl/hertz_gateway/common.proto
+
+
 
 .PHONY: gen-hertz_gateway-checkout
 gen-hertz_gateway-checkout:
