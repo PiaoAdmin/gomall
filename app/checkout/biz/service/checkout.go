@@ -4,16 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
-	"strconv"
-	//"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
-	checkout "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout"
-	//"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
-	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
-	//"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
+
 	"github.com/PiaoAdmin/gomall/app/checkout/infra/rpc"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+	checkout "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/klog"
 )
 
@@ -34,6 +31,7 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 		err = fmt.Errorf("GetCart.err:%v", err)
 		return
 	}
+	// fmt.Printf("cartResult:%v\n", cartResult)
 	if cartResult == nil || cartResult.Cart == nil || len(cartResult.Cart.Items) == 0 {
 		err = errors.New("cart is empty")
 		return
@@ -70,13 +68,12 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 	}
 	if req.Address != nil {
 		addr := req.Address
-		zipCodeInt, _ := strconv.Atoi(addr.ZipCode)
 		orderReq.Address = &order.Address{
 			StreetAddress: addr.StreetAddress,
 			City:          addr.City,
 			Country:       addr.Country,
 			State:         addr.State,
-			ZipCode:       int32(zipCodeInt),
+			ZipCode:       addr.ZipCode,
 		}
 	}
 	orderResult, err := rpc.OrderClient.PlaceOrder(s.ctx, orderReq)
@@ -96,7 +93,7 @@ func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.Checkou
 	klog.Info(emptyResult)
 	// 购物车清空后正式开始完成支付
 	var orderId int64
-	if orderResult != nil || orderResult.Order != nil {
+	if orderResult != nil && orderResult.Order != nil {
 		orderId = orderResult.Order.OrderId
 	}
 	payReq := &payment.ChargeReq{

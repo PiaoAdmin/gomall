@@ -7,13 +7,8 @@
 
 package model
 
-// import (
-// 	"gorm.io/gorm"
-// 	"time"
-// )
-
 type OrderItem struct {
-	SnowflakeBase
+	Base
 	ProductID    int64
 	OrderIdRefer int64 `gorm:"index"`
 	Quantity     int32

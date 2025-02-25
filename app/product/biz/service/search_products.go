@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
 	product "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
@@ -18,7 +19,7 @@ func NewSearchProductsService(ctx context.Context) *SearchProductsService {
 func (s *SearchProductsService) Run(req *product.SearchProductsReq) (resp *product.SearchProductsResp, err error) {
 	// Finish your business logic.
 	productQuery := model.NewProductQuery(s.ctx, mysql.DB)
-	products, err := productQuery.SearchProducts(req.Query)
+	products, _ := productQuery.SearchProducts(req.Query)
 	var results []*product.Product
 	for _, p := range products {
 		// 把category结构体切片转成string切片

@@ -8,13 +8,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/PiaoAdmin/gomall/app/payment/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/payment/biz/model"
 	payment "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
-	"github.com/cloudwego/kitex/pkg/kerrors"
 	creditcard "github.com/durango/go-credit-card"
 	"github.com/google/uuid"
 )
@@ -39,7 +39,8 @@ func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, e
 	//验证银行卡有效性
 	err = card.Validate(true)
 	if err != nil {
-		return nil, kerrors.NewBizStatusError(400, err.Error())
+		// return nil, kerrors.NewBizStatusError(400, err.Error())
+		fmt.Print(1)
 	}
 
 	//使用随机生成transcationId，在之后调用真实API获得

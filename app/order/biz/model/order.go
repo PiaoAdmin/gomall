@@ -38,7 +38,7 @@ type Order struct {
 	UserId       int64
 	UserCurrency string
 	Consignee    Consignee   `gorm:"embedded"`
-	OrderItem    []OrderItem `gorm:"foreignKey:OrderIdRefer;references:ID"`
+	OrderItem    []OrderItem `gorm:"foreignKey:OrderIdRefer;references:OrderId"`
 	OrderState   OrderState
 }
 
@@ -58,7 +58,7 @@ func CreateId(flag int64) (id int64) {
 
 func ListOrder(db *gorm.DB, ctx context.Context, userId int64) ([]*Order, error) {
 	var orders []*Order
-	err := db.WithContext(ctx).Where("user_id = ?", userId).Preload("OrderItems").Find(&orders).Error
+	err := db.WithContext(ctx).Where("user_id = ?", userId).Preload("OrderItem").Find(&orders).Error
 	if err != nil {
 		return nil, err
 	}

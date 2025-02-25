@@ -16,14 +16,14 @@ import (
 
 // Base 自定义模型结构体
 type Base struct {
-	ID        int64          `gorm:"primaryKey;autoIncrement:false"`
+	ID        int64          `gorm:"primaryKey"`
 	CreatedAt time.Time      `gorm:"autoCreateTime"`
 	UpdatedAt time.Time      `gorm:"autoUpdateTime"`
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
 // BeforeCreate 在创建记录之前调用
-func (cm Base) BeforeCreate(tx *gorm.DB) (err error) {
+func (cm *Base) BeforeCreate(tx *gorm.DB) (err error) {
 	cm.ID = CreateId(700) // 这里的1可以替换为实际的mark值
 	return
 }

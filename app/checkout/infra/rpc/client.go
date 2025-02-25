@@ -11,16 +11,11 @@ import (
 
 	"github.com/cloudwego/kitex/client"
 
-	"github.com/PiaoAdmin/gomall/app/checkout/conf"
-
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment/paymentservice"
 	productservice "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product/productcatalogservice"
 
-	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	"github.com/cloudwego/kitex/pkg/transmeta"
-	"github.com/cloudwego/kitex/transport"
 	consul "github.com/kitex-contrib/registry-consul"
 )
 
@@ -34,7 +29,6 @@ var (
 	OrderClient   orderservice.Client
 	CartClient    cartservice.Client
 	once          sync.Once
-	err           error
 )
 
 func InitClient() {
@@ -46,78 +40,44 @@ func InitClient() {
 	})
 }
 
-func initPaymentClient() {
-	var opts []client.Option
-	r, err := consul.NewConsulResolver(conf.GetConf().Registry.RegistryAddress[0])
-	if err != nil {
-		panic(err)
-	}
-	//获得对应的的客户端
-	opts = append(opts, client.WithResolver(r))
-	opts = append(opts,
-		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
-		client.WithTransportProtocol(transport.GRPC),
-		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
-	)
-	PaymentClient, err = paymentservice.NewClient(conf.GetConf().Kitex.Service, opts...)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func initCartClient() {
-	var opts []client.Option
-	r, err := consul.NewConsulResolver(conf.GetConf().Registry.RegistryAddress[0])
-	if err != nil {
-		panic(err)
-	}
-	//获得对应的的客户端
-	opts = append(opts, client.WithResolver(r))
-	opts = append(opts,
-		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
-		client.WithTransportProtocol(transport.GRPC),
-		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
-	)
-	CartClient, err = cartservice.NewClient(conf.GetConf().Kitex.Service, opts...)
-	if err != nil {
-		panic(err)
-	}
-}
-
 func initProductClient() {
-	var opts []client.Option
-	r, err := consul.NewConsulResolver(conf.GetConf().Registry.RegistryAddress[0])
+	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
 	if err != nil {
-		panic(err)
+		return
 	}
-	//获得对应的的客户端
-	opts = append(opts, client.WithResolver(r))
-	opts = append(opts,
-		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
-		client.WithTransportProtocol(transport.GRPC),
-		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
-	)
-	ProductClient, err = productservice.NewClient(conf.GetConf().Kitex.Service, opts...)
+	ProductClient, err = productservice.NewClient("product", client.WithResolver(resolver))
 	if err != nil {
-		panic(err)
+		return
 	}
 }
 
-func initOrderClient() {
-	var opts []client.Option
-	r, err := consul.NewConsulResolver(conf.GetConf().Registry.RegistryAddress[0])
+func initPaymentClient() {
+	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
 	if err != nil {
-		panic(err)
+		return
 	}
-	//获得对应的的客户端
-	opts = append(opts, client.WithResolver(r))
-	opts = append(opts,
-		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: conf.GetConf().Kitex.Service}),
-		client.WithTransportProtocol(transport.GRPC),
-		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
-	)
-	OrderClient, err = orderservice.NewClient(conf.GetConf().Kitex.Service, opts...)
+	PaymentClient, err = paymentservice.NewClient("payment", client.WithResolver(resolver))
 	if err != nil {
-		panic(err)
+		return
+	}
+}
+func initOrderClient() {
+	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
+	if err != nil {
+		return
+	}
+	OrderClient, err = orderservice.NewClient("order", client.WithResolver(resolver))
+	if err != nil {
+		return
+	}
+}
+func initCartClient() {
+	resolver, err := consul.NewConsulResolver("127.0.0.1:8500")
+	if err != nil {
+		return
+	}
+	CartClient, err = cartservice.NewClient("cart", client.WithResolver(resolver))
+	if err != nil {
+		return
 	}
 }

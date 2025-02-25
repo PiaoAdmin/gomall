@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/PiaoAdmin/gomall/app/order/biz/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -27,7 +28,10 @@ func Init() {
 		panic(err)
 	}
 	if os.Getenv("GO_ENV") != "online" {
-		DB.AutoMigrate()
+		DB.AutoMigrate(
+			&model.Order{},
+			&model.OrderItem{},
+		)
 		DB = DB.Debug()
 	}
 }
