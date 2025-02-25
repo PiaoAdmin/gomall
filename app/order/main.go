@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * @Author: liaosijie
  * @Date: 2025-02-18 16:47:56
@@ -5,12 +6,15 @@
  * @Last Modified time: 2025-02-18 16:48:56
  */
 
+=======
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 package main
 
 import (
 	"net"
 	"time"
 
+<<<<<<< HEAD
 	//"douyin-gomall/gomall/app/order/biz/dal"
 	//"douyin-gomall/gomall/app/order/conf"
 	//"douyin-gomall/gomall/rpc_gen/kitex_gen/order/orderservice"
@@ -24,13 +28,24 @@ import (
 	"github.com/joho/godotenv"
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	consul "github.com/kitex-contrib/registry-consul"
+=======
+	"github.com/PiaoAdmin/gomall/app/order/conf"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
+	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/pkg/rpcinfo"
+	"github.com/cloudwego/kitex/server"
+	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func main() {
+<<<<<<< HEAD
 	_ = godotenv.Load()
 	dal.Init()
+=======
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	opts := kitexInit()
 
 	svr := orderservice.NewServer(new(OrderServiceImpl), opts...)
@@ -47,11 +62,15 @@ func kitexInit() (opts []server.Option) {
 	if err != nil {
 		panic(err)
 	}
+<<<<<<< HEAD
 	r, err := consul.NewConsulRegister(conf.GetConf().Registry.RegistryAddress[0])
 	if err != nil {
 		klog.Fatal(err)
 	}
 	opts = append(opts, server.WithServiceAddr(addr), server.WithRegistry(r))
+=======
+	opts = append(opts, server.WithServiceAddr(addr))
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 
 	// service info
 	opts = append(opts, server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{

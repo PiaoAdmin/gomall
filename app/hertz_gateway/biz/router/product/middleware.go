@@ -25,3 +25,13 @@ func _searchproductsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _associateproductwithcategoryMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _createproductMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

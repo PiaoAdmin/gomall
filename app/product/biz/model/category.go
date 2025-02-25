@@ -7,7 +7,6 @@ package model
 
 import (
 	"context"
-
 	"gorm.io/gorm"
 )
 

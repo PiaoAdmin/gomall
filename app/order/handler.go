@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * @Author: liaosijie
  * @Date: 2025-02-18 16:51:32
@@ -5,12 +6,17 @@
  * @Last Modified time: 2025-02-18 16:51:32
  */
 
+=======
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 package main
 
 import (
 	"context"
+<<<<<<< HEAD
 	// order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
 	// "douyin-gomall/gomall/app/order/biz/service"
+=======
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	"github.com/PiaoAdmin/gomall/app/order/biz/service"
 	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 )

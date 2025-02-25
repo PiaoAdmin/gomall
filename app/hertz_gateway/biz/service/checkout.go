@@ -8,9 +8,15 @@ package service
 
 import (
 	"context"
+	"strconv"
 
 	checkout "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/checkout"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
+	frontendutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+	rpccart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+	rpcproduct "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 )
 
 type CheckoutService struct {
@@ -28,6 +34,37 @@ func (h *CheckoutService) Run(req *checkout.CheckoutReq) (resp map[string]any, e
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
+	var items []map[string]string
+	userId := frontendutils.GetUserIdFromCtx(h.Context)
 
+	carts, err := rpc.CartClient.GetCart(h.Context, &rpccart.GetCartReq{UserId: userId})
+	if err != nil {
+		return nil, err
+	}
+	var total float32
+	for _, v := range carts.Cart.Items {
+		productResp, err := rpc.ProductClient.GetProduct(h.Context, &rpcproduct.GetProductReq{Id: int64(v.ProductId)})
+		if err != nil {
+			return nil, err
+		}
+		if productResp.Product == nil {
+			continue
+		}
+		p := productResp.Product
+		items = append(items, map[string]string{
+			"Name":    p.ProdName,
+			"Price":   strconv.FormatFloat(float64(p.Price), 'f', 2, 64),
+			"Picture": p.MainImage,
+			"Qty":     strconv.Itoa(int(v.Quantity)),
+		})
+		total += float32(v.Quantity) * p.Price
+	}
+
+	return utils.H{
+		"title":    "Checkout",
+		"items":    items,
+		"cart_num": len(items),
+		"total":    strconv.FormatFloat(float64(total), 'f', 2, 64),
+	}, nil
 	return
 }

@@ -4,9 +4,14 @@ package orderservice
 
 import (
 	"context"
+<<<<<<< HEAD
 	// order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
 	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 	"errors"
+=======
+	"errors"
+	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
 	streaming "github.com/cloudwego/kitex/pkg/streaming"

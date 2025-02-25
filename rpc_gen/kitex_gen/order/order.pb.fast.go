@@ -3,9 +3,14 @@
 package order
 
 import (
+<<<<<<< HEAD
 	// cart "douyin-gomall/gomall/rpc_gen/kitex_gen/cart"
 	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	fmt "fmt"
+=======
+	fmt "fmt"
+	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	fastpb "github.com/cloudwego/fastpb"
 )
 
@@ -120,7 +125,11 @@ ReadFieldError:
 }
 
 func (x *PlaceOrderReq) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	x.UserId, offset, err = fastpb.ReadUint32(buf, _type)
+=======
+	x.UserId, offset, err = fastpb.ReadInt64(buf, _type)
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset, err
 }
 
@@ -215,7 +224,11 @@ ReadFieldError:
 }
 
 func (x *OrderResult) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	x.OrderId, offset, err = fastpb.ReadString(buf, _type)
+=======
+	x.OrderId, offset, err = fastpb.ReadInt64(buf, _type)
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset, err
 }
 
@@ -270,7 +283,11 @@ ReadFieldError:
 }
 
 func (x *ListOrderReq) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	x.UserId, offset, err = fastpb.ReadUint32(buf, _type)
+=======
+	x.UserId, offset, err = fastpb.ReadInt64(buf, _type)
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset, err
 }
 
@@ -335,12 +352,20 @@ func (x *Order) fastReadField1(buf []byte, _type int8) (offset int, err error) {
 }
 
 func (x *Order) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	x.OrderId, offset, err = fastpb.ReadString(buf, _type)
+=======
+	x.OrderId, offset, err = fastpb.ReadInt64(buf, _type)
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset, err
 }
 
 func (x *Order) fastReadField3(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	x.UserId, offset, err = fastpb.ReadUint32(buf, _type)
+=======
+	x.UserId, offset, err = fastpb.ReadInt64(buf, _type)
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset, err
 }
 
@@ -425,12 +450,20 @@ ReadFieldError:
 }
 
 func (x *MarkOrderPaidReq) fastReadField1(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	x.UserId, offset, err = fastpb.ReadUint32(buf, _type)
+=======
+	x.UserId, offset, err = fastpb.ReadInt64(buf, _type)
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset, err
 }
 
 func (x *MarkOrderPaidReq) fastReadField2(buf []byte, _type int8) (offset int, err error) {
+<<<<<<< HEAD
 	x.OrderId, offset, err = fastpb.ReadString(buf, _type)
+=======
+	x.OrderId, offset, err = fastpb.ReadInt64(buf, _type)
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset, err
 }
 
@@ -515,7 +548,11 @@ func (x *PlaceOrderReq) fastWriteField1(buf []byte) (offset int) {
 	if x.UserId == 0 {
 		return offset
 	}
+<<<<<<< HEAD
 	offset += fastpb.WriteUint32(buf[offset:], 1, x.GetUserId())
+=======
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset
 }
 
@@ -587,10 +624,17 @@ func (x *OrderResult) FastWrite(buf []byte) (offset int) {
 }
 
 func (x *OrderResult) fastWriteField1(buf []byte) (offset int) {
+<<<<<<< HEAD
 	if x.OrderId == "" {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 1, x.GetOrderId())
+=======
+	if x.OrderId == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetOrderId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset
 }
 
@@ -622,7 +666,11 @@ func (x *ListOrderReq) fastWriteField1(buf []byte) (offset int) {
 	if x.UserId == 0 {
 		return offset
 	}
+<<<<<<< HEAD
 	offset += fastpb.WriteUint32(buf[offset:], 1, x.GetUserId())
+=======
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset
 }
 
@@ -651,10 +699,17 @@ func (x *Order) fastWriteField1(buf []byte) (offset int) {
 }
 
 func (x *Order) fastWriteField2(buf []byte) (offset int) {
+<<<<<<< HEAD
 	if x.OrderId == "" {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 2, x.GetOrderId())
+=======
+	if x.OrderId == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.GetOrderId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset
 }
 
@@ -662,7 +717,11 @@ func (x *Order) fastWriteField3(buf []byte) (offset int) {
 	if x.UserId == 0 {
 		return offset
 	}
+<<<<<<< HEAD
 	offset += fastpb.WriteUint32(buf[offset:], 3, x.GetUserId())
+=======
+	offset += fastpb.WriteInt64(buf[offset:], 3, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset
 }
 
@@ -729,15 +788,26 @@ func (x *MarkOrderPaidReq) fastWriteField1(buf []byte) (offset int) {
 	if x.UserId == 0 {
 		return offset
 	}
+<<<<<<< HEAD
 	offset += fastpb.WriteUint32(buf[offset:], 1, x.GetUserId())
+=======
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset
 }
 
 func (x *MarkOrderPaidReq) fastWriteField2(buf []byte) (offset int) {
+<<<<<<< HEAD
 	if x.OrderId == "" {
 		return offset
 	}
 	offset += fastpb.WriteString(buf[offset:], 2, x.GetOrderId())
+=======
+	if x.OrderId == 0 {
+		return offset
+	}
+	offset += fastpb.WriteInt64(buf[offset:], 2, x.GetOrderId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return offset
 }
 
@@ -816,7 +886,11 @@ func (x *PlaceOrderReq) sizeField1() (n int) {
 	if x.UserId == 0 {
 		return n
 	}
+<<<<<<< HEAD
 	n += fastpb.SizeUint32(1, x.GetUserId())
+=======
+	n += fastpb.SizeInt64(1, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return n
 }
 
@@ -888,10 +962,17 @@ func (x *OrderResult) Size() (n int) {
 }
 
 func (x *OrderResult) sizeField1() (n int) {
+<<<<<<< HEAD
 	if x.OrderId == "" {
 		return n
 	}
 	n += fastpb.SizeString(1, x.GetOrderId())
+=======
+	if x.OrderId == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(1, x.GetOrderId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return n
 }
 
@@ -923,7 +1004,11 @@ func (x *ListOrderReq) sizeField1() (n int) {
 	if x.UserId == 0 {
 		return n
 	}
+<<<<<<< HEAD
 	n += fastpb.SizeUint32(1, x.GetUserId())
+=======
+	n += fastpb.SizeInt64(1, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return n
 }
 
@@ -952,10 +1037,17 @@ func (x *Order) sizeField1() (n int) {
 }
 
 func (x *Order) sizeField2() (n int) {
+<<<<<<< HEAD
 	if x.OrderId == "" {
 		return n
 	}
 	n += fastpb.SizeString(2, x.GetOrderId())
+=======
+	if x.OrderId == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.GetOrderId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return n
 }
 
@@ -963,7 +1055,11 @@ func (x *Order) sizeField3() (n int) {
 	if x.UserId == 0 {
 		return n
 	}
+<<<<<<< HEAD
 	n += fastpb.SizeUint32(3, x.GetUserId())
+=======
+	n += fastpb.SizeInt64(3, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return n
 }
 
@@ -1030,15 +1126,26 @@ func (x *MarkOrderPaidReq) sizeField1() (n int) {
 	if x.UserId == 0 {
 		return n
 	}
+<<<<<<< HEAD
 	n += fastpb.SizeUint32(1, x.GetUserId())
+=======
+	n += fastpb.SizeInt64(1, x.GetUserId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return n
 }
 
 func (x *MarkOrderPaidReq) sizeField2() (n int) {
+<<<<<<< HEAD
 	if x.OrderId == "" {
 		return n
 	}
 	n += fastpb.SizeString(2, x.GetOrderId())
+=======
+	if x.OrderId == 0 {
+		return n
+	}
+	n += fastpb.SizeInt64(2, x.GetOrderId())
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return n
 }
 

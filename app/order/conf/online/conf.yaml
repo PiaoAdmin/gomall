@@ -9,6 +9,7 @@ kitex:
 
 registry:
   registry_address:
+<<<<<<< HEAD
     - 127.0.0.1:8500 # 修改为 consul 的实际地址
   username: "" # consul 的用户名，如果有的话请填写
   password: "" # consul 的密码，如果有的话请填写
@@ -20,4 +21,17 @@ redis:
   address: "127.0.0.1:6379" # 修改为 redis 的实际地址和端口
   username: "" # redis 的用户名，如果有的话请填写
   password: "" # redis 的密码，如果有的话请填写
+=======
+    - 127.0.0.1:2379
+  username: ""
+  password: ""
+
+mysql:
+  dsn: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8mb4&parseTime=True&loc=Local"
+
+redis:
+  address: "127.0.0.1:6379"
+  username: ""
+  password: ""
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
   db: 0

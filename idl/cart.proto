@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 syntax = "proto3";
 
 package cart;
@@ -39,4 +40,47 @@ message Cart {
   repeated CartItem items = 2;
 }
 
+=======
+syntax = "proto3";
+
+package cart;
+
+option go_package = '/cart';
+
+service CartService {
+  rpc AddItem(AddItemReq) returns (AddItemResp) {}
+  rpc GetCart(GetCartReq) returns (GetCartResp) {}
+  rpc EmptyCart(EmptyCartReq) returns (EmptyCartResp) {}
+}
+
+message CartItem {
+  int64 product_id = 1;
+  int32  quantity = 2;
+}
+
+message AddItemReq {
+  int64 user_id = 1;
+  CartItem item = 2;
+}
+
+message AddItemResp {}
+
+message EmptyCartReq {
+  int64 user_id = 1;
+}
+
+message GetCartReq {
+  int64 user_id = 1;
+}
+
+message GetCartResp {
+  Cart cart = 1;
+}
+
+message Cart {
+  int64 user_id = 1;
+  repeated CartItem items = 2;
+}
+
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 message EmptyCartResp {}

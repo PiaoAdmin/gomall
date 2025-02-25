@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*
  * @Author: liaosijie
  * @Date: 2025-02-18 22:28:50
@@ -5,10 +6,13 @@
  * @Last Modified time: 2025-02-18 23:30:55
  */
 
+=======
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 package service
 
 import (
 	"context"
+<<<<<<< HEAD
 
 	"github.com/PiaoAdmin/gomall/app/cart"
 
@@ -20,13 +24,20 @@ import (
 	// order "douyin-gomall/gomall/rpc_gen/kitex_gen/order"
 	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 	"github.com/cloudwego/kitex/pkg/kerrors"
+=======
+	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 )
 
 type ListOrderService struct {
 	ctx context.Context
+<<<<<<< HEAD
 }
 
 // NewListOrderService new ListOrderService
+=======
+} // NewListOrderService new ListOrderService
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 func NewListOrderService(ctx context.Context) *ListOrderService {
 	return &ListOrderService{ctx: ctx}
 }
@@ -34,6 +45,7 @@ func NewListOrderService(ctx context.Context) *ListOrderService {
 // Run create note info
 func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderResp, err error) {
 	// Finish your business logic.
+<<<<<<< HEAD
 	model.ListOrder(s.ctx,mysql.DB, req.UserId)
 	if err != nil {
 		return nil, kerrors.NewBizStatusError(500001,err.Error())
@@ -69,5 +81,8 @@ func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderRe
 	resp = &order.ListOrderResp{
 		Orders: orders,
 	}
+=======
+
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 	return
 }

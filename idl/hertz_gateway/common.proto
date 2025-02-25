@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 syntax = "proto3";
 
 package hertz_gateway.common;
@@ -10,3 +11,18 @@ message Base {
 }
 
 message Empty {}
+=======
+
+syntax = "proto3";
+
+package hertz_gateway.common;
+
+option go_package = "hertz_gateway/common";
+
+message Base {
+  string title = 1;
+  int64 user_id = 2;
+}
+
+message Empty {}
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a

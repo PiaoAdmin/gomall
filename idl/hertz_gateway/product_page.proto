@@ -15,6 +15,34 @@ service ProductService {
   rpc SearchProducts(SearchProductsReq) returns (common.Empty) {
     option (api.get) = "/product/search";
   }
+  rpc CreateProduct(CreateProductReq) returns (common.Empty) {
+    option (api.post) = "/product/create";
+  }
+  rpc AssociateProductWithCategory(AssociateProductWithCategoryReq) returns (common.Empty) {
+    option (api.post) = "/product/associateProdWithCategory";
+  }
+}
+message AssociateProductWithCategoryReq {
+  int64 productId = 1;
+  int64 categoryId = 2;
+}
+message Product {
+  string ProdName = 2;
+  int64 ShopId = 3;
+  float OriPrice = 4;
+  float Price = 5;
+  string Brief = 6;
+  string Content = 7;
+  string MainImage = 8;
+  string SecondaryImages = 9;
+  int32 Status = 10;
+  int32 SoldNum = 11;
+  int32 TotalStock = 12;
+  int64 ListingTime  = 13;
+}
+
+message CreateProductReq {
+ Product product = 1[(api.body) = "product"];
 }
 message ProductReq {
   int64 id = 1 [ (api.query) = "id"];

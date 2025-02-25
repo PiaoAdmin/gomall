@@ -124,7 +124,7 @@ ReadFieldError:
 }
 
 func (x *CheckoutReq) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	x.UserId, offset, err = fastpb.ReadUint32(buf, _type)
+	x.UserId, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -189,7 +189,7 @@ ReadFieldError:
 }
 
 func (x *CheckoutResp) fastReadField1(buf []byte, _type int8) (offset int, err error) {
-	x.OrderId, offset, err = fastpb.ReadString(buf, _type)
+	x.OrderId, offset, err = fastpb.ReadInt64(buf, _type)
 	return offset, err
 }
 
@@ -267,7 +267,7 @@ func (x *CheckoutReq) fastWriteField1(buf []byte) (offset int) {
 	if x.UserId == 0 {
 		return offset
 	}
-	offset += fastpb.WriteUint32(buf[offset:], 1, x.GetUserId())
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetUserId())
 	return offset
 }
 
@@ -321,10 +321,10 @@ func (x *CheckoutResp) FastWrite(buf []byte) (offset int) {
 }
 
 func (x *CheckoutResp) fastWriteField1(buf []byte) (offset int) {
-	if x.OrderId == "" {
+	if x.OrderId == 0 {
 		return offset
 	}
-	offset += fastpb.WriteString(buf[offset:], 1, x.GetOrderId())
+	offset += fastpb.WriteInt64(buf[offset:], 1, x.GetOrderId())
 	return offset
 }
 
@@ -405,7 +405,7 @@ func (x *CheckoutReq) sizeField1() (n int) {
 	if x.UserId == 0 {
 		return n
 	}
-	n += fastpb.SizeUint32(1, x.GetUserId())
+	n += fastpb.SizeInt64(1, x.GetUserId())
 	return n
 }
 
@@ -459,10 +459,10 @@ func (x *CheckoutResp) Size() (n int) {
 }
 
 func (x *CheckoutResp) sizeField1() (n int) {
-	if x.OrderId == "" {
+	if x.OrderId == 0 {
 		return n
 	}
-	n += fastpb.SizeString(1, x.GetOrderId())
+	n += fastpb.SizeInt64(1, x.GetOrderId())
 	return n
 }
 

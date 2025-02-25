@@ -42,11 +42,18 @@ var (
 
 func InitClient() {
 	once.Do(func() {
+<<<<<<< HEAD
 		registryAddr = conf.GetConf().Hertz.RegistryAddr
 		commonSuite = client.WithSuite(clientsuite.CommonGrpcClientSuite{
 			RegistryAddr:       registryAddr,
 			CurrentServiceName: hertz_gatewayutils.ServiceName,
 		})
+=======
+		initCartClient()
+		initUserClient()
+		initAuthClient()
+		initCartClient()
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 		initProductClient()
 		initUserClient()
 		initCartClient()
@@ -93,7 +100,7 @@ func initUserClient() {
 	UserClient, err = userservice.NewClient("user", commonSuite)
 	hertz_gatewayutils.MustHandleError(err)
 }
-
+  
 func initCartClient() {
 	CartClient, err = cartservice.NewClient("cart", commonSuite)
 	hertz_gatewayutils.MustHandleError(err)

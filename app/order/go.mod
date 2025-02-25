@@ -4,6 +4,7 @@ go 1.24.0
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
+<<<<<<< HEAD
 replace github.com/PiaoAdmin/gomall/rpc_gen => ../rpc_gen
 
 require (
@@ -95,3 +96,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/klog/v2 v2.130.1
 )
+=======
+require github.com/golang/protobuf v1.5.4 // indirect
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a

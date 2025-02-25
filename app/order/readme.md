@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # \*\*\* Project
+=======
+# *** Project
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 
 ## introduce
 
@@ -9,6 +13,7 @@
 
 ## Directory structure
 
+<<<<<<< HEAD
 | catalog     | introduce                                       |
 | ----------- | ----------------------------------------------- |
 | conf        | Configuration files                             |
@@ -17,6 +22,16 @@
 | kitex_gen   | kitex generated code                            |
 | biz/service | The actual business logic.                      |
 | biz/dal     | Logic for operating the storage layer           |
+=======
+|  catalog   | introduce  |
+|  ----  | ----  |
+| conf  | Configuration files |
+| main.go  | Startup file |
+| handler.go  | Used for request processing return of response. |
+| kitex_gen  | kitex generated code |
+| biz/service  | The actual business logic. |
+| biz/dal  | Logic for operating the storage layer |
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
 
 ## How to run
 
@@ -24,6 +39,7 @@
 sh build.sh
 sh output/bootstrap.sh
 ```
+<<<<<<< HEAD
 
 ## 项目文档
 
@@ -47,3 +63,5 @@ ListOrder: 根据用户 ID 查询订单列表。
 返回结果: 订单列表，每个订单包含订单 ID、用户 ID、订单总金额、用户货币类型、收货人信息以及订单中包含的商品列表和数量。
 注意事项
 使用前需要修改 app\order\conf 中的配置文件，主要修改的是数据库等服务器的连接信息，包括端口和密码。
+=======
+>>>>>>> b6e73c27fce12b01552c5334097a847176b8f26a
