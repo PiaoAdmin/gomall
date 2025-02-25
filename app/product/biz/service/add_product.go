@@ -2,10 +2,11 @@ package service
 
 import (
 	"context"
+	"time"
+
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
-	"time"
 )
 
 type AddProductService struct {
@@ -31,7 +32,9 @@ func (s *AddProductService) Run(p *product.AddProductReq) (resp *product.AddProd
 		ListingTime:     time.Unix(p.Product.ListingTime, 0),
 	}
 	err = model.CreateProduct(mysql.DB, newProduct)
-
+	if err != nil {
+		return nil, err
+	}
 	return &product.AddProductResp{
 		Id: newProduct.ID,
 	}, nil

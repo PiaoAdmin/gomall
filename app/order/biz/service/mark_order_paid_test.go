@@ -2,16 +2,24 @@ package service
 
 import (
 	"context"
-	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 	"testing"
+
+	"github.com/PiaoAdmin/gomall/app/order/biz/dal"
+	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
+	"github.com/joho/godotenv"
 )
 
 func TestMarkOrderPaid_Run(t *testing.T) {
+	_ = godotenv.Load("../../.env")
+	dal.Init()
 	ctx := context.Background()
 	s := NewMarkOrderPaidService(ctx)
 	// init req and assert value
 
-	req := &order.MarkOrderPaidReq{}
+	req := &order.MarkOrderPaidReq{
+		OrderId: 1893995460704608256,
+		UserId:  1892469484459921408,
+	}
 	resp, err := s.Run(req)
 	t.Logf("err: %v", err)
 	t.Logf("resp: %v", resp)

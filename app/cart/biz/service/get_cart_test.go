@@ -1,20 +1,29 @@
 package service
 
 import (
+	"context"
 	"testing"
+
+	"github.com/PiaoAdmin/gomall/app/cart/biz/dal"
+	"github.com/PiaoAdmin/gomall/app/cart/rpc"
+	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
+	"github.com/joho/godotenv"
 )
 
 func TestGetCart_Run(t *testing.T) {
-	//dal.Init()
-	//ctx := context.Background()
-	//s := NewGetCartService(ctx)
-	//// init req and assert value
-	//
-	//req := &cart.GetCartReq{UserId: 1}
-	//resp, err := s.Run(req)
-	//t.Logf("err: %v", err)
-	//t.Logf("resp: %v", resp)
-	//
+	_ = godotenv.Load("../../.env")
+	rpc.InitClient()
+	dal.Init()
+	dal.Init()
+	ctx := context.Background()
+	s := NewGetCartService(ctx)
+	// init req and assert value
+
+	req := &cart.GetCartReq{UserId: 1892469484459921408}
+	resp, err := s.Run(req)
+	t.Logf("err: %v", err)
+	t.Logf("resp: %v", resp)
+
 	//// todo: edit your unit test
 
 }

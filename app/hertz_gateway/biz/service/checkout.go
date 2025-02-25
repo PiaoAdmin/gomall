@@ -66,5 +66,4 @@ func (h *CheckoutService) Run(req *checkout.CheckoutReq) (resp map[string]any, e
 		"cart_num": len(items),
 		"total":    strconv.FormatFloat(float64(total), 'f', 2, 64),
 	}, nil
-	return
 }
