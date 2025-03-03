@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/PiaoAdmin/gomall/app/auth/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/auth/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/auth/biz/model"
 	"github.com/PiaoAdmin/gomall/app/auth/biz/utils"
 	auth "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth"
 	"golang.org/x/crypto/bcrypt"
@@ -39,7 +39,7 @@ func (s *IssueTokenService) Run(req *auth.IssueTokenRequest) (resp *auth.IssueTo
 	if err = bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(req.Password)); err != nil {
 		return &auth.IssueTokenResponse{
 			Success: false,
-			Msg:     "旧密码错误",
+			Msg:     "密码错误",
 		}, err
 	}
 	accessTokenString, refreshTokenString, err := utils.NewARJWT().GenerateToken(u.ID, u.Username)

@@ -2,11 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	user "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/user"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	rpcuser "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/jinzhu/copier"
 )
 
@@ -25,7 +27,13 @@ func (h *GetUserInfoService) Run(req *user.GetUserInfoRequest) (resp *user.GetUs
 		UserId: req.UserId,
 	})
 	if err != nil {
-		return nil, err
+		// TODO:如何返回业务异常
+		bizErr, isBizErr := kerrors.FromBizStatusError(err)
+		if isBizErr {
+			fmt.Printf("bizErr: %v\n", bizErr)
+			return nil, bizErr
+		}
+		return
 	}
 	// 构造响应
 	resp = &user.GetUserInfoResponse{

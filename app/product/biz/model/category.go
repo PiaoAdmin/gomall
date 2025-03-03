@@ -7,6 +7,7 @@ package model
 
 import (
 	"context"
+	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -19,7 +20,7 @@ type Category struct {
 	Products []*Product `gorm:"many2many:prod_category" json:"Products"`
 }
 
-func (c Category) tableName() string {
+func (c Category) TableName() string {
 	return "category"
 }
 
@@ -55,24 +56,26 @@ func CreateCategory(DB *gorm.DB, category *Category) error {
 	return DB.Create(&category).Error
 }
 
-// AddProductAndCategory 根据productId和categoryName，将product添加到对应的category中
-func AddProductAndCategory(DB *gorm.DB, productId int64, category Category) error {
-	var product Product
-	if err := DB.First(&product, productId).Error; err != nil {
-		return err
-	}
-	return DB.Model(&product).Association("Categories").Append(&category)
-}
-
 // AssociateProductWithCategory 根据productId和categoryId，将product添加到对应的category中
 func AssociateProductWithCategory(DB *gorm.DB, productId int64, categoryId int64) error {
-	var product Product
-	if err := DB.First(&product, productId).Error; err != nil {
-		return err
-	}
-	var category Category
-	if err := DB.First(&category, categoryId).Error; err != nil {
-		return err
-	}
-	return DB.Model(&product).Association("Categories").Append(&category)
+	// TODO: NND 怎么都不对
+	return DB.Transaction(func(tx *gorm.DB) error {
+		var product Product
+		if err := tx.Preload("Categories").First(&product, productId).Error; err != nil {
+			return err
+		}
+
+		for _, c := range product.Categories {
+			if c.ID == categoryId {
+				return nil
+			}
+		}
+		fmt.Printf("categoryId: %+v\n", categoryId)
+		var category Category
+		if err := tx.First(&category, categoryId).Error; err != nil {
+			return err
+		}
+		fmt.Printf("category: %+v\n", category)
+		return tx.Model(&product).Association("Categories").Append(&category)
+	})
 }

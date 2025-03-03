@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/PiaoAdmin/gomall/app/auth/conf"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/conf"
 	"github.com/golang-jwt/jwt/v4"
 )
 

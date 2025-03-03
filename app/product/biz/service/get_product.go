@@ -2,10 +2,11 @@ package service
 
 import (
 	"context"
+
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
-	"github.com/cloudwego/kitex/pkg/kerrors"
 )
 
 type GetProductService struct {
@@ -19,7 +20,7 @@ func NewGetProductService(ctx context.Context) *GetProductService {
 func (s *GetProductService) Run(req *product.GetProductReq) (resp *product.GetProductResp, err error) {
 	id := req.Id
 	if id == 0 {
-		return nil, kerrors.NewBizStatusError(2004001, "Product id is required.")
+		return nil, constant.ParametersError("请求为空")
 	}
 	productQuery := model.NewProductQuery(s.ctx, mysql.DB)
 	p, err := productQuery.GetById(int64(id))
@@ -33,6 +34,7 @@ func (s *GetProductService) Run(req *product.GetProductReq) (resp *product.GetPr
 	resp = &product.GetProductResp{
 		Product: &product.Product{
 			Id:              p.ID,
+			ShopId:          p.ShopId,
 			ProdName:        p.ProdName,
 			Brief:           p.Brief,
 			MainImage:       p.MainImage,

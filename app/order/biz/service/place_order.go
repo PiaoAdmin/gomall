@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/PiaoAdmin/gomall/app/order/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/order/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 	"gorm.io/gorm"
 )
@@ -21,8 +21,7 @@ func NewPlaceOrderService(ctx context.Context) *PlaceOrderService {
 func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (resp *order.PlaceOrderResp, err error) {
 	// Finish your business logic.
 	if len(req.OrderItems) == 0 {
-		err = fmt.Errorf("OrderItems empty")
-		return
+		return nil, constant.ParametersError("OrderItems empty")
 	}
 	err = mysql.DB.Transaction(func(tx *gorm.DB) error {
 		orderId := model.CreateId(2)

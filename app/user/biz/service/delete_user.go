@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"errors"
 
-	"github.com/PiaoAdmin/gomall/app/user/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/user/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/user/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	user "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 )
 
@@ -19,10 +19,12 @@ func NewDeleteUserService(ctx context.Context) *DeleteUserService {
 // Run create note info
 func (s *DeleteUserService) Run(req *user.DeleteUserRequest) (resp *user.DeleteUserResponse, err error) {
 	// Finish your business logic.
-	if req == nil || req.UserId <= 0 {
-		return nil, errors.New("参数错误")
+	if req == nil {
+		return nil, constant.ReqIsNilError("请求为空")
 	}
-
+	if req.UserId <= 0 {
+		return nil, constant.ParametersError("用户id错误")
+	}
 	is_user, err := model.GetUserById(mysql.DB, s.ctx, req.UserId)
 	if err != nil {
 		return

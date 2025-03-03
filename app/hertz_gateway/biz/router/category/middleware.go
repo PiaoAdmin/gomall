@@ -3,6 +3,8 @@
 package category
 
 import (
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/middleware"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -23,5 +25,8 @@ func _category0Mw() []app.HandlerFunc {
 
 func _addcategoryMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_addcategoryMw"),
+		middleware.PermissionCheck([]int32{constant.Merchant.RoleCode}),
+	}
 }

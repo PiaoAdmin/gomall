@@ -8,12 +8,12 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/PiaoAdmin/gomall/app/payment/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/payment/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	payment "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
 	creditcard "github.com/durango/go-credit-card"
 	"github.com/google/uuid"
@@ -29,6 +29,9 @@ func NewChargeService(ctx context.Context) *ChargeService {
 // Run create note info
 func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, err error) {
 	// Finish your business logic.
+	if req == nil || req.CreditCard == nil || req.OrderId == 0 || req.UserId == 0 {
+		return nil, constant.ParametersError("请求参数错误")
+	}
 	//暂时只提供银行卡号一种方式
 	card := creditcard.Card{
 		Number: req.CreditCard.CreditCardNumber,
@@ -39,8 +42,8 @@ func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, e
 	//验证银行卡有效性
 	err = card.Validate(true)
 	if err != nil {
-		// return nil, kerrors.NewBizStatusError(400, err.Error())
-		fmt.Print(1)
+		return nil, constant.ParametersError("请求参数错误")
+		// fmt.Print(1)
 	}
 
 	//使用随机生成transcationId，在之后调用真实API获得

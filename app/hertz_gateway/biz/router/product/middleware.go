@@ -3,6 +3,8 @@
 package product
 
 import (
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/middleware"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -28,10 +30,16 @@ func _searchproductsMw() []app.HandlerFunc {
 
 func _associateproductwithcategoryMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_associateproductwithcategoryMw"),
+		middleware.PermissionCheck([]int32{constant.Merchant.RoleCode}),
+	}
 }
 
 func _createproductMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_createproductMw"),
+		middleware.PermissionCheck([]int32{constant.Merchant.RoleCode}),
+	}
 }

@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/PiaoAdmin/gomall/app/auth/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/auth/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/auth/biz/model"
 	"github.com/PiaoAdmin/gomall/app/auth/biz/utils"
 	auth "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth"
 )

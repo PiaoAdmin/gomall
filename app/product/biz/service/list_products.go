@@ -2,8 +2,10 @@ package service
 
 import (
 	"context"
+
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	product "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 )
 
@@ -16,6 +18,9 @@ func NewListProductsService(ctx context.Context) *ListProductsService {
 
 // Run create note info
 func (s *ListProductsService) Run(req *product.ListProductsReq) (resp *product.ListProductsResp, err error) {
+	if req == nil || req.CategoryName == "" {
+		return nil, constant.ParametersError("请求为空")
+	}
 	categoryQuery := model.NewCategoryQuery(s.ctx, mysql.DB)
 	products, err := categoryQuery.GetProductsByCategoryName(req.CategoryName)
 	resp = &product.ListProductsResp{}

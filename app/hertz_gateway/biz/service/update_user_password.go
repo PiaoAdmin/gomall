@@ -2,11 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	user "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/user"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	rpcuser "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 )
 
 type UpdateUserPasswordService struct {
@@ -26,6 +28,12 @@ func (h *UpdateUserPasswordService) Run(req *user.UpdateUserPasswordRequest) (re
 		NewPassword: req.NewPassword,
 	})
 	if err != nil {
+		// TODO:如何返回业务异常
+		bizErr, isBizErr := kerrors.FromBizStatusError(err)
+		if isBizErr {
+			fmt.Printf("bizErr: %v\n", bizErr)
+			return nil, bizErr
+		}
 		return nil, err
 	}
 	// 构造响应

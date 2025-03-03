@@ -12,7 +12,7 @@ import (
 
 	checkout "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/checkout"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
-	frontendutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+	gatewayutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
 	rpccart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	rpcproduct "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -35,9 +35,11 @@ func (h *CheckoutService) Run(req *checkout.CheckoutReq) (resp map[string]any, e
 	//}()
 	// todo edit your code
 	var items []map[string]string
-	userId := frontendutils.GetUserIdFromCtx(h.Context)
-
-	carts, err := rpc.CartClient.GetCart(h.Context, &rpccart.GetCartReq{UserId: userId})
+	userId, err := gatewayutils.GetUserIdFromToken(h.Context, h.RequestContext)
+	if err != nil {
+		return nil, err
+	}
+	carts, err := rpc.CartClient.GetCart(h.Context, &rpccart.GetCartReq{UserId: *userId})
 	if err != nil {
 		return nil, err
 	}

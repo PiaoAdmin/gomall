@@ -3,7 +3,9 @@ package service
 import (
 	"context"
 
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/utils"
 	auth "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/auth"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	rpcauth "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -18,10 +20,18 @@ func NewLogoutService(Context context.Context, RequestContext *app.RequestContex
 	return &LogoutService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *LogoutService) Run(req *auth.LogoutRequest) (resp *auth.LogoutResponse, err error) {
+func (h *LogoutService) Run(req *common.Empty) (resp *auth.LogoutResponse, err error) {
+	token, err := utils.GetToken(h.Context, h.RequestContext)
+	if err != nil {
+		return
+	}
+	refreshToken, err := utils.GetRefreshToken(h.Context, h.RequestContext)
+	if err != nil {
+		return
+	}
 	res, err := rpc.AuthClient.Logout(h.Context, &rpcauth.LogoutRequest{
-		Token:        req.Token,
-		RefreshToken: req.RefreshToken,
+		Token:        token,
+		RefreshToken: refreshToken,
 	})
 	if err != nil {
 		return &auth.LogoutResponse{

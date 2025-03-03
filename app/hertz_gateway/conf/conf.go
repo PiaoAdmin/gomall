@@ -23,6 +23,7 @@ type Config struct {
 	Hertz Hertz `yaml:"hertz"`
 	MySQL MySQL `yaml:"mysql"`
 	Redis Redis `yaml:"redis"`
+	JWT   JWT   `yaml:"jwt"`
 }
 
 type MySQL struct {
@@ -48,6 +49,13 @@ type Hertz struct {
 	LogMaxBackups   int    `yaml:"log_max_backups"`
 	LogMaxAge       int    `yaml:"log_max_age"`
 	RegistryAddr    string `yaml:"registry_addr"`
+}
+
+type JWT struct {
+	Secret            string `yaml:"secret"`
+	AccessExpireTime  int64  `yaml:"access_expire"`
+	RefreshExpireTime int64  `yaml:"refresh_expire"`
+	Issuer            string `yaml:"issuer"`
 }
 
 // GetConf gets configuration instance

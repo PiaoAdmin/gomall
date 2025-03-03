@@ -17,7 +17,7 @@ func NewVerifyTokenService(ctx context.Context) *VerifyTokenService {
 // Run create note info
 func (s *VerifyTokenService) Run(req *auth.VerifyTokenRequest) (resp *auth.VerifyTokenResponse, err error) {
 	// Finish your business logic.
-	_, err = utils.NewARJWT().ParseAccessToken(req.Token)
+	claims, err := utils.NewARJWT().ParseAccessToken(req.Token)
 	if err != nil {
 		return &auth.VerifyTokenResponse{
 			IsValid: false,
@@ -28,5 +28,6 @@ func (s *VerifyTokenService) Run(req *auth.VerifyTokenRequest) (resp *auth.Verif
 	return &auth.VerifyTokenResponse{
 		IsValid: true,
 		Msg:     "token is valid",
+		UserId:  claims.UserID,
 	}, nil
 }

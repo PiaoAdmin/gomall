@@ -2,8 +2,10 @@ package service
 
 import (
 	"context"
+
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	product "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 )
 
@@ -16,6 +18,14 @@ func NewAssociateProductWithCategoryService(ctx context.Context) *AssociateProdu
 
 // Run create note info
 func (s *AssociateProductWithCategoryService) Run(req *product.AssociateProductWithCategoryReq) (resp *product.AssociateProductWithCategoryResp, err error) {
+	if req.ProductId == 0 || req.CategoryId == 0 {
+		return nil, constant.ParametersError("请求为空")
+	}
 	err = model.AssociateProductWithCategory(mysql.DB, req.ProductId, req.CategoryId)
-	return
+	if err != nil {
+		return nil, err
+	}
+	return &product.AssociateProductWithCategoryResp{
+		Success: true,
+	}, nil
 }

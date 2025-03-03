@@ -3,12 +3,17 @@
 package cart
 
 import (
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/middleware"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
 func rootMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_cartMw"),
+		middleware.PermissionCheck([]int32{constant.User.RoleCode}),
+	}
 }
 
 func _getcartMw() []app.HandlerFunc {

@@ -20,6 +20,7 @@ func NewDeleteUserService(Context context.Context, RequestContext *app.RequestCo
 
 func (h *DeleteUserService) Run(req *user.DeleteUserRequest) (resp *user.DeleteUserResponse, err error) {
 	// 调用后端 RPC 删除用户
+	// TODO: 其他关联表的删除
 	res, err := rpc.UserClient.DeleteUser(h.Context, &rpcuser.DeleteUserRequest{
 		UserId: req.UserId,
 	})

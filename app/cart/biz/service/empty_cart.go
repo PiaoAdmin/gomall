@@ -5,6 +5,7 @@ import (
 
 	"github.com/PiaoAdmin/gomall/app/cart/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/cart/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 )
@@ -19,6 +20,9 @@ func NewEmptyCartService(ctx context.Context) *EmptyCartService {
 // Run create note info
 func (s *EmptyCartService) Run(req *cart.EmptyCartReq) (resp *cart.EmptyCartResp, err error) {
 	// Finish your business logic.
+	if req.UserId == 0 {
+		return nil, constant.ParametersError("请求为空")
+	}
 	err = model.EmptyCart(s.ctx, mysql.DB, req.UserId)
 	if err != nil {
 		return nil, kerrors.NewBizStatusError(50001, err.Error())

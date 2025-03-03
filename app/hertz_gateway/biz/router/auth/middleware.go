@@ -3,6 +3,8 @@
 package auth
 
 import (
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/middleware"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -23,7 +25,9 @@ func _loginMw() []app.HandlerFunc {
 
 func _logoutMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_logoutMw"),
+	}
 }
 
 func _refreshtokenMw() []app.HandlerFunc {
@@ -36,19 +40,12 @@ func _verifytokenMw() []app.HandlerFunc {
 	return nil
 }
 
-func _permissionMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
-func _checkpermissionMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
 func _roleMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_roleMw"),
+		middleware.PermissionCheck([]int32{constant.Admin.RoleCode}),
+	}
 }
 
 func _adduserroleMw() []app.HandlerFunc {

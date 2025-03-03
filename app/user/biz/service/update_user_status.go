@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"errors"
 
-	"github.com/PiaoAdmin/gomall/app/user/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/user/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/user/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	user "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 )
 
@@ -19,14 +19,11 @@ func NewUpdateUserStatusService(ctx context.Context) *UpdateUserStatusService {
 // Run create note info
 func (s *UpdateUserStatusService) Run(req *user.UpdateUserStatusRequest) (resp *user.UpdateUserStatusResponse, err error) {
 	// Finish your business logic.
-	// TODO: 权限验证
-	// 基本校验
-	// TODO: 通过常量来验证
 	if req.Status == 0 {
-		return nil, errors.New("无效的状态")
+		return nil, constant.ParametersError("无效的状态")
 	}
 	if req.UserId <= 0 {
-		return nil, errors.New("无效的用户ID")
+		return nil, constant.ParametersError("无效的用户ID")
 	}
 
 	// 更新状态

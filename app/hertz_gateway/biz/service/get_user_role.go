@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	auth "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/auth"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
@@ -23,8 +22,7 @@ func (h *GetUserRoleService) Run(req *auth.GetUserRoleRequest) (resp *auth.GetUs
 	res, err := rpc.AuthClient.GetUserRole(h.Context, &rpcauth.GetUserRoleRequest{
 		UserId: req.UserId,
 	})
-	fmt.Printf("req: %v\n", req)
-	fmt.Printf("____________________")
+
 	if err != nil {
 		return nil, err
 	}

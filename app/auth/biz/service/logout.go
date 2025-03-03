@@ -16,6 +16,9 @@ func NewLogoutService(ctx context.Context) *LogoutService {
 // Run create note info
 func (s *LogoutService) Run(req *auth.LogoutRequest) (resp *auth.LogoutResponse, err error) {
 	// Finish your business logic.
-
-	return
+	// TODO: redis实现
+	return &auth.LogoutResponse{
+		Success: true,
+		Msg:     "logout successfully",
+	}, nil
 }

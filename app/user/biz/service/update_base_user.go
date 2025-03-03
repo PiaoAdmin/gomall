@@ -2,11 +2,11 @@ package service
 
 import (
 	"context"
-	"errors"
 	"time"
 
-	"github.com/PiaoAdmin/gomall/app/user/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/user/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/user/biz/model"
+	constant "github.com/PiaoAdmin/gomall/common/constant"
 	user "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 )
 
@@ -21,20 +21,19 @@ func NewUpdateBaseUserService(ctx context.Context) *UpdateBaseUserService {
 func (s *UpdateBaseUserService) Run(req *user.UpdateBaseUserRequest) (resp *user.UpdateBaseUserResponse, err error) {
 	// Finish your business logic.
 	// 基本校验
-	if req.BaseUser == nil {
-		return nil, errors.New("user信息不能为空")
+	if req == nil || req.BaseUser == nil {
+		return nil, constant.ReqIsNilError("请求为空")
 	}
 	if req.BaseUser.UserId <= 0 {
-		return nil, errors.New("无效的用户ID")
+		return nil, constant.ParametersError("用户id错误")
 	}
-
 	// 更新字段
 	u := &model.User{}
 	if req.BaseUser != nil {
 		if req.BaseUser.BirthDate != "" {
 			birthDate, err := time.Parse("2006-01-02", req.BaseUser.BirthDate)
 			if err != nil {
-				return nil, err
+				return nil, constant.ParametersError("生日日期错误", err)
 			}
 			u.BirthDate = birthDate
 		}

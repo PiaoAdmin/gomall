@@ -3,6 +3,8 @@
 package user
 
 import (
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/middleware"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -16,11 +18,6 @@ func _userMw() []app.HandlerFunc {
 	return nil
 }
 
-func _updateuserbalanceMw() []app.HandlerFunc {
-	// your code...
-	return nil
-}
-
 func _createuserMw() []app.HandlerFunc {
 	// your code...
 	return nil
@@ -28,25 +25,48 @@ func _createuserMw() []app.HandlerFunc {
 
 func _deleteuserMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_deleteuserMw"),
+		middleware.PermissionCheck([]int32{constant.Merchant.RoleCode, constant.User.RoleCode}),
+	}
 }
 
 func _getuserinfoMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_getuserinfoMw"),
+		middleware.PermissionCheck([]int32{constant.Merchant.RoleCode, constant.User.RoleCode}),
+	}
+}
+
+func _updateuserbalanceMw() []app.HandlerFunc {
+	// your code...
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_updateuserbalanceMw"),
+		middleware.PermissionCheck([]int32{constant.Admin.RoleCode}),
+	}
 }
 
 func _updateuserpasswordMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_updateuserpasswordMw"),
+		middleware.PermissionCheck([]int32{constant.Merchant.RoleCode, constant.User.RoleCode}),
+	}
 }
 
 func _updateuserstatusMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_updateuserstatusMw"),
+		middleware.PermissionCheck([]int32{constant.Admin.RoleCode}),
+	}
 }
 
 func _updatebaseuserMw() []app.HandlerFunc {
 	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.LoginCheck("_updatebaseuserMw"),
+		middleware.PermissionCheck([]int32{constant.Merchant.RoleCode, constant.User.RoleCode}),
+	}
 }

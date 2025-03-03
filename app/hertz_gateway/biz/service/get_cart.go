@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 
 	common "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
@@ -28,9 +29,14 @@ func (h *GetCartService) Run(req *common.Empty) (resp map[string]any, err error)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
+	user_id, err := gateutils.GetUserIdFromToken(h.Context, h.RequestContext)
+	if err != nil {
+		return nil, err
+	}
 	cartResp, err := rpc.CartClient.GetCart(h.Context, &cart.GetCartReq{
-		UserId: gateutils.GetUserIdFromCtx(h.Context),
+		UserId: *user_id,
 	})
+	fmt.Printf("%v", cartResp.Cart.Items)
 	if err != nil {
 		return nil, err
 	}

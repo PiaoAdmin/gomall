@@ -13,6 +13,7 @@ import (
 
 	"github.com/PiaoAdmin/gomall/app/user/biz/dal"
 	"github.com/PiaoAdmin/gomall/app/user/conf"
+	"github.com/PiaoAdmin/gomall/app/user/infra/rpc"
 	"github.com/PiaoAdmin/gomall/app/user/utils"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user/userservice"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -29,6 +30,7 @@ import (
 func main() {
 	_ = godotenv.Load()
 	dal.Init()
+	rpc.InitClient()
 	opts := kitexInit()
 
 	svr := userservice.NewServer(new(UserServiceImpl), opts...)
@@ -50,7 +52,7 @@ func kitexInit() (opts []server.Option) {
 	if err != nil {
 		panic(err)
 	}
-	print(address)
+	// print(address)
 	opts = append(opts, server.WithServiceAddr(addr))
 
 	// service info

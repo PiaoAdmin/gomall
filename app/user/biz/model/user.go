@@ -17,14 +17,19 @@ type User struct {
 	Phone         string    `gorm:"unique;size:20;not null;index"`
 	Email         string    `gorm:"unique;size:80;index"`
 	Password      string    `gorm:"size:256;not null"`
-	Gender        int8      `gorm:"type:tinyint;default:2"`
+	Gender        int8      `gorm:"type:tinyint;default:2"` // 0 表示未知，2 表示女，1 表示男
 	BirthDate     time.Time `gorm:"type:date"`
-	Status        int32     `gorm:"default:1"`                       // 1 表示正常，0 表示禁用，2 表示未激活等
+	Status        int32     `gorm:"default:1"`                       // 1 表示正常，0 表示禁用
 	Balance       float64   `gorm:"type:decimal(10,2);default:0.00"` // 余额字段，精确到小数点后两位
 }
 
 func (u User) TableName() string {
 	return "user"
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	u.ID = CreateId(1)
+	return nil
 }
 
 // 雪花算法生成id
@@ -38,7 +43,6 @@ func CreateId(flag int64) (id int64) {
 }
 
 func CreateUser(db *gorm.DB, ctx context.Context, user *User) error {
-	user.ID = CreateId(1)
 	return db.WithContext(ctx).Create(user).Error
 }
 
