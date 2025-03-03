@@ -3,6 +3,7 @@ syntax = "proto3";
 package hertz_gateway.auth;
 
 import "api.proto";
+import "hertz_gateway/common.proto";
 
 option go_package = "/hertz_gateway/auth";
 
@@ -18,17 +19,17 @@ message LoginResponse {
   string msg = 4 [ (api.form) = "msg" ];
 }
 
-message VerifyTokenRequest { string token = 1 [ (api.form) = "token" ]; }
+// message VerifyTokenRequest { string token = 1 [ (api.form) = "token" ]; }
 
 message VerifyTokenResponse {
   bool is_valid = 1 [ (api.form) = "is_valid" ];
   string msg = 2 [ (api.form) = "msg" ];
 }
 
-message RefreshTokenRequest {
-  string refresh_token = 1 [ (api.form) = "refresh_token" ];
-  string token = 2 [ (api.form) = "token" ];
-}
+// message RefreshTokenRequest {
+//   string refresh_token = 1 [ (api.form) = "refresh_token" ];
+//   string token = 2 [ (api.form) = "token" ];
+// }
 
 message RefreshTokenResponse {
   bool is_valid = 1 [ (api.form) = "is_valid" ];
@@ -37,26 +38,26 @@ message RefreshTokenResponse {
   string msg = 4 [ (api.form) = "msg" ];
 }
 
-message LogoutRequest {
-  string token = 1 [ (api.form) = "token" ];
-  string refresh_token = 2 [ (api.form) = "refresh_token" ];
-}
+// message LogoutRequest {
+//   string token = 1 [ (api.form) = "token" ];
+//   string refresh_token = 2 [ (api.form) = "refresh_token" ];
+// }
 
 message LogoutResponse {
   bool success = 1 [ (api.form) = "success" ];
   string msg = 2 [ (api.form) = "msg" ];
 }
 
-message PermissionCheckRequest {
-  string token = 1 [ (api.form) = "token" ];
-  string service_name = 2 [ (api.form) = "service_name" ];
-  string resource_name = 3 [ (api.form) = "resource_name" ];
-}
+// message PermissionCheckRequest {
+//   string token = 1 [ (api.form) = "token" ];
+//   string service_name = 2 [ (api.form) = "service_name" ];
+//   string resource_name = 3 [ (api.form) = "resource_name" ];
+// }
 
-message PermissionCheckResponse {
-  bool has_permission = 1 [ (api.form) = "has_permission" ];
-  string msg = 2 [ (api.form) = "msg" ];
-}
+// message PermissionCheckResponse {
+//   bool has_permission = 1 [ (api.form) = "has_permission" ];
+//   string msg = 2 [ (api.form) = "msg" ];
+// }
 
 message AddUserRoleRequest {
   int64 user_id = 1 [ (api.form) = "user_id" ];
@@ -92,22 +93,22 @@ service AuthService {
     option (api.post) = "/auth/login";
   }
 
-  rpc VerifyToken(VerifyTokenRequest) returns (VerifyTokenResponse) {
+  rpc VerifyToken(common.Empty) returns (VerifyTokenResponse) {
     option (api.post) = "/auth/verify";
   }
 
-  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse) {
+  rpc RefreshToken(common.Empty) returns (RefreshTokenResponse) {
     option (api.post) = "/auth/refresh";
   }
 
-  rpc Logout(LogoutRequest) returns (LogoutResponse) {
+  rpc Logout(common.Empty) returns (LogoutResponse) {
     option (api.post) = "/auth/logout";
   }
 
-  rpc CheckPermission(PermissionCheckRequest)
-      returns (PermissionCheckResponse) {
-    option (api.post) = "/auth/permission/check";
-  }
+  // rpc CheckPermission(PermissionCheckRequest)
+  //     returns (PermissionCheckResponse) {
+  //   option (api.post) = "/auth/permission/check";
+  // }
 
   rpc AddUserRole(AddUserRoleRequest) returns (AddUserRoleResponse) {
     option (api.post) = "/auth/role/add";

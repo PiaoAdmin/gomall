@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"errors"
 
-	"github.com/PiaoAdmin/gomall/app/user/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/user/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/user/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	user "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 )
 
@@ -19,13 +19,8 @@ func NewUpdateUserBalanceService(ctx context.Context) *UpdateUserBalanceService 
 // Run create note info
 func (s *UpdateUserBalanceService) Run(req *user.UpdateUserBalanceRequest) (resp *user.UpdateUserBalanceResponse, err error) {
 	// Finish your business logic.
-	// TODO: 权限验证
-	// 基本校验
-	if req.Balance <= 0 {
-		return nil, errors.New("无效的余额")
-	}
 	if req.UserId <= 0 {
-		return nil, errors.New("无效的用户ID")
+		return nil, constant.ParametersError("用户id错误")
 	}
 	// 获取用户现有余额
 	u, err := model.GetUserById(mysql.DB, s.ctx, req.UserId)

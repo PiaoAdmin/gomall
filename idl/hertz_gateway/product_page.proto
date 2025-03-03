@@ -23,8 +23,8 @@ service ProductService {
   }
 }
 message AssociateProductWithCategoryReq {
-  int64 productId = 1;
-  int64 categoryId = 2;
+  int64 productId = 1[(api.body) = "product"];
+  int64 categoryId = 2[(api.body) = "category"];
 }
 message Product {
   string ProdName = 2;

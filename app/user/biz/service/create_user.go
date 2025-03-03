@@ -2,10 +2,15 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"time"
 
-	"github.com/PiaoAdmin/gomall/app/user/biz/dal/model"
+	constant "github.com/PiaoAdmin/gomall/common/constant"
+
 	"github.com/PiaoAdmin/gomall/app/user/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/user/biz/model"
+	"github.com/PiaoAdmin/gomall/app/user/infra/rpc"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth"
 
 	user "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 	"golang.org/x/crypto/bcrypt"
@@ -21,15 +26,19 @@ func NewCreateUserService(ctx context.Context) *CreateUserService {
 // Run create note info
 func (s *CreateUserService) Run(req *user.CreateUserRequest) (resp *user.CreateUserResponse, err error) {
 	// Finish your business logic.
-	// TODO: 判空和密码校验
-
+	if req.User == nil || req.User.BaseUser == nil {
+		return nil, constant.ReqIsNilError("请求为空")
+	}
+	if len(req.User.Password) < 8 || len(req.User.Password) > 16 {
+		return nil, constant.ParametersError("密码长度不符合要求")
+	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.User.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return
+		return nil, constant.ParametersError("密码加密错误", err)
 	}
 	birthDate, err := time.Parse("2006-01-02", req.User.BaseUser.BirthDate)
 	if err != nil {
-		return
+		return nil, constant.ParametersError("生日格式错误", err)
 	}
 	newUser := &model.User{
 		Username:  req.User.BaseUser.Username,
@@ -41,7 +50,17 @@ func (s *CreateUserService) Run(req *user.CreateUserRequest) (resp *user.CreateU
 		Gender:    int8(req.User.BaseUser.Gender),
 		BirthDate: birthDate,
 	}
+	// TODO: 事务，未成功添加角色回滚
 	if err = model.CreateUser(mysql.DB, s.ctx, newUser); err != nil {
+		return
+	}
+	_, err = rpc.AuthClient.AddUserRole(s.ctx, &auth.AddUserRoleRequest{
+		UserId:   newUser.ID,
+		RoleCode: constant.User.RoleCode,
+		RoleName: constant.User.RoleName,
+	})
+	if err != nil {
+		fmt.Print(err.Error())
 		return
 	}
 	return &user.CreateUserResponse{

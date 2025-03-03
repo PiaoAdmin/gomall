@@ -2,11 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	user "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/user"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	rpcuser "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/jinzhu/copier"
 )
 
@@ -29,6 +31,12 @@ func (h *UpdateBaseUserService) Run(req *user.UpdateBaseUserRequest) (resp *user
 		BaseUser: &tempUser,
 	})
 	if err != nil {
+		// TODO:如何返回业务异常
+		bizErr, isBizErr := kerrors.FromBizStatusError(err)
+		if isBizErr {
+			fmt.Printf("bizErr: %v\n", bizErr)
+			return nil, bizErr
+		}
 		return nil, err
 	}
 

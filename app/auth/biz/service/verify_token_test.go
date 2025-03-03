@@ -17,7 +17,8 @@ func TestVerifyToken_Run(t *testing.T) {
 	// init req and assert value
 
 	req := &auth.VerifyTokenRequest{
-		Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxODkxODI3MTM4NDgzNDU4MDQ4LCJ1c2VybmFtZSI6InRlc3QyIiwiaXNzIjoiZ29tYWxsIiwiZXhwIjoxNzM5OTUzNDMxLCJpYXQiOjE3Mzk5NTMzNzF9.2C4-6DP6NoyExebE3a5WWi8agqBdjP3sVUF11AkE_CQ"}
+		Token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxODkzNTk3NDAxMDMwMDcwMjcyLCJ1c2VybmFtZSI6InRlc3QyIiwiaXNzIjoiZ29tYWxsIiwiZXhwIjoxNzQwNjU3NzQyLCJpYXQiOjE3NDA2NTcxNDJ9.Qx5HRkSL9BjJptqojpRiFC_u9aKwNx2u-t-tKxyoFTA",
+	}
 	resp, err := s.Run(req)
 	t.Logf("err: %v", err)
 	t.Logf("resp: %v", resp)

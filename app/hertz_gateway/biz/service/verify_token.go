@@ -3,7 +3,9 @@ package service
 import (
 	"context"
 
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/utils"
 	auth "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/auth"
+	common "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	rpcauth "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -18,9 +20,13 @@ func NewVerifyTokenService(Context context.Context, RequestContext *app.RequestC
 	return &VerifyTokenService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *VerifyTokenService) Run(req *auth.VerifyTokenRequest) (resp *auth.VerifyTokenResponse, err error) {
+func (h *VerifyTokenService) Run(req *common.Empty) (resp *auth.VerifyTokenResponse, err error) {
+	token, err := utils.GetToken(h.Context, h.RequestContext)
+	if err != nil {
+		return
+	}
 	res, err := rpc.AuthClient.VerifyToken(h.Context, &rpcauth.VerifyTokenRequest{
-		Token: req.Token,
+		Token: string(token),
 	})
 	if err != nil {
 		return &auth.VerifyTokenResponse{

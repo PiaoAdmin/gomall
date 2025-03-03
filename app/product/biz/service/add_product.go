@@ -6,6 +6,7 @@ import (
 
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 )
 
@@ -17,19 +18,23 @@ func NewAddProductService(ctx context.Context) *AddProductService {
 }
 
 // Run create note info
-func (s *AddProductService) Run(p *product.AddProductReq) (resp *product.AddProductResp, err error) {
+func (s *AddProductService) Run(req *product.AddProductReq) (resp *product.AddProductResp, err error) {
+	if req == nil || req.Product == nil {
+		return nil, constant.ParametersError("请求为空")
+	}
 	newProduct := &model.Product{
-		ProdName:        p.Product.ProdName,
-		Brief:           p.Product.Brief,
-		MainImage:       p.Product.MainImage,
-		Price:           float64(p.Product.Price),
-		Status:          int(p.Product.Status),
+		ProdName:        req.Product.ProdName,
+		ShopId:          req.Product.ShopId,
+		Brief:           req.Product.Brief,
+		MainImage:       req.Product.MainImage,
+		Price:           float64(req.Product.Price),
+		Status:          int(req.Product.Status),
 		Categories:      nil,
-		Content:         p.Product.Content,
-		SecondaryImages: p.Product.SecondaryImages,
-		SoldNum:         int(p.Product.SoldNum),
-		TotalStock:      int(p.Product.TotalStock),
-		ListingTime:     time.Unix(p.Product.ListingTime, 0),
+		Content:         req.Product.Content,
+		SecondaryImages: req.Product.SecondaryImages,
+		SoldNum:         int(req.Product.SoldNum),
+		TotalStock:      int(req.Product.TotalStock),
+		ListingTime:     time.Unix(req.Product.ListingTime, 0),
 	}
 	err = model.CreateProduct(mysql.DB, newProduct)
 	if err != nil {

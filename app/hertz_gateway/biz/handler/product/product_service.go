@@ -2,6 +2,7 @@ package product
 
 import (
 	"context"
+
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/product"
 
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/service"

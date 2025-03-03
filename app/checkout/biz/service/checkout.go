@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/PiaoAdmin/gomall/app/checkout/infra/rpc"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	checkout "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
@@ -25,6 +26,9 @@ func NewCheckoutService(ctx context.Context) *CheckoutService {
 func (s *CheckoutService) Run(req *checkout.CheckoutReq) (resp *checkout.CheckoutResp, err error) {
 	// Finish your business logic.
 	//首先获取cart购物车信息,获取所有商品
+	if req == nil || req.UserId == 0 || req.Address == nil || req.CreditCard == nil {
+		return nil, constant.ParametersError("请求参数错误")
+	}
 	cartResult, err := rpc.CartClient.GetCart(s.ctx, &cart.GetCartReq{UserId: req.UserId})
 	if err != nil {
 		klog.Error(err)

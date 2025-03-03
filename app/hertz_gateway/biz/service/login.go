@@ -2,11 +2,13 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	auth "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/auth"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
 	rpcauth "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 )
 
 type LoginService struct {
@@ -25,10 +27,12 @@ func (h *LoginService) Run(req *auth.LoginRequest) (resp *auth.LoginResponse, er
 		Password: req.Password,
 	})
 	if err != nil {
-		return &auth.LoginResponse{
-			Success: false,
-			Msg:     err.Error(),
-		}, err
+		bizErr, isBizErr := kerrors.FromBizStatusError(err)
+		if isBizErr {
+			fmt.Printf("bizErr: %v\n", bizErr)
+			return nil, bizErr
+		}
+		return
 	}
 
 	// 构造响应

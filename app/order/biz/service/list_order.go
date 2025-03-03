@@ -5,6 +5,7 @@ import (
 
 	"github.com/PiaoAdmin/gomall/app/order/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/order/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	order "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -20,6 +21,9 @@ func NewListOrderService(ctx context.Context) *ListOrderService {
 // Run create note info
 func (s *ListOrderService) Run(req *order.ListOrderReq) (resp *order.ListOrderResp, err error) {
 	// Finish your business logic.
+	if req == nil || req.UserId == 0 {
+		return nil, constant.ParametersError("请求为空")
+	}
 	orders, err := model.ListOrder(mysql.DB, s.ctx, req.UserId)
 	if err != nil {
 		klog.Errorf("model.ListOrder.err:%v", err)

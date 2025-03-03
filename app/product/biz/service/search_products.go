@@ -5,6 +5,7 @@ import (
 
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	product "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 )
 
@@ -17,6 +18,9 @@ func NewSearchProductsService(ctx context.Context) *SearchProductsService {
 
 // Run create note info
 func (s *SearchProductsService) Run(req *product.SearchProductsReq) (resp *product.SearchProductsResp, err error) {
+	if req == nil {
+		return nil, constant.ParametersError("请求为空")
+	}
 	// Finish your business logic.
 	productQuery := model.NewProductQuery(s.ctx, mysql.DB)
 	products, _ := productQuery.SearchProducts(req.Query)
@@ -29,6 +33,7 @@ func (s *SearchProductsService) Run(req *product.SearchProductsReq) (resp *produ
 		}
 		results = append(results, &product.Product{
 			Id:              p.ID,
+			ShopId:          p.ShopId,
 			ProdName:        p.ProdName,
 			Brief:           p.Brief,
 			MainImage:       p.MainImage,

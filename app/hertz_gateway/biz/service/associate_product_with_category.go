@@ -3,8 +3,9 @@ package service
 import (
 	"context"
 
-	common "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
 	product "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/product"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
+	rpcproduct "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -17,11 +18,18 @@ func NewAssociateProductWithCategoryService(Context context.Context, RequestCont
 	return &AssociateProductWithCategoryService{RequestContext: RequestContext, Context: Context}
 }
 
-func (h *AssociateProductWithCategoryService) Run(req *product.AssociateProductWithCategoryReq) (resp *common.Empty, err error) {
+func (h *AssociateProductWithCategoryService) Run(req *product.AssociateProductWithCategoryReq) (resp *bool, err error) {
 	//defer func() {
 	// hlog.CtxInfof(h.Context, "req = %+v", req)
 	// hlog.CtxInfof(h.Context, "resp = %+v", resp)
 	//}()
 	// todo edit your code
-	return
+	res, err := rpc.ProductClient.AssociateProductWithCategory(h.Context, &rpcproduct.AssociateProductWithCategoryReq{
+		ProductId:  req.ProductId,
+		CategoryId: req.CategoryId,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &res.Success, nil
 }

@@ -2,8 +2,8 @@ package model
 
 type Role struct {
 	Base               // 继承公共字段 ID自增
-	RoleCode    int    `gorm:"unique;not null"`          // 角色编码，100\200\300等
-	RoleName    string `gorm:"size:100;not null;unique"` // 角色名称，如"admin", "user"等
+	RoleCode    int    `gorm:"unique;not null"`          // 角色编码，100用户，200商家，300管理员
+	RoleName    string `gorm:"size:100;not null;unique"` // 角色名称， "user"，"merchant"，"admin"
 	Description string `gorm:"size:255"`                 // 角色描述
 	User        []User `gorm:"many2many:user_role;foreignKey:RoleCode;joinForeignKey:RoleCode;References:ID;joinReferences:UserID"`
 }

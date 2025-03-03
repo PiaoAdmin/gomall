@@ -42,7 +42,6 @@ func AddCategory(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp, err := service.NewAddCategoryService(ctx, c).Run(&req)
-
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return

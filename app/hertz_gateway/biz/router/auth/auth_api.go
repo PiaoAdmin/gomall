@@ -24,10 +24,6 @@ func Register(r *server.Hertz) {
 		_auth.POST("/refresh", append(_refreshtokenMw(), auth.RefreshToken)...)
 		_auth.POST("/verify", append(_verifytokenMw(), auth.VerifyToken)...)
 		{
-			_permission := _auth.Group("/permission", _permissionMw()...)
-			_permission.POST("/check", append(_checkpermissionMw(), auth.CheckPermission)...)
-		}
-		{
 			_role := _auth.Group("/role", _roleMw()...)
 			_role.POST("/add", append(_adduserroleMw(), auth.AddUserRole)...)
 			_role.GET("/get", append(_getuserroleMw(), auth.GetUserRole)...)

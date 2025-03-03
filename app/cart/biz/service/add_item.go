@@ -6,6 +6,7 @@ import (
 	"github.com/PiaoAdmin/gomall/app/cart/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/cart/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/cart/rpc"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	cart "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 	"github.com/cloudwego/kitex/pkg/kerrors"
@@ -21,6 +22,9 @@ func NewAddItemService(ctx context.Context) *AddItemService {
 // Run create note info
 func (s *AddItemService) Run(req *cart.AddItemReq) (resp *cart.AddItemResp, err error) {
 	// Finish your business logic.
+	if req == nil || req.UserId == 0 || req.Item == nil {
+		return nil, constant.ParametersError("请求为空")
+	}
 	productResp, err := rpc.ProductClient.GetProduct(s.ctx, &product.GetProductReq{Id: req.Item.ProductId})
 	if err != nil {
 		return nil, err

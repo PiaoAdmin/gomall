@@ -19,3 +19,9 @@ redis:
   username: ""
   password: ""
   db: 0
+
+jwt:
+  access_expire: 30
+  refresh_expire: 1440 # 24h
+  secret: "gomall"
+  issuer: "gomall"

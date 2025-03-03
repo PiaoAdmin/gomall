@@ -6,6 +6,7 @@ import (
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/service"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/biz/utils"
 	auth "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/auth"
+	common "github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/common"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -35,7 +36,7 @@ func Login(ctx context.Context, c *app.RequestContext) {
 // @router /auth/verify [POST]
 func VerifyToken(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req auth.VerifyTokenRequest
+	var req common.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -56,7 +57,7 @@ func VerifyToken(ctx context.Context, c *app.RequestContext) {
 // @router /auth/refresh [POST]
 func RefreshToken(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req auth.RefreshTokenRequest
+	var req common.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -77,7 +78,7 @@ func RefreshToken(ctx context.Context, c *app.RequestContext) {
 // @router /auth/logout [POST]
 func Logout(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req auth.LogoutRequest
+	var req common.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
@@ -86,27 +87,6 @@ func Logout(ctx context.Context, c *app.RequestContext) {
 
 	resp := &auth.LogoutResponse{}
 	resp, err = service.NewLogoutService(ctx, c).Run(&req)
-	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
-		return
-	}
-
-	utils.SendSuccessResponse(ctx, c, consts.StatusOK, resp)
-}
-
-// CheckPermission .
-// @router /auth/permission/check [POST]
-func CheckPermission(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req auth.PermissionCheckRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
-		return
-	}
-
-	resp := &auth.PermissionCheckResponse{}
-	resp, err = service.NewCheckPermissionService(ctx, c).Run(&req)
 	if err != nil {
 		utils.SendErrResponse(ctx, c, consts.StatusOK, err)
 		return

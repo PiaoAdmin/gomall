@@ -1,10 +1,18 @@
 package utils
 
-import "context"
+import (
+	"context"
+	"fmt"
 
-func GetUserIdFromCtx(ctx context.Context) int64 {
-	if ctx.Value(UserIdKey) == nil {
-		return 0
+	"github.com/cloudwego/hertz/pkg/app"
+)
+
+func GetUserIdFromToken(ctx context.Context, c *app.RequestContext) (user_id *int64, err error) {
+	token := string(c.GetHeader("token"))
+	claim, err := NewARJWT().ParseAccessToken(token)
+	if err != nil {
+		fmt.Printf("parse token error: %v", err)
+		return nil, err
 	}
-	return ctx.Value(UserIdKey).(int64)
+	return &claim.UserID, nil
 }

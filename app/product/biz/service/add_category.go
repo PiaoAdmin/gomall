@@ -2,8 +2,10 @@ package service
 
 import (
 	"context"
+
 	"github.com/PiaoAdmin/gomall/app/product/biz/dal/mysql"
 	"github.com/PiaoAdmin/gomall/app/product/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	product "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/product"
 )
 
@@ -16,6 +18,9 @@ func NewAddCategoryService(ctx context.Context) *AddCategoryService {
 
 // Run create note info
 func (s *AddCategoryService) Run(req *product.AddCategoryReq) (resp *product.AddCategoryResp, err error) {
+	if req == nil || req.Category == nil {
+		return nil, constant.ParametersError("请求为空")
+	}
 	category := &model.Category{
 		Name:     req.Category.CategoryName,
 		ParentId: req.Category.ParentId,

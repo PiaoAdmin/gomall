@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"github.com/PiaoAdmin/gomall/app/auth/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/auth/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/auth/biz/model"
 	auth "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth"
 )
 
@@ -24,10 +24,7 @@ func (s *AddUserRoleService) Run(req *auth.AddUserRoleRequest) (resp *auth.AddUs
 	}
 
 	if err = mysql.DB.WithContext(s.ctx).Create(&ur).Error; err != nil {
-		return &auth.AddUserRoleResponse{
-			Success: false,
-			Msg:     "添加用户角色失败: " + err.Error(),
-		}, err
+		return nil, err
 	}
 	return &auth.AddUserRoleResponse{
 		Success: true,

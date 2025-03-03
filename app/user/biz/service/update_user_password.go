@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"errors"
 
-	"github.com/PiaoAdmin/gomall/app/user/biz/dal/model"
 	"github.com/PiaoAdmin/gomall/app/user/biz/dal/mysql"
+	"github.com/PiaoAdmin/gomall/app/user/biz/model"
+	"github.com/PiaoAdmin/gomall/common/constant"
 	user "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/user"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -20,13 +20,12 @@ func NewUpdateUserPasswordService(ctx context.Context) *UpdateUserPasswordServic
 // Run create note info
 func (s *UpdateUserPasswordService) Run(req *user.UpdateUserPasswordRequest) (resp *user.UpdateUserPasswordResponse, err error) {
 	// Finish your business logic.
-	// TODO: 权限验证
 	// 基本校验
 	if req.NewPassword == "" {
-		return nil, errors.New("密码为空")
+		return nil, constant.ParametersError("请求参数错误")
 	}
 	if req.UserId <= 0 {
-		return nil, errors.New("无效的用户ID")
+		return nil, constant.ParametersError("无效的用户ID")
 	}
 	// 验证旧密码
 	u, err := model.GetUserById(mysql.DB, s.ctx, req.UserId)
@@ -42,7 +41,7 @@ func (s *UpdateUserPasswordService) Run(req *user.UpdateUserPasswordRequest) (re
 	// 更新密码
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
 	if err != nil {
-		return
+		return nil, constant.ParametersError("密码加密错误", err)
 	}
 	if err = model.UpdateUser(mysql.DB, s.ctx, req.UserId, &model.User{Password: string(hashedPassword)}); err != nil {
 		return
