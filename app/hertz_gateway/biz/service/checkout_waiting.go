@@ -2,9 +2,15 @@ package service
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/hertz_gen/hertz_gateway/checkout"
+	"github.com/PiaoAdmin/gomall/app/hertz_gateway/infra/rpc"
+	gatewayutils "github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
+	rpccheckout "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout"
+	rpcpayment "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
 )
 
 type CheckoutWaitingService struct {
@@ -17,33 +23,35 @@ func NewCheckoutWaitingService(Context context.Context, RequestContext *app.Requ
 }
 
 func (h *CheckoutWaitingService) Run(req *checkout.CheckoutReq) (resp map[string]any, err error) {
-	// userId := frontendutils.GetUserIdFromCtx(h.Context)
-	// _, err = rpc.CheckoutClient.Checkout(h.Context, &rpccheckout.CheckoutReq{
-	// 	UserId:    userId,
-	// 	Email:     req.Email,
-	// 	Firstname: req.Firstname,
-	// 	Lastname:  req.Lastname,
-	// 	Address: &rpccheckout.Address{
-	// 		Country:       req.Country,
-	// 		ZipCode:       req.Zipcode,
-	// 		City:          req.City,
-	// 		State:         req.Province,
-	// 		StreetAddress: req.Street,
-	// 	},
-	// 	CreditCard: &rpcpayment.CreditCardInfo{
-	// 		CreditCardNumber:          req.CardNum,
-	// 		CreditCardExpirationYear:  req.ExpirationYear,
-	// 		CreditCardExpirationMonth: req.ExpirationMonth,
-	// 		CreditCardCvv:             req.Cvv,
-	// 	},
-	// })
-	// if err != nil {
-	// 	return nil, err
-	// }
+	userId, err := gatewayutils.GetUserIdFromToken(h.Context, h.RequestContext)
+	if err != nil {
+		return nil, err
+	}
+	zipcode, _ := strconv.ParseInt(req.Zipcode, 10, 32)
+	_, err = rpc.CheckoutClient.Checkout(h.Context, &rpccheckout.CheckoutReq{
+		UserId:    *userId,
+		Email:     req.Email,
+		Firstname: req.Firstname,
+		Lastname:  req.Lastname,
+		Address: &rpccheckout.Address{
+			Country:       req.Country,
+			ZipCode:       int32(zipcode),
+			City:          req.City,
+			State:         req.Province,
+			StreetAddress: req.Street,
+		},
+		CreditCard: &rpcpayment.CreditCardInfo{
+			CreditCardNumber:          req.CardNum,
+			CreditCardExpirationYear:  req.ExpirationYear,
+			CreditCardExpirationMonth: req.ExpirationMonth,
+			CreditCardCvv:             req.Cvv,
+		},
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	// return utils.H{
-	// 	"title":    "waiting",
-	// 	"redirect": "/checkout/result",
-	// }, nil
-	return
+	return utils.H{
+		"msg": "success",
+	}, nil
 }

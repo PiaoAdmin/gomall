@@ -6,6 +6,7 @@ import (
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/conf"
 	"github.com/PiaoAdmin/gomall/app/hertz_gateway/utils"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/auth/authservice"
+	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/order/orderservice"
 
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/cart/cartservice"
 	"github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/checkout/checkoutservice"
@@ -21,6 +22,7 @@ var (
 	ProductClient  productcatalogservice.Client
 	CheckoutClient checkoutservice.Client
 	CartClient     cartservice.Client
+	OrderClient    orderservice.Client
 	once           sync.Once
 )
 
@@ -32,7 +34,15 @@ func InitClient() {
 		initCartClient()
 		initProductClient()
 		initCheckoutClient()
+		initOrderClient()
 	})
+}
+
+func initOrderClient() {
+	r, err := consul.NewConsulResolver(conf.GetConf().Hertz.RegistryAddr)
+	utils.MustHandleError(err)
+	OrderClient, err = orderservice.NewClient("order", client.WithResolver(r))
+	utils.MustHandleError(err)
 }
 
 func initUserClient() {
