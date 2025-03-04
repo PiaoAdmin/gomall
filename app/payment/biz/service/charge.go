@@ -15,7 +15,6 @@ import (
 	"github.com/PiaoAdmin/gomall/app/payment/biz/model"
 	"github.com/PiaoAdmin/gomall/common/constant"
 	payment "github.com/PiaoAdmin/gomall/rpc_gen/kitex_gen/payment"
-	creditcard "github.com/durango/go-credit-card"
 	"github.com/google/uuid"
 )
 
@@ -33,18 +32,18 @@ func (s *ChargeService) Run(req *payment.ChargeReq) (resp *payment.ChargeResp, e
 		return nil, constant.ParametersError("请求参数错误")
 	}
 	//暂时只提供银行卡号一种方式
-	card := creditcard.Card{
-		Number: req.CreditCard.CreditCardNumber,
-		Cvv:    strconv.Itoa(int(req.CreditCard.CreditCardCvv)),
-		Month:  strconv.Itoa(int(req.CreditCard.CreditCardExpirationMonth)),
-		Year:   strconv.Itoa(int(req.CreditCard.CreditCardExpirationYear)),
-	}
-	//验证银行卡有效性
-	err = card.Validate(true)
-	if err != nil {
-		return nil, constant.ParametersError("请求参数错误")
-		// fmt.Print(1)
-	}
+	// card := creditcard.Card{
+	// 	Number: req.CreditCard.CreditCardNumber,
+	// 	Cvv:    strconv.Itoa(int(req.CreditCard.CreditCardCvv)),
+	// 	Month:  strconv.Itoa(int(req.CreditCard.CreditCardExpirationMonth)),
+	// 	Year:   strconv.Itoa(int(req.CreditCard.CreditCardExpirationYear)),
+	// }
+	// //验证银行卡有效性
+	// err = card.Validate(true)
+	// if err != nil {
+	// 	return nil, constant.ParametersError("请求参数错误")
+	// 	// fmt.Print(1)
+	// }
 
 	//使用随机生成transcationId，在之后调用真实API获得
 	transcationId, err := uuid.NewRandom()
