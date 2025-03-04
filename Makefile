@@ -45,3 +45,10 @@ gen-hertz_gateway-auth:
 .PHONY: gen-hertz_gateway-checkout
 gen-hertz_gateway-checkout:
 	@cd app/hertz_gateway && cwgo server -I ../../idl --type HTTP --service hertz_gateway --module github.com/PiaoAdmin/gomall/app/hertz_gateway --idl ../../idl/hertz_gateway/checkout_page.proto
+
+.PHONY:gen-order-page
+gen-order-page:
+	@cd app/hertz_gateway && cwgo server -I ../../idl --type HTTP --service hertz_gateway --module $(ROOT_MOD)/app/hertz_gateway --idl ../../idl/hertz_gateway/order_page.proto
+.PHONY:gen-checkout-page
+gen-checkout-page:
+	@cd app/hertz_gateway && cwgo server -I ../../idl --type HTTP --service hertz_gateway --module $(ROOT_MOD)/app/hertz_gateway --idl ../../idl/hertz_gateway/checkout_page.proto
