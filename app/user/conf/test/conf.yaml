@@ -1,0 +1,23 @@
+kitex:
+  service: "user"
+  address: ":8899"
+  log_level: info
+  log_file_name: "log/kitex.log"
+  log_max_size: 10
+  log_max_age: 3
+  log_max_backups: 50
+
+registry:
+  registry_address:
+    - 10.161.105.212:8500
+  username: ""
+  password: ""
+
+mysql:
+  dsn: "root:123456@tcp(10.161.105.212:3306)/pmall?charset=utf8mb4&parseTime=True&loc=Local"
+
+redis:
+  address: "10.161.105.212:6379"
+  username: ""
+  password: ""
+  db: 0

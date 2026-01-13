@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "/user";
+
+// 脱敏
+message User {
+  uint64 id = 1;
+  string username = 2;
+  string email = 3;
+  string phone = 4;
+  string avatar = 5;
+  int32 status = 6;
+}
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string password_confirm = 4;
+}
+
+message RegisterResponse {
+  User user = 1;
+}
+
+message LoginRequest {
+  string username = 1; 
+  string password = 2;
+}
+
+message LoginResponse {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  uint64 user_id = 1;
+  string email = 2;
+  string phone = 3;
+  string avatar = 4;
+  string username = 5;
+}
+
+message UpdateUserResponse {
+  bool success = 1;
+  User user = 2; // 返回更新后的最新数据
+}
+
+message UpdatePasswordRequest {
+  uint64 user_id = 1;
+  string old_password = 2;
+  string new_password = 3;
+}
+
+message UpdatePasswordResponse {
+  bool success = 1;
+}
+
+message GetUserInfoRequest {
+  uint64 user_id = 1;
+}
+
+message GetUserInfoResponse {
+  User user = 1;
+}
+
+// 用户服务
+service UserService {
+  // 注册
+  rpc Register(RegisterRequest) returns (RegisterResponse);
+  // 登录
+  rpc Login(LoginRequest) returns (LoginResponse);
+
+  // 用户信息
+  rpc GetUserInfo(GetUserInfoRequest) returns (GetUserInfoResponse);
+  // 更新用户信息
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  // 更新密码
+  rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse);
+}

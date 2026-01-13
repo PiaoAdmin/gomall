@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package gateway.auth;
+
+import "api.proto";
+
+option go_package = "/api/auth";
+
+message Empty {
+}
+
+message UserInfo {
+  uint64 id = 1;
+  string username = 2;
+  string email = 3;
+  string phone = 4;
+  string avatar = 5;
+  int32 status = 6;
+}
+
+message RegisterReq {
+  string username = 1 [(api.body) = "username"];
+  string password = 2 [(api.body) = "password"];
+  string email = 3 [(api.body) = "email"];
+  string password_confirm = 4 [(api.body) = "password_confirm"];
+}
+
+message RegisterResp {
+  UserInfo user = 1;
+  string token = 2;
+  int64 expire_in = 3;
+}
+
+message LoginReq {
+  string username = 1 [(api.body) = "username"];
+  string password = 2 [(api.body) = "password"];
+}
+
+message LoginResp {
+  UserInfo user = 1;
+  string token = 2;
+  int64 expire_in = 3;
+}
+
+message GetUserInfoReq {
+}
+
+message GetUserInfoResp {
+  UserInfo user = 1;
+}
+
+message UpdateUserReq {
+  string email = 1 [(api.body) = "email"];
+  string phone = 2 [(api.body) = "phone"];
+  string avatar = 3 [(api.body) = "avatar"];
+  string username = 4 [(api.body) = "username"];
+}
+
+message UpdateUserResp {
+  bool success = 1;
+  UserInfo user = 2;
+}
+
+message UpdatePasswordReq {
+  string old_password = 1 [(api.body) = "old_password"];
+  string new_password = 2 [(api.body) = "new_password"];
+}
+
+message UpdatePasswordResp {
+  bool success = 1;
+}
+
+message RefreshResp {
+  string token = 1;
+  int64 expire_in = 2;
+}
+
+// 认证服务
+service AuthService {
+  // 用户注册
+  rpc Register(RegisterReq) returns (RegisterResp) {
+    option (api.post) = "/register";
+  }
+  // 用户登录
+  rpc Login(LoginReq) returns (LoginResp) {
+    option (api.post) = "/login";
+  }
+  // 用户登出
+  rpc Logout(Empty) returns (Empty) {
+    option (api.post) = "/logout";
+  }
+  // 刷新 Token
+  rpc RefreshToken(Empty) returns (RefreshResp) {
+    option (api.post) = "/refresh";
+  }
+  // 获取用户信息
+  rpc GetUserInfo(GetUserInfoReq) returns (GetUserInfoResp) {
+    option (api.get) = "/auth/info";
+  }
+  // 更新用户信息
+  rpc UpdateUser(UpdateUserReq) returns (UpdateUserResp) {
+    option (api.post) = "/auth/update";
+  }
+  // 更新密码
+  rpc UpdatePassword(UpdatePasswordReq) returns (UpdatePasswordResp) {
+    option (api.post) = "/auth/password";
+  }
+}
+

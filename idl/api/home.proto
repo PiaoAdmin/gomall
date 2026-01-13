@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package gateway.home;
+
+import "api.proto";
+
+option go_package = "/api/home";
+
+message Empty {}
+
+// 初始化
+service HomeService {
+  // 初始化
+  rpc Home(Empty) returns (Empty) { option (api.get) = "/"; }
+}
