@@ -1,0 +1,27 @@
+kitex:
+  service: "product"
+  address: ":9900"
+  log_level: info
+  log_file_name: "log/kitex.log"
+  log_max_size: 10
+  log_max_age: 3
+  log_max_backups: 50
+
+registry:
+  registry_address:
+    - 10.161.105.212:8500
+  username: ""
+  password: ""
+
+mysql:
+  dsn: "root:123456@tcp(10.161.105.212:3306)/p_product?charset=utf8mb4&parseTime=True&loc=Local"
+
+mongodb:
+  uri: "mongodb://admin:123456@10.161.105.212:27017/?replicaSet=rs0&authSource=admin"
+  database: "p_product"
+
+redis:
+  address: "10.161.105.212:6379"
+  username: ""
+  password: "123456"
+  db: 1

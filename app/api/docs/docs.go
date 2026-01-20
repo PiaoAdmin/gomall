@@ -20,6 +20,170 @@ const docTemplate = `{
                 "responses": {}
             }
         },
+        "/admin/products": {
+            "post": {
+                "description": "Create a new product with SPU, SKUs and detail info (Admin only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "创建商品",
+                "parameters": [
+                    {
+                        "description": "Create Product Request",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.CreateProductRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/product.CreateProductResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/skus/batch": {
+            "post": {
+                "description": "Batch update SKU price and stock (Admin only)",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "批量更新SKU",
+                "parameters": [
+                    {
+                        "description": "Batch Update SKU Request",
+                        "name": "req",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/product.BatchUpdateSkuRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/product.BatchUpdateSkuResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/auth/info": {
             "get": {
                 "security": [
@@ -293,6 +457,173 @@ const docTemplate = `{
                 }
             }
         },
+        "/brands": {
+            "get": {
+                "description": "Get brand list with pagination",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "获取品牌列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/product.ListBrandsResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/categories": {
+            "get": {
+                "description": "Get category list with optional parent filter",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "获取分类列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Parent category ID (0 for root categories)",
+                        "name": "parent_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/product.ListCategoriesResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Login with username and password to get JWT token",
@@ -402,6 +733,316 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/products/home": {
+            "get": {
+                "description": "Get home page product list (SPU) with pagination and filters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "获取首页商品列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Category ID",
+                        "name": "category_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Brand ID",
+                        "name": "brand_id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/product.GetHomeProductsResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/products/search": {
+            "get": {
+                "description": "Search products (SKU) with keyword, filters and sorting",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "搜索商品",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Page size",
+                        "name": "page_size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search keyword",
+                        "name": "keyword",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Category ID",
+                        "name": "category_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Brand ID",
+                        "name": "brand_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Minimum price",
+                        "name": "min_price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Maximum price",
+                        "name": "max_price",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Sort type (0:default, 1:price asc, 2:price desc, 3:sales)",
+                        "name": "sort_type",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/product.SearchProductsResponse"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{spu_id}": {
+            "get": {
+                "description": "Get product detail including SPU, SKUs, category, brand and detail info",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "获取商品详情",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Product SPU ID",
+                        "name": "spu_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/response.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/product.GetProductDetailResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
@@ -715,6 +1356,451 @@ const docTemplate = `{
                 },
                 "username": {
                     "type": "string"
+                }
+            }
+        },
+        "product.BatchUpdateSkuRequest": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.UpdateSkuItem"
+                    }
+                }
+            }
+        },
+        "product.BatchUpdateSkuResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "updated_count": {
+                    "description": "实际更新数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "product.BrandDTO": {
+            "type": "object",
+            "properties": {
+                "first_letter": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "logo": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.CategoryDTO": {
+            "type": "object",
+            "properties": {
+                "children": {
+                    "description": "子分类",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.CategoryDTO"
+                    }
+                },
+                "icon": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "product.CreateProductDetail": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "富文本描述",
+                    "type": "string"
+                },
+                "images": {
+                    "description": "商品图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "market_tag_json": {
+                    "description": "营销标签 JSON",
+                    "type": "string"
+                },
+                "tech_tag_json": {
+                    "description": "技术参数 JSON",
+                    "type": "string"
+                },
+                "videos": {
+                    "description": "商品视频",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "product.CreateProductRequest": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "$ref": "#/definitions/product.CreateProductDetail"
+                },
+                "skus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.CreateProductSKU"
+                    }
+                },
+                "spu": {
+                    "$ref": "#/definitions/product.CreateProductSPU"
+                }
+            }
+        },
+        "product.CreateProductResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "spu_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "product.CreateProductSKU": {
+            "type": "object",
+            "properties": {
+                "main_image": {
+                    "type": "string"
+                },
+                "market_price": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "sku_code": {
+                    "type": "string"
+                },
+                "sku_spec_data": {
+                    "description": "JSON 字符串",
+                    "type": "string"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "sub_title": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.CreateProductSPU": {
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "main_image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "service_bits": {
+                    "type": "integer"
+                },
+                "sort": {
+                    "type": "integer"
+                },
+                "sub_title": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.DetailInfoDTO": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "description": "富文本描述",
+                    "type": "string"
+                },
+                "images": {
+                    "description": "商品图",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "market_tag_json": {
+                    "description": "营销标签 JSON",
+                    "type": "string"
+                },
+                "tech_tag_json": {
+                    "description": "技术参数 JSON",
+                    "type": "string"
+                },
+                "videos": {
+                    "description": "商品视频",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "product.GetHomeProductsResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.HomeSpuDTO"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "product.GetProductDetailResponse": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "$ref": "#/definitions/product.ProductDetailDTO"
+                }
+            }
+        },
+        "product.HomeSpuDTO": {
+            "type": "object",
+            "properties": {
+                "high_price": {
+                    "type": "string"
+                },
+                "low_price": {
+                    "type": "string"
+                },
+                "main_image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sale_count": {
+                    "type": "integer"
+                },
+                "spu_id": {
+                    "type": "integer"
+                },
+                "sub_title": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.ListBrandsResponse": {
+            "type": "object",
+            "properties": {
+                "brands": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.BrandDTO"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "product.ListCategoriesResponse": {
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.CategoryDTO"
+                    }
+                }
+            }
+        },
+        "product.ProductDetailDTO": {
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "$ref": "#/definitions/product.BrandDTO"
+                },
+                "category": {
+                    "$ref": "#/definitions/product.CategoryDTO"
+                },
+                "detail": {
+                    "$ref": "#/definitions/product.DetailInfoDTO"
+                },
+                "high_price": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "low_price": {
+                    "type": "string"
+                },
+                "main_image": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "sale_count": {
+                    "type": "integer"
+                },
+                "service_bits": {
+                    "type": "integer"
+                },
+                "skus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.SkuDTO"
+                    }
+                },
+                "sub_title": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.SearchProductsResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.SearchSkuDTO"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "product.SearchSkuDTO": {
+            "type": "object",
+            "properties": {
+                "brand_id": {
+                    "type": "integer"
+                },
+                "brand_name": {
+                    "type": "string"
+                },
+                "category_id": {
+                    "type": "integer"
+                },
+                "category_name": {
+                    "type": "string"
+                },
+                "main_image": {
+                    "type": "string"
+                },
+                "market_price": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "sale_count": {
+                    "description": "SPU 销量",
+                    "type": "integer"
+                },
+                "sku_id": {
+                    "type": "integer"
+                },
+                "sku_name": {
+                    "type": "string"
+                },
+                "sku_spec_data": {
+                    "description": "规格 JSON",
+                    "type": "string"
+                },
+                "spu_id": {
+                    "type": "integer"
+                },
+                "spu_name": {
+                    "type": "string"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "sub_title": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.SkuDTO": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "main_image": {
+                    "type": "string"
+                },
+                "market_price": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "sku_spec_data": {
+                    "description": "规格 JSON",
+                    "type": "string"
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "sub_title": {
+                    "type": "string"
+                }
+            }
+        },
+        "product.UpdateSkuItem": {
+            "type": "object",
+            "properties": {
+                "price": {
+                    "description": "为空则不更新",
+                    "type": "string"
+                },
+                "sku_id": {
+                    "type": "integer"
+                },
+                "stock": {
+                    "description": "0 表示不更新",
+                    "type": "integer"
                 }
             }
         },

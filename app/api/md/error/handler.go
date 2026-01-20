@@ -62,13 +62,13 @@ func resolveError(e *herrors.Error) (int, *response.Response) {
 			return consts.StatusInternalServerError, &response.Response{
 				Code:    code,
 				Message: myErr.Error(),
-				Data:    "",
+				Data:    nil,
 			}
 		}
 		return consts.StatusOK, &response.Response{
 			Code:    code,
 			Message: myErr.Error(),
-			Data:    "",
+			Data:    nil,
 		}
 	}
 
@@ -77,13 +77,13 @@ func resolveError(e *herrors.Error) (int, *response.Response) {
 			return consts.StatusInternalServerError, &response.Response{
 				Code:    uint64(e.Code),
 				Message: e.Error(),
-				Data:    "",
+				Data:    nil,
 			}
 		}
 		return consts.StatusOK, &response.Response{
 			Code:    uint64(e.Code),
 			Message: e.Error(),
-			Data:    "",
+			Data:    nil,
 		}
 	}
 
@@ -91,6 +91,6 @@ func resolveError(e *herrors.Error) (int, *response.Response) {
 	return consts.StatusInternalServerError, &response.Response{
 		Code:    uint64(perrors.ErrInternal.Code),
 		Message: "Internal Server Error",
-		Data:    "",
+		Data:    nil,
 	}
 }

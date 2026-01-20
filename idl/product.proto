@@ -1,0 +1,248 @@
+syntax = "proto3";
+
+package product;
+
+option go_package = "/product";
+
+// 商品服务
+service ProductService {
+  // 1. 商品 SPU 管理 (Product/SPU)
+  // 创建商品 (包含 SPU + SKU 列表)
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse);
+  // 更新商品基础信息 (不含 SKU)
+  rpc UpdateProduct(UpdateProductRequest) returns (UpdateProductResponse);
+  // 修改商品状态 (上架/下架/审核)        
+  rpc UpdateProductStatus(UpdateProductStatusRequest) returns (UpdateProductStatusResponse);
+  // 获取商品详情 (回显编辑或C端详情，包含 SKU 列表)
+  rpc GetProductDetail(GetProductDetailRequest) returns (GetProductDetailResponse);
+  // 分页查询商品列表 (后台管理用，支持多条件筛选)
+  rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+  // 根据 ID 列表批量获取 SPU (购物车/订单服务调用)
+  rpc GetProductsByIds(GetProductsByIdsRequest) returns (GetProductsByIdsResponse);
+
+  // 2. 商品 SKU 管理 (Stock/Price)
+  // 批量更新 SKU (用于修改库存、价格)
+  rpc BatchUpdateSku(BatchUpdateSkuRequest) returns (BatchUpdateSkuResponse);
+  // 扣减库存 (订单服务调用，核心接口)
+  rpc DeductStock(DeductStockRequest) returns (DeductStockResponse);
+  // 归还库存 (取消订单/退货调用)
+  rpc ReleaseStock(ReleaseStockRequest) returns (ReleaseStockResponse);
+
+  // 3. 分类管理 (Category)
+  // 获取全部分类树
+  rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse); 
+
+  // 4. 品牌管理 (Brand)
+  // 获取全部品牌列表
+  rpc ListBrands(ListBrandsRequest) returns (ListBrandsResponse);
+
+  // 5. C端商品搜索 (返回可购买的 SKU)
+  rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse);
+}
+
+// 消息结构定义 (Messages)
+// SPU 模型
+message ProductSPU {
+  uint64 id = 1;
+  uint64 brand_id = 2;
+  uint64 category_id = 3;
+  string name = 4;
+  string sub_title = 5;
+  string main_image = 6;
+  int32 publish_status = 7;
+  int32 verify_status = 8;
+  string low_price = 9; // Decimal 推荐用 string 传输以防精度丢失
+  string high_price = 10;
+  int32 sale_count = 11;
+  int32 sort = 12;
+  int64 service_bits = 13;
+  int32 version = 14;
+}
+
+// SPU detail
+message ProductDetail {
+  string description = 1; // 富文本描述
+  repeated string images = 2; // 商品图
+  repeated string videos = 3; // 商品视频
+  string market_tag_json = 4; // 营销标签 JSON 字符串
+  string tech_tag_json = 5; // 技术参数 JSON 字符串
+  string faq_json = 6; // 常见问题 JSON 字符串
+}
+
+// SKU 模型
+message ProductSKU {
+  uint64 id = 1;
+  uint64 spu_id = 2;
+  string sku_code = 3;
+  string name = 4;
+  string sub_title = 5;
+  string main_image = 6;
+  string price = 7;
+  string market_price = 8;
+  int32 stock = 9;
+  int32 lock_stock = 10;
+  string sku_spec_data = 11; // JSON 字符串
+  int32 version = 12;
+}
+
+// 分类模型
+message Category {
+  uint64 id = 1;
+  uint64 parent_id = 2;
+  string name = 3;
+  int32 level = 4;
+  string icon = 5;
+  string unit = 6;
+  int32 sort = 7;
+  repeated Category children = 8; // 树形结构返回时用
+}
+
+// 品牌模型
+message Brand {
+  uint64 id = 1;
+  string name = 2;
+  string first_letter = 3;
+  string logo = 4;
+  int32 sort = 5;
+}
+
+// --- 请求与响应定义 ---
+// 1. CreateProduct
+message CreateProductRequest {
+  ProductSPU spu = 1; // 基础信息
+  repeated ProductSKU skus = 2; // 对应的规格列表
+  ProductDetail detail = 3; // 详细信息
+}
+message CreateProductResponse {
+  uint64 spu_id = 1;
+}
+
+// 2. UpdateProduct
+message UpdateProductRequest {
+  ProductSPU spu = 1; // 只更新非空字段
+  ProductDetail detail = 2; // 详细信息
+}
+message UpdateProductResponse {
+  bool success = 1;
+}
+
+// 3. UpdateProductStatus
+message UpdateProductStatusRequest {
+  repeated uint64 ids = 1;
+  int32 publish_status = 2; // 0:不变更, 1:上架, 2:下架
+  int32 verify_status = 3; // 0:不变更, 1:审核通过...
+}
+message UpdateProductStatusResponse {
+  bool success = 1;
+}
+
+// 4. GetProductDetail
+message GetProductDetailRequest {
+  uint64 id = 1;
+}
+message GetProductDetailResponse {
+  ProductSPU spu = 1;
+  repeated ProductSKU skus = 2;
+  Category category = 3;
+  Brand brand = 4;
+  ProductDetail detail = 5;
+}
+
+// 5. ListProducts (后台筛选)
+message ListProductsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string keyword = 3;
+  uint64 category_id = 4;
+  uint64 brand_id = 5;
+  int32 publish_status = 6; // -1表示全部
+  int32 verify_status = 7;
+}
+message ListProductsResponse {
+  repeated ProductSPU list = 1;
+  int64 total = 2;
+}
+
+// 6. GetProductsByIds
+message GetProductsByIdsRequest {
+  repeated uint64 ids = 1;
+}
+message GetProductsByIdsResponse {
+  map<uint64, ProductSPU> products = 1; // ID -> SPU 映射
+}
+
+// 7. BatchUpdateSku
+message BatchUpdateSkuRequest {
+  repeated ProductSKU skus = 1; // 根据 sku_id 更新 price/stock
+}
+message BatchUpdateSkuResponse {
+  bool success = 1;
+}
+
+// 8. DeductStock (核心)
+message SkuDeductItem {
+  uint64 sku_id = 1;
+  int32 count = 2;
+}
+message DeductStockRequest {
+  string order_sn = 1; // 订单号，用于幂等性
+  repeated SkuDeductItem items = 2;
+}
+message DeductStockResponse {
+  bool success = 1;
+}
+
+// 9. ReleaseStock
+message ReleaseStockRequest {
+  string order_sn = 1;
+  repeated SkuDeductItem items = 2;
+}
+message ReleaseStockResponse {
+  bool success = 1;
+}
+
+// 10. ListCategories
+message ListCategoriesRequest {
+  uint64 parent_id = 1; // 0 获取所有一级，或者 -1 获取全树
+}
+message ListCategoriesResponse {
+  repeated Category categories = 1;
+}
+
+// 11. ListBrands
+message ListBrandsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+}
+message ListBrandsResponse {
+  repeated Brand brands = 1;
+  int64 total = 2;
+}
+
+// 12. SearchProducts (C端商品搜索，返回可购买的 SKU)
+message SearchProductsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string keyword = 3;           // 搜索关键词
+  uint64 category_id = 4;       // 分类筛选
+  uint64 brand_id = 5;          // 品牌筛选
+  string min_price = 6;         // 最低价格
+  string max_price = 7;         // 最高价格
+  int32 sort_type = 8;          // 排序: 0-综合, 1-价格升序, 2-价格降序, 3-销量降序
+}
+message SearchProductsResponse {
+  repeated SearchProductItem list = 1;
+  int64 total = 2;
+}
+
+// 搜索结果项：SKU + 关联的 SPU 基本信息
+message SearchProductItem {
+  ProductSKU sku = 1;           // SKU 详细信息
+  uint64 spu_id = 2;            // 关联的 SPU ID
+  string spu_name = 3;          // SPU 名称
+  uint64 brand_id = 4;          // 品牌 ID
+  string brand_name = 5;        // 品牌名称
+  uint64 category_id = 6;       // 分类 ID
+  string category_name = 7;     // 分类名称
+  int32 spu_sale_count = 8;     // SPU 总销量
+}

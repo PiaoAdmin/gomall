@@ -48,3 +48,6 @@ api_home:
 	$(call gen_api,home.proto)
 api_auth:
 	$(call gen_api,auth.proto) 
+
+api_product:
+	$(call gen_api,product_api.proto) 

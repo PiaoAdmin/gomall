@@ -9,6 +9,7 @@ import (
 	"github.com/PiaoAdmin/pmall/app/api/biz/service"
 	"github.com/PiaoAdmin/pmall/app/api/pkg/response"
 	"github.com/cloudwego/hertz/pkg/app"
+	herrors "github.com/cloudwego/hertz/pkg/common/errors"
 )
 
 // Register .
@@ -27,7 +28,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 	var req auth.RegisterReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		_ = c.Error(err)
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
 		return
 	}
 
@@ -56,7 +57,7 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	var req auth.LoginReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		_ = c.Error(err)
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
 		return
 	}
 
@@ -85,7 +86,7 @@ func Logout(ctx context.Context, c *app.RequestContext) {
 	var req auth.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		_ = c.Error(err)
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
 		return
 	}
 
@@ -115,7 +116,7 @@ func GetUserInfo(ctx context.Context, c *app.RequestContext) {
 	var req auth.GetUserInfoReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		_ = c.Error(err)
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
 		return
 	}
 
@@ -146,7 +147,7 @@ func UpdateUser(ctx context.Context, c *app.RequestContext) {
 	var req auth.UpdateUserReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		_ = c.Error(err)
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
 		return
 	}
 
@@ -177,7 +178,7 @@ func UpdatePassword(ctx context.Context, c *app.RequestContext) {
 	var req auth.UpdatePasswordReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		_ = c.Error(err)
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
 		return
 	}
 
@@ -205,7 +206,7 @@ func RefreshToken(ctx context.Context, c *app.RequestContext) {
 	var req auth.Empty
 	err = c.BindAndValidate(&req)
 	if err != nil {
-		_ = c.Error(err)
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
 		return
 	}
 

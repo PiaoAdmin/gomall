@@ -83,6 +83,302 @@ definitions:
       username:
         type: string
     type: object
+  product.BatchUpdateSkuRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/product.UpdateSkuItem'
+        type: array
+    type: object
+  product.BatchUpdateSkuResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      updated_count:
+        description: 实际更新数量
+        type: integer
+    type: object
+  product.BrandDTO:
+    properties:
+      first_letter:
+        type: string
+      id:
+        type: integer
+      logo:
+        type: string
+      name:
+        type: string
+    type: object
+  product.CategoryDTO:
+    properties:
+      children:
+        description: 子分类
+        items:
+          $ref: '#/definitions/product.CategoryDTO'
+        type: array
+      icon:
+        type: string
+      id:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+      parent_id:
+        type: integer
+    type: object
+  product.CreateProductDetail:
+    properties:
+      description:
+        description: 富文本描述
+        type: string
+      images:
+        description: 商品图
+        items:
+          type: string
+        type: array
+      market_tag_json:
+        description: 营销标签 JSON
+        type: string
+      tech_tag_json:
+        description: 技术参数 JSON
+        type: string
+      videos:
+        description: 商品视频
+        items:
+          type: string
+        type: array
+    type: object
+  product.CreateProductRequest:
+    properties:
+      detail:
+        $ref: '#/definitions/product.CreateProductDetail'
+      skus:
+        items:
+          $ref: '#/definitions/product.CreateProductSKU'
+        type: array
+      spu:
+        $ref: '#/definitions/product.CreateProductSPU'
+    type: object
+  product.CreateProductResponse:
+    properties:
+      message:
+        type: string
+      spu_id:
+        type: integer
+    type: object
+  product.CreateProductSKU:
+    properties:
+      main_image:
+        type: string
+      market_price:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      sku_code:
+        type: string
+      sku_spec_data:
+        description: JSON 字符串
+        type: string
+      stock:
+        type: integer
+      sub_title:
+        type: string
+    type: object
+  product.CreateProductSPU:
+    properties:
+      brand_id:
+        type: integer
+      category_id:
+        type: integer
+      main_image:
+        type: string
+      name:
+        type: string
+      service_bits:
+        type: integer
+      sort:
+        type: integer
+      sub_title:
+        type: string
+    type: object
+  product.DetailInfoDTO:
+    properties:
+      description:
+        description: 富文本描述
+        type: string
+      images:
+        description: 商品图
+        items:
+          type: string
+        type: array
+      market_tag_json:
+        description: 营销标签 JSON
+        type: string
+      tech_tag_json:
+        description: 技术参数 JSON
+        type: string
+      videos:
+        description: 商品视频
+        items:
+          type: string
+        type: array
+    type: object
+  product.GetHomeProductsResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/product.HomeSpuDTO'
+        type: array
+      total:
+        type: integer
+    type: object
+  product.GetProductDetailResponse:
+    properties:
+      product:
+        $ref: '#/definitions/product.ProductDetailDTO'
+    type: object
+  product.HomeSpuDTO:
+    properties:
+      high_price:
+        type: string
+      low_price:
+        type: string
+      main_image:
+        type: string
+      name:
+        type: string
+      sale_count:
+        type: integer
+      spu_id:
+        type: integer
+      sub_title:
+        type: string
+    type: object
+  product.ListBrandsResponse:
+    properties:
+      brands:
+        items:
+          $ref: '#/definitions/product.BrandDTO'
+        type: array
+      total:
+        type: integer
+    type: object
+  product.ListCategoriesResponse:
+    properties:
+      categories:
+        items:
+          $ref: '#/definitions/product.CategoryDTO'
+        type: array
+    type: object
+  product.ProductDetailDTO:
+    properties:
+      brand:
+        $ref: '#/definitions/product.BrandDTO'
+      category:
+        $ref: '#/definitions/product.CategoryDTO'
+      detail:
+        $ref: '#/definitions/product.DetailInfoDTO'
+      high_price:
+        type: string
+      id:
+        type: integer
+      low_price:
+        type: string
+      main_image:
+        type: string
+      name:
+        type: string
+      sale_count:
+        type: integer
+      service_bits:
+        type: integer
+      skus:
+        items:
+          $ref: '#/definitions/product.SkuDTO'
+        type: array
+      sub_title:
+        type: string
+    type: object
+  product.SearchProductsResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/product.SearchSkuDTO'
+        type: array
+      total:
+        type: integer
+    type: object
+  product.SearchSkuDTO:
+    properties:
+      brand_id:
+        type: integer
+      brand_name:
+        type: string
+      category_id:
+        type: integer
+      category_name:
+        type: string
+      main_image:
+        type: string
+      market_price:
+        type: string
+      price:
+        type: string
+      sale_count:
+        description: SPU 销量
+        type: integer
+      sku_id:
+        type: integer
+      sku_name:
+        type: string
+      sku_spec_data:
+        description: 规格 JSON
+        type: string
+      spu_id:
+        type: integer
+      spu_name:
+        type: string
+      stock:
+        type: integer
+      sub_title:
+        type: string
+    type: object
+  product.SkuDTO:
+    properties:
+      id:
+        type: integer
+      main_image:
+        type: string
+      market_price:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      sku_spec_data:
+        description: 规格 JSON
+        type: string
+      stock:
+        type: integer
+      sub_title:
+        type: string
+    type: object
+  product.UpdateSkuItem:
+    properties:
+      price:
+        description: 为空则不更新
+        type: string
+      sku_id:
+        type: integer
+      stock:
+        description: 0 表示不更新
+        type: integer
+    type: object
   response.Response:
     properties:
       code:
@@ -101,6 +397,96 @@ paths:
   /:
     get:
       responses: {}
+  /admin/products:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with SPU, SKUs and detail info (Admin only)
+      parameters:
+      - description: Create Product Request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/product.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/product.CreateProductResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 创建商品
+      tags:
+      - Product
+  /admin/skus/batch:
+    post:
+      consumes:
+      - application/json
+      description: Batch update SKU price and stock (Admin only)
+      parameters:
+      - description: Batch Update SKU Request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/product.BatchUpdateSkuRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/product.BatchUpdateSkuResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 批量更新SKU
+      tags:
+      - Product
   /auth/info:
     get:
       consumes:
@@ -251,6 +637,99 @@ paths:
       summary: 更新用户信息
       tags:
       - Auth
+  /brands:
+    get:
+      consumes:
+      - application/json
+      description: Get brand list with pagination
+      parameters:
+      - description: Page number
+        format: int32
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        format: int32
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/product.ListBrandsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 获取品牌列表
+      tags:
+      - Product
+  /categories:
+    get:
+      consumes:
+      - application/json
+      description: Get category list with optional parent filter
+      parameters:
+      - description: Parent category ID (0 for root categories)
+        format: int64
+        in: query
+        name: parent_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/product.ListCategoriesResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 获取分类列表
+      tags:
+      - Product
   /login:
     post:
       consumes:
@@ -335,6 +814,189 @@ paths:
       summary: 用户登出
       tags:
       - Auth
+  /products/{spu_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get product detail including SPU, SKUs, category, brand and detail
+        info
+      parameters:
+      - description: Product SPU ID
+        format: int64
+        in: path
+        name: spu_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/product.GetProductDetailResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 获取商品详情
+      tags:
+      - Product
+  /products/home:
+    get:
+      consumes:
+      - application/json
+      description: Get home page product list (SPU) with pagination and filters
+      parameters:
+      - description: Page number
+        format: int32
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        format: int32
+        in: query
+        name: page_size
+        type: integer
+      - description: Category ID
+        format: int64
+        in: query
+        name: category_id
+        type: integer
+      - description: Brand ID
+        format: int64
+        in: query
+        name: brand_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/product.GetHomeProductsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 获取首页商品列表
+      tags:
+      - Product
+  /products/search:
+    get:
+      consumes:
+      - application/json
+      description: Search products (SKU) with keyword, filters and sorting
+      parameters:
+      - description: Page number
+        format: int32
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        format: int32
+        in: query
+        name: page_size
+        type: integer
+      - description: Search keyword
+        in: query
+        name: keyword
+        type: string
+      - description: Category ID
+        format: int64
+        in: query
+        name: category_id
+        type: integer
+      - description: Brand ID
+        format: int64
+        in: query
+        name: brand_id
+        type: integer
+      - description: Minimum price
+        format: int64
+        in: query
+        name: min_price
+        type: integer
+      - description: Maximum price
+        format: int64
+        in: query
+        name: max_price
+        type: integer
+      - description: Sort type (0:default, 1:price asc, 2:price desc, 3:sales)
+        format: int32
+        in: query
+        name: sort_type
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/product.SearchProductsResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 搜索商品
+      tags:
+      - Product
   /refresh:
     post:
       consumes:

@@ -1,0 +1,257 @@
+syntax = "proto3";
+
+package gateway.product;
+
+import "api.proto";
+
+option go_package = "/api/product";
+
+// Gateway 商品服务
+service ProductService {
+  // === C端服务 ===
+  // 主页商品列表
+  rpc GetHomeProducts(GetHomeProductsRequest) returns (GetHomeProductsResponse) {
+    option (api.get) = "/products/home";
+  }
+  // 商品搜索
+  rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse) {
+    option (api.get) = "/products/search";
+  }
+  // 商品详情
+  rpc GetProductDetail(GetProductDetailRequest) returns (GetProductDetailResponse) {
+    option (api.get) = "/products/:spu_id";
+  }
+  // 分类树
+  rpc ListCategories(ListCategoriesRequest) returns (ListCategoriesResponse) {
+    option (api.get) = "/categories";
+  }
+  // 品牌列表
+  rpc ListBrands(ListBrandsRequest) returns (ListBrandsResponse) {
+    option (api.get) = "/brands";
+  }
+
+  // === 后台管理服务 ===
+  // 创建商品
+  rpc CreateProduct(CreateProductRequest) returns (CreateProductResponse) {
+    option (api.post) = "/admin/products";
+  }
+  // 批量更新 SKU (库存/价格)
+  rpc BatchUpdateSku(BatchUpdateSkuRequest) returns (BatchUpdateSkuResponse) {
+    option (api.post) = "/admin/skus/batch";
+  }
+}
+
+// ==================== DTO 数据传输对象 ====================
+// 主页 SPU DTO（首页分类展示）
+message HomeSpuDTO {
+  uint64 spu_id = 1;
+  string name = 2;
+  string sub_title = 3;
+  string main_image = 4;
+  string low_price = 5;
+  string high_price = 6;
+  int32 sale_count = 7;
+}
+
+// 主页 SKU DTO（轻量级）
+message HomeSkuDTO {
+  uint64 sku_id = 1;
+  string sku_name = 2;
+  string main_image = 3;
+  string price = 4;
+  string market_price = 5;
+  uint64 spu_id = 6;
+  string spu_name = 7;
+  int32 sale_count = 8;
+  string sub_title = 9;
+}
+
+// 搜索结果 SKU DTO
+message SearchSkuDTO {
+  uint64 sku_id = 1;
+  string sku_name = 2;
+  string sub_title = 3;
+  string main_image = 4;
+  string price = 5;
+  string market_price = 6;
+  int32 stock = 7;
+  string sku_spec_data = 8; // 规格 JSON
+  uint64 spu_id = 9;
+  string spu_name = 10;
+  uint64 category_id = 11;
+  string category_name = 12;
+  uint64 brand_id = 13;
+  string brand_name = 14;
+  int32 sale_count = 15; // SPU 销量
+}
+
+// 商品详情 SPU DTO
+message ProductDetailDTO {
+  uint64 id = 1;
+  string name = 2;
+  string sub_title = 3;
+  string main_image = 4;
+  string low_price = 5;
+  string high_price = 6;
+  int32 sale_count = 7;
+  int64 service_bits = 8;
+  CategoryDTO category = 9;
+  BrandDTO brand = 10;
+  repeated SkuDTO skus = 11;
+  DetailInfoDTO detail = 12;
+}
+
+// SKU DTO
+message SkuDTO {
+  uint64 id = 1;
+  string name = 2;
+  string sub_title = 3;
+  string main_image = 4;
+  string price = 5;
+  string market_price = 6;
+  int32 stock = 7;
+  string sku_spec_data = 8; // 规格 JSON
+}
+
+// 详情信息 DTO
+message DetailInfoDTO {
+  string description = 1; // 富文本描述
+  repeated string images = 2; // 商品图
+  repeated string videos = 3; // 商品视频
+  string market_tag_json = 4; // 营销标签 JSON
+  string tech_tag_json = 5; // 技术参数 JSON
+}
+
+// 分类 DTO
+message CategoryDTO {
+  uint64 id = 1;
+  uint64 parent_id = 2;
+  string name = 3;
+  int32 level = 4;
+  string icon = 5;
+  repeated CategoryDTO children = 6; // 子分类
+}
+
+// 品牌 DTO
+message BrandDTO {
+  uint64 id = 1;
+  string name = 2;
+  string first_letter = 3;
+  string logo = 4;
+}
+
+// ==================== 后台管理模型 ====================
+// 创建商品 - SPU 信息
+message CreateProductSPU {
+  uint64 brand_id = 1;
+  uint64 category_id = 2;
+  string name = 3;
+  string sub_title = 4;
+  string main_image = 5;
+  int32 sort = 6;
+  int64 service_bits = 7;
+}
+
+// 创建商品 - SKU 信息
+message CreateProductSKU {
+  string sku_code = 1;
+  string name = 2;
+  string sub_title = 3;
+  string main_image = 4;
+  string price = 5;
+  string market_price = 6;
+  int32 stock = 7;
+  string sku_spec_data = 8; // JSON 字符串
+}
+
+// 创建商品 - 详情信息
+message CreateProductDetail {
+  string description = 1; // 富文本描述
+  repeated string images = 2; // 商品图
+  repeated string videos = 3; // 商品视频
+  string market_tag_json = 4; // 营销标签 JSON
+  string tech_tag_json = 5; // 技术参数 JSON
+}
+
+// 更新 SKU 库存/价格
+message UpdateSkuItem {
+  uint64 sku_id = 1;
+  string price = 2; // 为空则不更新
+  int32 stock = 3; // 0 表示不更新
+}
+
+// ==================== 请求与响应 ====================
+// 1. GetHomeProducts - 主页SPU商品列表（按分类展示）
+message GetHomeProductsRequest {
+  uint64 category_id = 1 [(api.query) = "category_id"];
+  uint64 brand_id = 2 [(api.query) = "brand_id"];
+  int32 page = 3 [(api.query) = "page"];
+  int32 page_size = 4 [(api.query) = "page_size"];
+}
+message GetHomeProductsResponse {
+  repeated HomeSpuDTO list = 1;
+  int64 total = 2;
+}
+
+// 2. SearchProducts - C端商品搜索
+message SearchProductsRequest {
+  int32 page = 1 [(api.query) = "page"];
+  int32 page_size = 2 [(api.query) = "page_size"];
+  string keyword = 3 [(api.query) = "keyword"];
+  uint64 category_id = 4 [(api.query) = "category_id"];
+  uint64 brand_id = 5 [(api.query) = "brand_id"];
+  string min_price = 6 [(api.query) = "min_price"];
+  string max_price = 7 [(api.query) = "max_price"];
+  int32 sort_type = 8 [(api.query) = "sort_type"];
+}
+message SearchProductsResponse {
+  repeated SearchSkuDTO list = 1;
+  int64 total = 2;
+}
+
+// 3. GetProductDetail - C端商品详情
+message GetProductDetailRequest {
+  uint64 id = 1 [(api.path) = "spu_id"]; // 路由中使用 spu_id，但字段名为 id 与 RPC 一致
+}
+message GetProductDetailResponse {
+  ProductDetailDTO product = 1;
+}
+
+// 4. ListCategories - 分类树
+message ListCategoriesRequest {
+  uint64 parent_id = 1 [(api.query) = "parent_id"];
+}
+message ListCategoriesResponse {
+  repeated CategoryDTO categories = 1;
+}
+
+// 5. ListBrands - 品牌列表
+message ListBrandsRequest {
+  int32 page = 1 [(api.query) = "page"];
+  int32 page_size = 2 [(api.query) = "page_size"];
+}
+message ListBrandsResponse {
+  repeated BrandDTO brands = 1;
+  int64 total = 2;
+}
+
+// 6. CreateProduct - 后台创建商品
+message CreateProductRequest {
+  CreateProductSPU spu = 1 [(api.body) = "spu"];
+  repeated CreateProductSKU skus = 2 [(api.body) = "skus"];
+  CreateProductDetail detail = 3 [(api.body) = "detail"];
+}
+message CreateProductResponse {
+  uint64 spu_id = 1;
+  string message = 2;
+}
+
+// 7. BatchUpdateSku - 后台批量更新库存/价格
+message BatchUpdateSkuRequest {
+  repeated UpdateSkuItem items = 1 [(api.body) = "items"];
+}
+message BatchUpdateSkuResponse {
+  bool success = 1;
+  int32 updated_count = 2; // 实际更新数量
+  string message = 3;
+}
