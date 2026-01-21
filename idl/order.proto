@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package order;
+
+option go_package = "order";
+// 订单服务
+service OrderService {
+  // 获取订单详情
+  rpc ListOrder(ListOrderReq) returns (ListOrderResp);
+  // 获取订单详情 (查看单个订单)
+  // rpc GetOrder(GetOrderReq) returns (GetOrderResp);
+  // 取消订单
+  rpc CancelOrder(CancelOrderReq) returns (CancelOrderResp);
+  // 创建订单
+  rpc PlaceOrder(PlaceOrderReq) returns (PlaceOrderResp);
+  // 标记订单为已支付
+  rpc MarkOrderPaid(MarkOrderPaidReq) returns (MarkOrderPaidResp);
+}
+
+// 地址不用存 每次下单时填写
+message Address {
+  string street_address = 1;
+  string city = 2;
+  string name = 3;
+  int32 zip_code = 4;
+}
+
+message CartItem {
+  uint64 sku_id = 1; // SKU ID
+  int32 quantity = 2; // 数量
+  string sku_name = 3; // SKU名称
+  string price = 4; // 当前价格
+}
+
+message PlaceOrderReq {
+  uint64 user_id = 1;
+  string email = 2;
+  repeated CartItem items = 3;
+  Address shipping_address = 4;
+}
+
+message OrderResult {
+  string order_id = 1;
+}
+
+message PlaceOrderResp {
+  OrderResult order = 1;
+}
+message Order {
+  repeated CartItem items = 1;
+  string order_id = 2;
+  uint64 user_id = 3;
+  string email = 4;
+  Address shipping_address = 5;
+  string status = 6;
+  int32 created_at = 7;
+}
+ 
+
+message ListOrderReq {
+  uint64 user_id = 1;
+}
+
+message ListOrderResp {
+  repeated Order orders = 1;
+}
+
+message MarkOrderPaidReq {
+  uint64 user_id = 1;
+  string order_id = 2;
+}
+
+message MarkOrderPaidResp {
+  bool success = 1;
+}
+
+message CancelOrderReq {
+  string order_id = 1;
+}
+
+message CancelOrderResp {
+  bool success = 1;
+}

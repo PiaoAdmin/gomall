@@ -54,3 +54,7 @@ api_product:
 
 api_cart:
 	$(call gen_api,cart_api.proto) 
+
+api_order:
+	$(call gen_api,order_api.proto) 
+

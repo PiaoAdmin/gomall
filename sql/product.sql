@@ -24,9 +24,9 @@ CREATE TABLE `product_spu` (
   `service_bits` BIGINT(20) DEFAULT '0' COMMENT '商品服务:用二进制位存储,每一位代表一种服务',
   `version` int DEFAULT '1' COMMENT '乐观锁版本号',
 
-  `create_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `delete_at` datetime DEFAULT NULL COMMENT '删除时间',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
   `is_deleted` tinyint DEFAULT '0' COMMENT '逻辑删除标记:0-未删除,1-已删除',
   PRIMARY KEY (`id`),
   KEY `idx_cat_brand` (`category_id`, `brand_id`), -- 联合索引优化筛选
@@ -60,9 +60,9 @@ CREATE TABLE `product_sku` (
 
   `version` int DEFAULT '1' COMMENT '乐观锁版本号',
 
-  `create_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `delete_at` datetime DEFAULT NULL COMMENT '删除时间',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
   `is_deleted` tinyint DEFAULT '0' COMMENT '逻辑删除标记:0-未删除,1-已删除',
   PRIMARY KEY (`id`),
   KEY `idx_spu_id` (`spu_id`, `is_deleted`, `publish_status`),
@@ -85,9 +85,9 @@ CREATE TABLE `product_category` (
   `sort` int(11) DEFAULT '0',
   `show_status` tinyint DEFAULT '1' COMMENT '是否显示',
 
-  `create_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `delete_at` datetime DEFAULT NULL COMMENT '删除时间',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
   `is_deleted` tinyint DEFAULT '0' COMMENT '逻辑删除标记:0-未删除,1-已删除',
   PRIMARY KEY (`id`),
   KEY `idx_parent_id` (`parent_id`, `sort`),
@@ -105,9 +105,9 @@ CREATE TABLE `product_brand` (
   `sort` int(11) DEFAULT '0',
   `show_status` tinyint DEFAULT '1' COMMENT '是否显示',
 
-  `create_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  `delete_at` datetime DEFAULT NULL COMMENT '删除时间',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  `deleted_at` datetime DEFAULT NULL COMMENT '删除时间',
   `is_deleted` tinyint DEFAULT '0' COMMENT '逻辑删除标记:0-未删除,1-已删除',
   PRIMARY KEY (`id`),
   KEY `idx_first_letter` (`first_letter`, `sort`),
