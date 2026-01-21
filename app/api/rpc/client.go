@@ -6,6 +6,7 @@ import (
 	"github.com/PiaoAdmin/pmall/app/api/conf"
 	"github.com/PiaoAdmin/pmall/common/clientsuite"
 	"github.com/PiaoAdmin/pmall/rpc_gen/cart/cartservice"
+	"github.com/PiaoAdmin/pmall/rpc_gen/order/orderservice"
 	"github.com/PiaoAdmin/pmall/rpc_gen/product/productservice"
 	"github.com/PiaoAdmin/pmall/rpc_gen/user/userservice"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -18,6 +19,7 @@ var (
 	UserClient    userservice.Client
 	ProductClient productservice.Client
 	CartClient    cartservice.Client
+	OrderClient   orderservice.Client
 	once          sync.Once
 	err           error
 	commonSuite   client.Option
@@ -29,6 +31,7 @@ func Init() {
 			initUserClientDirect("127.0.0.1:8899")
 			initProductClientDirect("127.0.0.1:9900")
 			initCartClientDirect("127.0.0.1:9901")
+			initOrderClientDirect("127.0.0.1:9902")
 			return
 		}
 		registryAddr := conf.GetConf().Hertz.RegistryAddr
@@ -39,6 +42,7 @@ func Init() {
 		initUserClient()
 		initProductClient()
 		initCartClient()
+		initOrderClient()
 	})
 }
 
@@ -73,6 +77,16 @@ func initCartClientDirect(addr string) {
 	}
 }
 
+func initOrderClientDirect(addr string) {
+	OrderClient, err = orderservice.NewClient("order",
+		client.WithHostPorts(addr),
+		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
+		client.WithTransportProtocol(transport.GRPC))
+	if err != nil {
+		hlog.Fatal(err)
+	}
+}
+
 func initUserClient() {
 	UserClient, err = userservice.NewClient("user", commonSuite)
 	if err != nil {
@@ -89,6 +103,13 @@ func initProductClient() {
 
 func initCartClient() {
 	CartClient, err = cartservice.NewClient("cart", commonSuite)
+	if err != nil {
+		hlog.Fatal(err)
+	}
+}
+
+func initOrderClient() {
+	OrderClient, err = orderservice.NewClient("order", commonSuite)
 	if err != nil {
 		hlog.Fatal(err)
 	}
