@@ -51,3 +51,6 @@ api_auth:
 
 api_product:
 	$(call gen_api,product_api.proto) 
+
+api_cart:
+	$(call gen_api,cart_api.proto) 

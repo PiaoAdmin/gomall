@@ -81,3 +81,9 @@ func (s *ProductServiceImpl) SearchProducts(ctx context.Context, req *product.Se
 	resp, err = service.NewSearchProductsService(ctx).Run(req)
 	return
 }
+
+// GetSkusByIds implements the ProductServiceImpl interface.
+func (s *ProductServiceImpl) GetSkusByIds(ctx context.Context, req *product.GetSkusByIdsRequest) (resp *product.GetSkusByIdsResponse, err error) {
+	resp, err = service.NewGetSkusByIdsService(ctx).Run(req)
+	return
+}

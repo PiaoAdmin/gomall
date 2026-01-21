@@ -57,6 +57,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
+	"GetSkusByIds": kitex.NewMethodInfo(
+		getSkusByIdsHandler,
+		newGetSkusByIdsArgs,
+		newGetSkusByIdsResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
 	"BatchUpdateSku": kitex.NewMethodInfo(
 		batchUpdateSkuHandler,
 		newBatchUpdateSkuArgs,
@@ -831,6 +838,117 @@ func (p *GetProductsByIdsResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getSkusByIdsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(product.GetSkusByIdsRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(product.ProductService).GetSkusByIds(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *GetSkusByIdsArgs:
+		success, err := handler.(product.ProductService).GetSkusByIds(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetSkusByIdsResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newGetSkusByIdsArgs() interface{} {
+	return &GetSkusByIdsArgs{}
+}
+
+func newGetSkusByIdsResult() interface{} {
+	return &GetSkusByIdsResult{}
+}
+
+type GetSkusByIdsArgs struct {
+	Req *product.GetSkusByIdsRequest
+}
+
+func (p *GetSkusByIdsArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetSkusByIdsArgs) Unmarshal(in []byte) error {
+	msg := new(product.GetSkusByIdsRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetSkusByIdsArgs_Req_DEFAULT *product.GetSkusByIdsRequest
+
+func (p *GetSkusByIdsArgs) GetReq() *product.GetSkusByIdsRequest {
+	if !p.IsSetReq() {
+		return GetSkusByIdsArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetSkusByIdsArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetSkusByIdsArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetSkusByIdsResult struct {
+	Success *product.GetSkusByIdsResponse
+}
+
+var GetSkusByIdsResult_Success_DEFAULT *product.GetSkusByIdsResponse
+
+func (p *GetSkusByIdsResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetSkusByIdsResult) Unmarshal(in []byte) error {
+	msg := new(product.GetSkusByIdsResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetSkusByIdsResult) GetSuccess() *product.GetSkusByIdsResponse {
+	if !p.IsSetSuccess() {
+		return GetSkusByIdsResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetSkusByIdsResult) SetSuccess(x interface{}) {
+	p.Success = x.(*product.GetSkusByIdsResponse)
+}
+
+func (p *GetSkusByIdsResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetSkusByIdsResult) GetResult() interface{} {
+	return p.Success
+}
+
 func batchUpdateSkuHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
 	switch s := arg.(type) {
 	case *streaming.Args:
@@ -1562,6 +1680,16 @@ func (p *kClient) GetProductsByIds(ctx context.Context, Req *product.GetProducts
 	_args.Req = Req
 	var _result GetProductsByIdsResult
 	if err = p.c.Call(ctx, "GetProductsByIds", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetSkusByIds(ctx context.Context, Req *product.GetSkusByIdsRequest) (r *product.GetSkusByIdsResponse, err error) {
+	var _args GetSkusByIdsArgs
+	_args.Req = Req
+	var _result GetSkusByIdsResult
+	if err = p.c.Call(ctx, "GetSkusByIds", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

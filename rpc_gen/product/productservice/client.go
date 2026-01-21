@@ -17,6 +17,7 @@ type Client interface {
 	GetProductDetail(ctx context.Context, Req *product.GetProductDetailRequest, callOptions ...callopt.Option) (r *product.GetProductDetailResponse, err error)
 	ListProducts(ctx context.Context, Req *product.ListProductsRequest, callOptions ...callopt.Option) (r *product.ListProductsResponse, err error)
 	GetProductsByIds(ctx context.Context, Req *product.GetProductsByIdsRequest, callOptions ...callopt.Option) (r *product.GetProductsByIdsResponse, err error)
+	GetSkusByIds(ctx context.Context, Req *product.GetSkusByIdsRequest, callOptions ...callopt.Option) (r *product.GetSkusByIdsResponse, err error)
 	BatchUpdateSku(ctx context.Context, Req *product.BatchUpdateSkuRequest, callOptions ...callopt.Option) (r *product.BatchUpdateSkuResponse, err error)
 	DeductStock(ctx context.Context, Req *product.DeductStockRequest, callOptions ...callopt.Option) (r *product.DeductStockResponse, err error)
 	ReleaseStock(ctx context.Context, Req *product.ReleaseStockRequest, callOptions ...callopt.Option) (r *product.ReleaseStockResponse, err error)
@@ -82,6 +83,11 @@ func (p *kProductServiceClient) ListProducts(ctx context.Context, Req *product.L
 func (p *kProductServiceClient) GetProductsByIds(ctx context.Context, Req *product.GetProductsByIdsRequest, callOptions ...callopt.Option) (r *product.GetProductsByIdsResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetProductsByIds(ctx, Req)
+}
+
+func (p *kProductServiceClient) GetSkusByIds(ctx context.Context, Req *product.GetSkusByIdsRequest, callOptions ...callopt.Option) (r *product.GetSkusByIdsResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetSkusByIds(ctx, Req)
 }
 
 func (p *kProductServiceClient) BatchUpdateSku(ctx context.Context, Req *product.BatchUpdateSkuRequest, callOptions ...callopt.Option) (r *product.BatchUpdateSkuResponse, err error) {

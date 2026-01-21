@@ -1,186 +1,13 @@
 package test
 
 import (
-	"bytes"
-	"context"
-	"encoding/json"
 	"fmt"
-	"io"
-	"net"
 	"net/http"
-	"os"
 	"testing"
 	"time"
 
-	"github.com/PiaoAdmin/pmall/app/api/biz/dal"
-	"github.com/PiaoAdmin/pmall/app/api/biz/router"
-	mwError "github.com/PiaoAdmin/pmall/app/api/md/error"
-	"github.com/PiaoAdmin/pmall/app/api/md/jwt"
-	"github.com/PiaoAdmin/pmall/app/api/rpc"
 	perrors "github.com/PiaoAdmin/pmall/common/errs"
-	"github.com/cloudwego/hertz/pkg/app/server"
-	"github.com/cloudwego/hertz/pkg/common/hlog"
 )
-
-var testBaseURL string
-
-// respEnvelope is a small helper to decode the unified response wrapper.
-type respEnvelope[T any] struct {
-	Code    uint64 `json:"code"`
-	Message string `json:"message"`
-	Data    T      `json:"data"`
-}
-
-type loginData struct {
-	Token string `json:"token"`
-}
-
-// startTestServer boots a real Hertz server on a random port and returns its base URL and shutdown func.
-func TestMain(m *testing.M) {
-	// Change to parent directory so config files can be found
-	if err := os.Chdir("../"); err != nil {
-		fmt.Printf("failed to change directory: %v", err)
-		os.Exit(1)
-	}
-
-	// Initialize shared dependencies just like main.go does.
-	dal.Init()
-	rpc.Init()
-	jwt.Init()
-
-	ln, _ := net.Listen("tcp", "127.0.0.1:0")
-	addr := ln.Addr().String()
-	ln.Close() // Close it so Hertz can bind to it
-
-	f, err := os.OpenFile("./output_test.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-	fileWriter := io.MultiWriter(f)
-	hlog.SetOutput(fileWriter)
-
-	h := server.New(server.WithHostPorts(addr))
-	h.Use(mwError.GlobalErrorHandler())
-	router.GeneratedRegister(h)
-
-	go h.Spin()
-
-	testBaseURL = fmt.Sprintf("http://%s", addr)
-	time.Sleep(200 * time.Millisecond)
-
-	// Run all tests
-	code := m.Run()
-
-	// Cleanup
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-	h.Shutdown(ctx)
-
-	os.Exit(code)
-}
-
-func getTestServer(t *testing.T) string {
-	return testBaseURL
-}
-
-// doJSON is a generic helper for making HTTP requests with JSON body and response
-func doJSON[T any](t *testing.T, client *http.Client, method, url string, body any, headers map[string]string) respEnvelope[T] {
-	t.Helper()
-
-	var bodyReader *bytes.Reader
-	if body != nil {
-		b, err := json.Marshal(body)
-		if err != nil {
-			t.Fatalf("marshal body: %v", err)
-		}
-		bodyReader = bytes.NewReader(b)
-	}
-
-	var req *http.Request
-	var err error
-	if bodyReader != nil {
-		req, err = http.NewRequest(method, url, bodyReader)
-	} else {
-		req, err = http.NewRequest(method, url, nil)
-	}
-	if err != nil {
-		t.Fatalf("new request: %v", err)
-	}
-
-	if body != nil {
-		req.Header.Set("Content-Type", "application/json")
-	}
-	for k, v := range headers {
-		req.Header.Set(k, v)
-	}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		t.Fatalf("do request: %v", err)
-	}
-	defer resp.Body.Close()
-
-	var env respEnvelope[T]
-	if err := json.NewDecoder(resp.Body).Decode(&env); err != nil {
-		t.Fatalf("decode resp: %v", err)
-	}
-	return env
-}
-
-func postJSON[T any](t *testing.T, client *http.Client, url string, body any, headers map[string]string) respEnvelope[T] {
-	return doJSON[T](t, client, http.MethodPost, url, body, headers)
-}
-
-func getJSON[T any](t *testing.T, client *http.Client, url string, headers map[string]string) respEnvelope[T] {
-	return doJSON[T](t, client, http.MethodGet, url, nil, headers)
-}
-
-// Helper functions for test setup
-
-// createTestUser registers a new user and returns username and password
-func createTestUser(t *testing.T, client *http.Client, baseURL string, suffix int64) (username, password string) {
-	t.Helper()
-	username = fmt.Sprintf("tester_%d", suffix%1000000)
-	password = "Passw0rd!"
-
-	regBody := map[string]any{
-		"username":         username,
-		"password":         password,
-		"password_confirm": password,
-		"email":            fmt.Sprintf("%s@example.com", username),
-	}
-	regResp := postJSON[map[string]any](t, client, baseURL+"/register", regBody, nil)
-	if regResp.Code != uint64(perrors.Success.Code) {
-		t.Fatalf("registration failed: code=%d msg=%s", regResp.Code, regResp.Message)
-	}
-	return username, password
-}
-
-// loginTestUser logs in with username and password, returns token
-func loginTestUser(t *testing.T, client *http.Client, baseURL, username, password string) string {
-	t.Helper()
-	loginBody := map[string]any{
-		"username": username,
-		"password": password,
-	}
-	loginResp := postJSON[loginData](t, client, baseURL+"/login", loginBody, nil)
-	if loginResp.Code != uint64(perrors.Success.Code) {
-		t.Fatalf("login failed: code=%d msg=%s", loginResp.Code, loginResp.Message)
-	}
-	if loginResp.Data.Token == "" {
-		t.Fatalf("login token is empty")
-	}
-	return loginResp.Data.Token
-}
-
-// createAndLoginTestUser registers and logs in a new user, returns username, password and token
-func createAndLoginTestUser(t *testing.T, client *http.Client, baseURL string, suffix int64) (username, password, token string) {
-	t.Helper()
-	username, password = createTestUser(t, client, baseURL, suffix)
-	token = loginTestUser(t, client, baseURL, username, password)
-	return username, password, token
-}
 
 // TestAuthFlow performs a real HTTP flow: register -> login -> get user info -> refresh.
 func TestAuthFlow(t *testing.T) {
@@ -317,7 +144,6 @@ func TestLoginNonexistentUser(t *testing.T) {
 		"password": "Passw0rd!",
 	}
 	loginResp := postJSON[any](t, client, baseURL+"/login", loginBody, nil)
-
 	if loginResp.Code == uint64(perrors.Success.Code) {
 		t.Fatalf("expected login to fail for nonexistent user, but succeeded")
 	}

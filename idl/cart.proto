@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package cart;
+
+option go_package = "cart";
+
+// 购物车服务
+service CartService {
+  // 添加商品到购物车
+  rpc AddToCart(AddToCartRequest) returns (AddToCartResponse);
+  
+  // 从购物车移除商品
+  rpc RemoveFromCart(RemoveFromCartRequest) returns (RemoveFromCartResponse);
+   
+  // 获取用户购物车详情
+  rpc GetCartDetails(GetCartDetailsRequest) returns (GetCartDetailsResponse);
+  
+  // 清空购物车
+  rpc ClearCart(ClearCartRequest) returns (ClearCartResponse);
+}
+
+// 购物车项模型
+message CartItem {
+  uint64 id = 1; // 购物车项ID
+  uint64 user_id = 2; // 用户ID
+  uint64 sku_id = 3; // SKU ID
+  int32 quantity = 4; // 数量
+  
+  // SKU 关联信息（从商品服务查询）
+  string sku_name = 6; // SKU名称
+  string sku_image = 7; // SKU图片
+  string price = 8; // 当前价格
+  string market_price = 9; // 市场价
+  int32 stock = 10; // 库存
+  uint64 spu_id = 11; // 关联的SPU ID
+  string spu_name = 12; // SPU名称
+  string sku_spec_data = 13; // 规格数据JSON
+}
+
+// 1. 添加到购物车
+message AddToCartRequest {
+  uint64 user_id = 1; // 用户ID
+  uint64 sku_id = 2; // SKU ID
+  int32 quantity = 3; // 数量（默认为1）
+}
+
+message AddToCartResponse {
+  bool success = 1;
+  CartItem cart_item = 2; // 返回添加后的购物车项
+}
+
+// 2. 从购物车移除
+message RemoveFromCartRequest {
+  uint64 user_id = 1; // 用户ID
+  repeated uint64 cart_item_ids = 2; // 购物车项ID列表（支持批量删除）
+}
+
+message RemoveFromCartResponse {
+  bool success = 1;
+}
+
+// 3. 获取购物车详情
+message GetCartDetailsRequest {
+  uint64 user_id = 1; // 用户ID
+}
+
+message GetCartDetailsResponse {
+  repeated CartItem items = 1; // 购物车项列表
+  int32 total_quantity = 2; // 总数量
+  string total_amount = 3; // 总金额
+}
+
+// 4. 清空购物车
+message ClearCartRequest {
+  uint64 user_id = 1; 
+}
+
+message ClearCartResponse {
+  bool success = 1;
+}

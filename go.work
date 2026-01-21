@@ -6,4 +6,5 @@ use (
 	./app/api
 	./common
 	./rpc_gen
+	./app/cart
 )

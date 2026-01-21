@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package gateway.cart;
+
+import "api.proto";
+
+option go_package = "/api/cart";
+
+// 购物车项模型
+message CartItem {
+  uint64 sku_id = 1;
+  int32 quantity = 2;
+  string sku_name = 3;
+  string sku_image = 4;
+  string price = 5;
+  string market_price = 6;
+  int32 stock = 7;
+  uint64 spu_id = 8;
+  string spu_name = 9;
+  string sku_spec_data = 10;
+}
+
+// 添加到购物车
+message AddToCartReq {
+  uint64 sku_id = 1 [(api.body) = "sku_id"];
+  int32 quantity = 2 [(api.body) = "quantity"];
+}
+
+message AddToCartResp {
+  CartItem cart_item = 1;
+}
+
+// 从购物车移除
+message RemoveFromCartReq {
+  repeated uint64 sku_ids = 1 [(api.body) = "sku_ids"];
+}
+
+message RemoveFromCartResp {
+  bool success = 1;
+}
+
+// 获取购物车详情
+message GetCartDetailsReq {
+}
+
+message GetCartDetailsResp {
+  repeated CartItem items = 1;
+  int32 total_quantity = 2;
+  string total_amount = 3;
+}
+
+// 清空购物车
+message ClearCartReq {
+}
+
+message ClearCartResp {
+  bool success = 1;
+}
+
+// 购物车服务
+service CartService {
+  // 添加商品到购物车
+  rpc AddToCart(AddToCartReq) returns (AddToCartResp) {
+    option (api.post) = "/cart/add";
+  }
+  
+  // 从购物车移除商品
+  rpc RemoveFromCart(RemoveFromCartReq) returns (RemoveFromCartResp) {
+    option (api.post) = "/cart/remove";
+  }
+  
+  // 获取购物车详情
+  rpc GetCartDetails(GetCartDetailsReq) returns (GetCartDetailsResp) {
+    option (api.get) = "/cart";
+  }
+  
+  // 清空购物车
+  rpc ClearCart(ClearCartReq) returns (ClearCartResp) {
+    option (api.post) = "/cart/clear";
+  }
+}

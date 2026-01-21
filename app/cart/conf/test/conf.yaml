@@ -1,6 +1,6 @@
 kitex:
-  service: "user"
-  address: ":8899"
+  service: "cart"
+  address: ":9901"
   log_level: info
   log_file_name: "log/kitex.log"
   log_max_size: 10
@@ -14,10 +14,13 @@ registry:
   password: ""
 
 mysql:
-  dsn: "root:123456@tcp(10.161.105.212:3306)/pmall?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "root:123456@tcp(10.161.105.212:3306)/p_cart?charset=utf8mb4&parseTime=True&loc=Local"
 
 redis:
   address: "10.161.105.212:6379"
   username: ""
-  password: ""
-  db: 0
+  password: "123456"
+  db: 0 
+
+rpc:
+  product_service: "product"  # 商品服务名称

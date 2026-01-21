@@ -26,6 +26,9 @@ func (s *LoginService) Run(req *user.LoginRequest) (resp *user.LoginResponse, er
 	if err != nil {
 		return nil, errs.New(errs.ErrRecordNotFound.Code, err.Error())
 	}
+	if userRow == nil {
+		return nil, errs.New(errs.ErrRecordNotFound.Code, "user not found")
+	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(userRow.Password), []byte(req.Password)); err != nil {
 		return nil, errs.New(errs.ErrParam.Code, "password incorrect")

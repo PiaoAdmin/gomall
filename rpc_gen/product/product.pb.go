@@ -774,7 +774,42 @@ func (x *GetProductsByIdsResponse) GetProducts() map[uint64]*ProductSPU {
 	return nil
 }
 
-// 7. BatchUpdateSku
+// 7. GetSkusByIds (批量获取 SKU 详情)
+type GetSkusByIdsRequest struct {
+	SkuIds []uint64 `protobuf:"varint,1,rep,packed,name=sku_ids" json:"sku_ids,omitempty"`
+}
+
+func (x *GetSkusByIdsRequest) Reset() { *x = GetSkusByIdsRequest{} }
+
+func (x *GetSkusByIdsRequest) Marshal(in []byte) ([]byte, error) { return prutal.MarshalAppend(in, x) }
+
+func (x *GetSkusByIdsRequest) Unmarshal(in []byte) error { return prutal.Unmarshal(in, x) }
+
+func (x *GetSkusByIdsRequest) GetSkuIds() []uint64 {
+	if x != nil {
+		return x.SkuIds
+	}
+	return nil
+}
+
+type GetSkusByIdsResponse struct {
+	Skus map[uint64]*ProductSKU `protobuf:"bytes,1,rep,name=skus" json:"skus,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+}
+
+func (x *GetSkusByIdsResponse) Reset() { *x = GetSkusByIdsResponse{} }
+
+func (x *GetSkusByIdsResponse) Marshal(in []byte) ([]byte, error) { return prutal.MarshalAppend(in, x) }
+
+func (x *GetSkusByIdsResponse) Unmarshal(in []byte) error { return prutal.Unmarshal(in, x) }
+
+func (x *GetSkusByIdsResponse) GetSkus() map[uint64]*ProductSKU {
+	if x != nil {
+		return x.Skus
+	}
+	return nil
+}
+
+// 8. BatchUpdateSku
 type BatchUpdateSkuRequest struct {
 	Skus []*ProductSKU `protobuf:"bytes,1,rep,name=skus" json:"skus,omitempty"` // 根据 sku_id 更新 price/stock
 }
@@ -813,7 +848,7 @@ func (x *BatchUpdateSkuResponse) GetSuccess() bool {
 	return false
 }
 
-// 8. DeductStock (核心)
+// 9. DeductStock (核心)
 type SkuDeductItem struct {
 	SkuId uint64 `protobuf:"varint,1,opt,name=sku_id" json:"sku_id,omitempty"`
 	Count int32  `protobuf:"varint,2,opt,name=count" json:"count,omitempty"`
@@ -881,7 +916,7 @@ func (x *DeductStockResponse) GetSuccess() bool {
 	return false
 }
 
-// 9. ReleaseStock
+// 10. ReleaseStock
 type ReleaseStockRequest struct {
 	OrderSn string           `protobuf:"bytes,1,opt,name=order_sn" json:"order_sn,omitempty"`
 	Items   []*SkuDeductItem `protobuf:"bytes,2,rep,name=items" json:"items,omitempty"`
@@ -924,7 +959,7 @@ func (x *ReleaseStockResponse) GetSuccess() bool {
 	return false
 }
 
-// 10. ListCategories
+// 11. ListCategories
 type ListCategoriesRequest struct {
 	ParentId uint64 `protobuf:"varint,1,opt,name=parent_id" json:"parent_id,omitempty"` // 0 获取所有一级，或者 -1 获取全树
 }
@@ -963,7 +998,7 @@ func (x *ListCategoriesResponse) GetCategories() []*Category {
 	return nil
 }
 
-// 11. ListBrands
+// 12. ListBrands
 type ListBrandsRequest struct {
 	Page     int32 `protobuf:"varint,1,opt,name=page" json:"page,omitempty"`
 	PageSize int32 `protobuf:"varint,2,opt,name=page_size" json:"page_size,omitempty"`
@@ -1014,7 +1049,7 @@ func (x *ListBrandsResponse) GetTotal() int64 {
 	return 0
 }
 
-// 12. SearchProducts (C端商品搜索，返回可购买的 SKU)
+// 13. SearchProducts (C端商品搜索，返回可购买的 SKU)
 type SearchProductsRequest struct {
 	Page       int32  `protobuf:"varint,1,opt,name=page" json:"page,omitempty"`
 	PageSize   int32  `protobuf:"varint,2,opt,name=page_size" json:"page_size,omitempty"`
@@ -1198,6 +1233,7 @@ type ProductService interface {
 	GetProductDetail(ctx context.Context, req *GetProductDetailRequest) (res *GetProductDetailResponse, err error)
 	ListProducts(ctx context.Context, req *ListProductsRequest) (res *ListProductsResponse, err error)
 	GetProductsByIds(ctx context.Context, req *GetProductsByIdsRequest) (res *GetProductsByIdsResponse, err error)
+	GetSkusByIds(ctx context.Context, req *GetSkusByIdsRequest) (res *GetSkusByIdsResponse, err error)
 	BatchUpdateSku(ctx context.Context, req *BatchUpdateSkuRequest) (res *BatchUpdateSkuResponse, err error)
 	DeductStock(ctx context.Context, req *DeductStockRequest) (res *DeductStockResponse, err error)
 	ReleaseStock(ctx context.Context, req *ReleaseStockRequest) (res *ReleaseStockResponse, err error)

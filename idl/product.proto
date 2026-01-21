@@ -21,6 +21,8 @@ service ProductService {
   rpc GetProductsByIds(GetProductsByIdsRequest) returns (GetProductsByIdsResponse);
 
   // 2. 商品 SKU 管理 (Stock/Price)
+  // 根据 SKU ID 列表批量获取 SKU 详情 (购物车/订单服务调用)
+  rpc GetSkusByIds(GetSkusByIdsRequest) returns (GetSkusByIdsResponse);
   // 批量更新 SKU (用于修改库存、价格)
   rpc BatchUpdateSku(BatchUpdateSkuRequest) returns (BatchUpdateSkuResponse);
   // 扣减库存 (订单服务调用，核心接口)
@@ -171,7 +173,15 @@ message GetProductsByIdsResponse {
   map<uint64, ProductSPU> products = 1; // ID -> SPU 映射
 }
 
-// 7. BatchUpdateSku
+// 7. GetSkusByIds (批量获取 SKU 详情)
+message GetSkusByIdsRequest {
+  repeated uint64 sku_ids = 1;
+}
+message GetSkusByIdsResponse {
+  map<uint64, ProductSKU> skus = 1;
+}
+
+// 8. BatchUpdateSku
 message BatchUpdateSkuRequest {
   repeated ProductSKU skus = 1; // 根据 sku_id 更新 price/stock
 }
@@ -179,7 +189,7 @@ message BatchUpdateSkuResponse {
   bool success = 1;
 }
 
-// 8. DeductStock (核心)
+// 9. DeductStock (核心)
 message SkuDeductItem {
   uint64 sku_id = 1;
   int32 count = 2;
@@ -192,7 +202,7 @@ message DeductStockResponse {
   bool success = 1;
 }
 
-// 9. ReleaseStock
+// 10. ReleaseStock
 message ReleaseStockRequest {
   string order_sn = 1;
   repeated SkuDeductItem items = 2;
@@ -201,7 +211,7 @@ message ReleaseStockResponse {
   bool success = 1;
 }
 
-// 10. ListCategories
+// 11. ListCategories
 message ListCategoriesRequest {
   uint64 parent_id = 1; // 0 获取所有一级，或者 -1 获取全树
 }
@@ -209,7 +219,7 @@ message ListCategoriesResponse {
   repeated Category categories = 1;
 }
 
-// 11. ListBrands
+// 12. ListBrands
 message ListBrandsRequest {
   int32 page = 1;
   int32 page_size = 2;
@@ -219,16 +229,16 @@ message ListBrandsResponse {
   int64 total = 2;
 }
 
-// 12. SearchProducts (C端商品搜索，返回可购买的 SKU)
+// 13. SearchProducts (C端商品搜索，返回可购买的 SKU)
 message SearchProductsRequest {
   int32 page = 1;
   int32 page_size = 2;
-  string keyword = 3;           // 搜索关键词
-  uint64 category_id = 4;       // 分类筛选
-  uint64 brand_id = 5;          // 品牌筛选
-  string min_price = 6;         // 最低价格
-  string max_price = 7;         // 最高价格
-  int32 sort_type = 8;          // 排序: 0-综合, 1-价格升序, 2-价格降序, 3-销量降序
+  string keyword = 3; // 搜索关键词
+  uint64 category_id = 4; // 分类筛选
+  uint64 brand_id = 5; // 品牌筛选
+  string min_price = 6; // 最低价格
+  string max_price = 7; // 最高价格
+  int32 sort_type = 8; // 排序: 0-综合, 1-价格升序, 2-价格降序, 3-销量降序
 }
 message SearchProductsResponse {
   repeated SearchProductItem list = 1;
@@ -237,12 +247,12 @@ message SearchProductsResponse {
 
 // 搜索结果项：SKU + 关联的 SPU 基本信息
 message SearchProductItem {
-  ProductSKU sku = 1;           // SKU 详细信息
-  uint64 spu_id = 2;            // 关联的 SPU ID
-  string spu_name = 3;          // SPU 名称
-  uint64 brand_id = 4;          // 品牌 ID
-  string brand_name = 5;        // 品牌名称
-  uint64 category_id = 6;       // 分类 ID
-  string category_name = 7;     // 分类名称
-  int32 spu_sale_count = 8;     // SPU 总销量
+  ProductSKU sku = 1; // SKU 详细信息
+  uint64 spu_id = 2; // 关联的 SPU ID
+  string spu_name = 3; // SPU 名称
+  uint64 brand_id = 4; // 品牌 ID
+  string brand_name = 5; // 品牌名称
+  uint64 category_id = 6; // 分类 ID
+  string category_name = 7; // 分类名称
+  int32 spu_sale_count = 8; // SPU 总销量
 }

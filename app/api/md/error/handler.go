@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/PiaoAdmin/pmall/app/api/pkg/response"
+	"github.com/PiaoAdmin/pmall/app/user/conf"
 	perrors "github.com/PiaoAdmin/pmall/common/errs"
 	"github.com/cloudwego/hertz/pkg/app"
 	herrors "github.com/cloudwego/hertz/pkg/common/errors"
@@ -87,10 +88,14 @@ func resolveError(e *herrors.Error) (int, *response.Response) {
 		}
 	}
 
+	message := "Internal Server Error"
+	if conf.GetConf().Env == "test" {
+		message = err.Error()
+	}
 	// 默认错误处理
 	return consts.StatusInternalServerError, &response.Response{
 		Code:    uint64(perrors.ErrInternal.Code),
-		Message: "Internal Server Error",
+		Message: message,
 		Data:    nil,
 	}
 }
