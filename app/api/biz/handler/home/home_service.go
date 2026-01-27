@@ -12,6 +12,12 @@ import (
 )
 
 // Home .
+// @Summary      主页
+// @Description  Home endpoint
+// @Tags         Home
+// @Success      200  {object}  response.Response{data=home.Empty}
+// @Failure      400  {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500  {object}  response.Response{data=string}  "Internal Server Error"
 // @router / [GET]
 func Home(ctx context.Context, c *app.RequestContext) {
 	var err error

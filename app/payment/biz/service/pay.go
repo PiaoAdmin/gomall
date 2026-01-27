@@ -21,6 +21,9 @@ func (s *PayService) Run(req *payment.PayRequest) (*payment.PayResponse, error) 
 	if req == nil || req.OrderId == "" || req.UserId == 0 {
 		return nil, errs.New(errs.ErrParam.Code, "invalid request")
 	}
+	if req.Amount == "" {
+		return nil, errs.New(errs.ErrParam.Code, "amount is required")
+	}
 
 	tradeNo := fmt.Sprintf("%d", uniqueid.GenId())
 	return &payment.PayResponse{

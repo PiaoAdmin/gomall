@@ -1,7 +1,9 @@
 package main
 
 import (
+	"io"
 	"net"
+	"os"
 
 	"github.com/PiaoAdmin/pmall/app/user/biz/dal"
 	"github.com/PiaoAdmin/pmall/app/user/conf"
@@ -17,9 +19,18 @@ func main() {
 	dal.Init()
 	opts := kitexInit()
 
+	logFile, err := os.OpenFile(conf.GetConf().Kitex.LogFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer logFile.Close()
+	fileWriter := io.MultiWriter(logFile, os.Stdout)
+	klog.SetOutput(fileWriter)
+	klog.SetLevel(conf.LogLevel())
+
 	svr := userservice.NewServer(new(UserServiceImpl), opts...)
 
-	err := svr.Run()
+	err = svr.Run()
 	if err != nil {
 		klog.Error(err.Error())
 	}

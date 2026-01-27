@@ -13,6 +13,14 @@ import (
 )
 
 // PlaceOrder .
+// @Summary      下单
+// @Description  Place order from cart items
+// @Tags         Order
+// @Param        Authorization  header    string              true  "Bearer {token}"
+// @Param        req            body      order.PlaceOrderReq true  "Place order request"
+// @Success      200            {object}  response.Response{data=order.PlaceOrderResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /orders [POST]
 func PlaceOrder(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -33,6 +41,13 @@ func PlaceOrder(ctx context.Context, c *app.RequestContext) {
 }
 
 // ListOrder .
+// @Summary      获取订单列表
+// @Description  List current user's orders
+// @Tags         Order
+// @Param        Authorization  header    string  true  "Bearer {token}"
+// @Success      200            {object}  response.Response{data=order.ListOrderResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /orders [GET]
 func ListOrder(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -53,6 +68,14 @@ func ListOrder(ctx context.Context, c *app.RequestContext) {
 }
 
 // CancelOrder .
+// @Summary      取消订单
+// @Description  Cancel order by order_id
+// @Tags         Order
+// @Param        Authorization  header    string              true  "Bearer {token}"
+// @Param        order_id       path      string              true  "Order ID"
+// @Success      200            {object}  response.Response{data=order.CancelOrderResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /orders/:order_id/cancel [POST]
 func CancelOrder(ctx context.Context, c *app.RequestContext) {
 	var err error

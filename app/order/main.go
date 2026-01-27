@@ -1,12 +1,14 @@
 package main
 
 import (
-	"log"
+	"io"
 	"net"
+	"os"
 
 	"github.com/PiaoAdmin/pmall/app/order/biz/dal"
 	"github.com/PiaoAdmin/pmall/app/order/conf"
 	order "github.com/PiaoAdmin/pmall/rpc_gen/order/orderservice"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
 	"github.com/cloudwego/kitex/server"
@@ -17,12 +19,21 @@ func main() {
 	dal.Init()
 	opts := kitexInit()
 
+	logFile, err := os.OpenFile(conf.GetConf().Kitex.LogFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic(err)
+	}
+	defer logFile.Close()
+	fileWriter := io.MultiWriter(logFile, os.Stdout)
+	klog.SetOutput(fileWriter)
+	klog.SetLevel(conf.LogLevel())
+
 	svr := order.NewServer(new(OrderServiceImpl), opts...)
 
-	err := svr.Run()
+	err = svr.Run()
 
 	if err != nil {
-		log.Println(err.Error())
+		klog.Error(err.Error())
 	}
 }
 

@@ -13,6 +13,14 @@ import (
 )
 
 // Pay .
+// @Summary      订单支付
+// @Description  Pay for an order
+// @Tags         Payment
+// @Param        Authorization  header    string           true  "Bearer {token}"
+// @Param        req            body      payment.PayReq   true  "Pay request"
+// @Success      200            {object}  response.Response{data=payment.PayResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /payment/pay [POST]
 func Pay(ctx context.Context, c *app.RequestContext) {
 	var err error

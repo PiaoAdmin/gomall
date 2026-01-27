@@ -13,6 +13,14 @@ import (
 )
 
 // Checkout .
+// @Summary      结算下单
+// @Description  Checkout with cart items, create order and pay
+// @Tags         Checkout
+// @Param        Authorization  header    string               true  "Bearer {token}"
+// @Param        req            body      checkout.CheckoutReq true  "Checkout request"
+// @Success      200            {object}  response.Response{data=checkout.CheckoutResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /checkout [POST]
 func Checkout(ctx context.Context, c *app.RequestContext) {
 	var err error

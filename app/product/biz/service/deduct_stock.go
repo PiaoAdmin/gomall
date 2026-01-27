@@ -42,8 +42,13 @@ func (s *DeductStockService) Run(req *product.DeductStockRequest) (*product.Dedu
 			}
 			// TODO: 不是主要业务不应该影响下单
 			spu, err := model.GetSKUByID(s.ctx, tx, item.SkuId)
-			err = model.AddSaleCount(s.ctx, tx, spu.SpuID, int(item.Count))
 			if err != nil {
+				return err
+			}
+			if spu == nil {
+				return errs.New(errs.ErrRecordNotFound.Code, "sku not found")
+			}
+			if err := model.AddSaleCount(s.ctx, tx, spu.SpuID, int(item.Count)); err != nil {
 				return err
 			}
 		}

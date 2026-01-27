@@ -13,6 +13,14 @@ import (
 )
 
 // AddToCart .
+// @Summary      添加商品到购物车
+// @Description  Add sku to cart
+// @Tags         Cart
+// @Param        Authorization  header    string           true  "Bearer {token}"
+// @Param        req            body      cart.AddToCartReq true  "Add to cart request"
+// @Success      200            {object}  response.Response{data=cart.AddToCartResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /cart/add [POST]
 func AddToCart(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -33,6 +41,14 @@ func AddToCart(ctx context.Context, c *app.RequestContext) {
 }
 
 // RemoveFromCart .
+// @Summary      从购物车移除商品
+// @Description  Remove skus from cart
+// @Tags         Cart
+// @Param        Authorization  header    string               true  "Bearer {token}"
+// @Param        req            body      cart.RemoveFromCartReq true  "Remove from cart request"
+// @Success      200            {object}  response.Response{data=cart.RemoveFromCartResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /cart/remove [POST]
 func RemoveFromCart(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -53,6 +69,13 @@ func RemoveFromCart(ctx context.Context, c *app.RequestContext) {
 }
 
 // GetCartDetails .
+// @Summary      获取购物车详情
+// @Description  Get current user's cart details
+// @Tags         Cart
+// @Param        Authorization  header    string  true  "Bearer {token}"
+// @Success      200            {object}  response.Response{data=cart.GetCartDetailsResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /cart [GET]
 func GetCartDetails(ctx context.Context, c *app.RequestContext) {
 	var err error
@@ -73,6 +96,13 @@ func GetCartDetails(ctx context.Context, c *app.RequestContext) {
 }
 
 // ClearCart .
+// @Summary      清空购物车
+// @Description  Clear all items in cart
+// @Tags         Cart
+// @Param        Authorization  header    string  true  "Bearer {token}"
+// @Success      200            {object}  response.Response{data=cart.ClearCartResp}
+// @Failure      400            {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500            {object}  response.Response{data=string}  "Internal Server Error"
 // @router /cart/clear [POST]
 func ClearCart(ctx context.Context, c *app.RequestContext) {
 	var err error

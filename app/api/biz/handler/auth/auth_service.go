@@ -6,7 +6,7 @@ import (
 	"context"
 
 	auth "github.com/PiaoAdmin/pmall/app/api/biz/model/api/auth"
-	"github.com/PiaoAdmin/pmall/app/api/biz/service"
+	service "github.com/PiaoAdmin/pmall/app/api/biz/service/auth"
 	"github.com/PiaoAdmin/pmall/app/api/pkg/response"
 	"github.com/cloudwego/hertz/pkg/app"
 	herrors "github.com/cloudwego/hertz/pkg/common/errors"

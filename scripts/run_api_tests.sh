@@ -49,4 +49,4 @@ echo "Waiting for services to boot..."
 sleep 6
 
 cd "${ROOT_DIR}/app/api"
-GO_ENV=test go test ./test -run TestCheckoutFlow -count=1
+GO_ENV=test go test ./test -count=1

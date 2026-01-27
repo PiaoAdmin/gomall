@@ -83,6 +83,199 @@ definitions:
       username:
         type: string
     type: object
+  cart.AddToCartReq:
+    properties:
+      quantity:
+        type: integer
+      sku_id:
+        type: integer
+    type: object
+  cart.AddToCartResp:
+    properties:
+      cart_item:
+        $ref: '#/definitions/cart.CartItem'
+    type: object
+  cart.CartItem:
+    properties:
+      market_price:
+        type: string
+      price:
+        type: string
+      quantity:
+        type: integer
+      sku_id:
+        type: integer
+      sku_image:
+        type: string
+      sku_name:
+        type: string
+      sku_spec_data:
+        type: string
+      spu_id:
+        type: integer
+      spu_name:
+        type: string
+      stock:
+        type: integer
+    type: object
+  cart.ClearCartResp:
+    properties:
+      success:
+        type: boolean
+    type: object
+  cart.GetCartDetailsResp:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/cart.CartItem'
+        type: array
+      total_amount:
+        type: string
+      total_quantity:
+        type: integer
+    type: object
+  cart.RemoveFromCartReq:
+    properties:
+      sku_ids:
+        items:
+          type: integer
+        type: array
+    type: object
+  cart.RemoveFromCartResp:
+    properties:
+      success:
+        type: boolean
+    type: object
+  checkout.AddressDTO:
+    properties:
+      city:
+        type: string
+      name:
+        type: string
+      street_address:
+        type: string
+      zip_code:
+        type: integer
+    type: object
+  checkout.CheckoutItemDTO:
+    properties:
+      market_price:
+        type: string
+      price:
+        type: string
+      quantity:
+        type: integer
+      sku_id:
+        type: integer
+      sku_image:
+        type: string
+      sku_name:
+        type: string
+      sku_spec_data:
+        type: string
+      spu_id:
+        type: integer
+    type: object
+  checkout.CheckoutReq:
+    properties:
+      shipping_address:
+        $ref: '#/definitions/checkout.AddressDTO'
+    type: object
+  checkout.CheckoutResp:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/checkout.CheckoutItemDTO'
+        type: array
+      order_id:
+        type: string
+      total_amount:
+        type: string
+    type: object
+  home.Empty:
+    type: object
+  order.AddressDTO:
+    properties:
+      city:
+        type: string
+      name:
+        type: string
+      street_address:
+        type: string
+      zip_code:
+        type: integer
+    type: object
+  order.CancelOrderResp:
+    properties:
+      success:
+        type: boolean
+    type: object
+  order.ListOrderResp:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/order.OrderDTO'
+        type: array
+    type: object
+  order.OrderDTO:
+    properties:
+      created_at:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/order.OrderItem'
+        type: array
+      order_id:
+        type: string
+      shipping_address:
+        $ref: '#/definitions/order.AddressDTO'
+      status:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  order.OrderItem:
+    properties:
+      price:
+        type: string
+      quantity:
+        type: integer
+      sku_id:
+        type: integer
+      sku_name:
+        type: string
+    type: object
+  order.OrderResultDTO:
+    properties:
+      order_id:
+        type: string
+    type: object
+  order.PlaceOrderReq:
+    properties:
+      email:
+        type: string
+      shipping_address:
+        $ref: '#/definitions/order.AddressDTO'
+    type: object
+  order.PlaceOrderResp:
+    properties:
+      order:
+        $ref: '#/definitions/order.OrderResultDTO'
+    type: object
+  payment.PayReq:
+    properties:
+      amount:
+        type: string
+      order_id:
+        type: string
+    type: object
+  payment.PayResp:
+    properties:
+      success:
+        type: boolean
+      trade_no:
+        type: string
+    type: object
   product.BatchUpdateSkuRequest:
     properties:
       items:
@@ -396,7 +589,38 @@ info:
 paths:
   /:
     get:
-      responses: {}
+      description: Home endpoint
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/home.Empty'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 主页
+      tags:
+      - Home
   /admin/products:
     post:
       consumes:
@@ -686,6 +910,178 @@ paths:
       summary: 获取品牌列表
       tags:
       - Product
+  /cart:
+    get:
+      description: Get current user's cart details
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/cart.GetCartDetailsResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 获取购物车详情
+      tags:
+      - Cart
+  /cart/add:
+    post:
+      description: Add sku to cart
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Add to cart request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/cart.AddToCartReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/cart.AddToCartResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 添加商品到购物车
+      tags:
+      - Cart
+  /cart/clear:
+    post:
+      description: Clear all items in cart
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/cart.ClearCartResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 清空购物车
+      tags:
+      - Cart
+  /cart/remove:
+    post:
+      description: Remove skus from cart
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Remove from cart request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/cart.RemoveFromCartReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/cart.RemoveFromCartResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 从购物车移除商品
+      tags:
+      - Cart
   /categories:
     get:
       consumes:
@@ -730,6 +1126,52 @@ paths:
       summary: 获取分类列表
       tags:
       - Product
+  /checkout:
+    post:
+      description: Checkout with cart items, create order and pay
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Checkout request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/checkout.CheckoutReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/checkout.CheckoutResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 结算下单
+      tags:
+      - Checkout
   /login:
     post:
       consumes:
@@ -814,6 +1256,182 @@ paths:
       summary: 用户登出
       tags:
       - Auth
+  /orders:
+    get:
+      description: List current user's orders
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/order.ListOrderResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 获取订单列表
+      tags:
+      - Order
+    post:
+      description: Place order from cart items
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Place order request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/order.PlaceOrderReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/order.PlaceOrderResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 下单
+      tags:
+      - Order
+  /orders/:order_id/cancel:
+    post:
+      description: Cancel order by order_id
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Order ID
+        in: path
+        name: order_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/order.CancelOrderResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 取消订单
+      tags:
+      - Order
+  /payment/pay:
+    post:
+      description: Pay for an order
+      parameters:
+      - description: Bearer {token}
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Pay request
+        in: body
+        name: req
+        required: true
+        schema:
+          $ref: '#/definitions/payment.PayReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/payment.PayResp'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/response.Response'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: 订单支付
+      tags:
+      - Payment
   /products/{spu_id}:
     get:
       consumes:
