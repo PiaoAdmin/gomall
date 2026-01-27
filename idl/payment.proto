@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package payment;
+
+option go_package = "payment";
+
+// 支付服务
+service PaymentService {
+  // 支付订单
+  rpc Pay(PayRequest) returns (PayResponse);
+}
+
+message PayRequest {
+  string order_id = 1;
+  uint64 user_id = 2;
+  string amount = 3;
+}
+
+message PayResponse {
+  bool success = 1;
+  string trade_no = 2;
+}

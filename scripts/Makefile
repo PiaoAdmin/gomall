@@ -57,4 +57,7 @@ api_cart:
 
 api_order:
 	$(call gen_api,order_api.proto) 
-
+api_checkout:
+	$(call gen_api,checkout_api.proto)
+api_payment:
+	$(call gen_api,payment_api.proto)

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package gateway.payment;
+
+import "api.proto";
+
+option go_package = "/api/payment";
+
+message PayReq {
+  string order_id = 1 [(api.body) = "order_id"];
+  string amount = 2 [(api.body) = "amount"];
+}
+
+message PayResp {
+  bool success = 1;
+  string trade_no = 2;
+}
+
+service PaymentService {
+  rpc Pay(PayReq) returns (PayResp) {
+    option (api.post) = "/payment/pay";
+  }
+}

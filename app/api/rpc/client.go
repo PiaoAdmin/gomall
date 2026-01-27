@@ -6,7 +6,9 @@ import (
 	"github.com/PiaoAdmin/pmall/app/api/conf"
 	"github.com/PiaoAdmin/pmall/common/clientsuite"
 	"github.com/PiaoAdmin/pmall/rpc_gen/cart/cartservice"
+	"github.com/PiaoAdmin/pmall/rpc_gen/checkout/checkoutservice"
 	"github.com/PiaoAdmin/pmall/rpc_gen/order/orderservice"
+	"github.com/PiaoAdmin/pmall/rpc_gen/payment/paymentservice"
 	"github.com/PiaoAdmin/pmall/rpc_gen/product/productservice"
 	"github.com/PiaoAdmin/pmall/rpc_gen/user/userservice"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -16,13 +18,15 @@ import (
 )
 
 var (
-	UserClient    userservice.Client
-	ProductClient productservice.Client
-	CartClient    cartservice.Client
-	OrderClient   orderservice.Client
-	once          sync.Once
-	err           error
-	commonSuite   client.Option
+	UserClient     userservice.Client
+	ProductClient  productservice.Client
+	CartClient     cartservice.Client
+	OrderClient    orderservice.Client
+	CheckoutClient checkoutservice.Client
+	PaymentClient  paymentservice.Client
+	once           sync.Once
+	err            error
+	commonSuite    client.Option
 )
 
 func Init() {
@@ -32,6 +36,8 @@ func Init() {
 			initProductClientDirect("127.0.0.1:9900")
 			initCartClientDirect("127.0.0.1:9901")
 			initOrderClientDirect("127.0.0.1:9902")
+			initCheckoutClientDirect("127.0.0.1:9903")
+			initPaymentClientDirect("127.0.0.1:9904")
 			return
 		}
 		registryAddr := conf.GetConf().Hertz.RegistryAddr
@@ -43,6 +49,8 @@ func Init() {
 		initProductClient()
 		initCartClient()
 		initOrderClient()
+		initCheckoutClient()
+		initPaymentClient()
 	})
 }
 
@@ -87,6 +95,26 @@ func initOrderClientDirect(addr string) {
 	}
 }
 
+func initCheckoutClientDirect(addr string) {
+	CheckoutClient, err = checkoutservice.NewClient("checkout",
+		client.WithHostPorts(addr),
+		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
+		client.WithTransportProtocol(transport.GRPC))
+	if err != nil {
+		hlog.Fatal(err)
+	}
+}
+
+func initPaymentClientDirect(addr string) {
+	PaymentClient, err = paymentservice.NewClient("payment",
+		client.WithHostPorts(addr),
+		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
+		client.WithTransportProtocol(transport.GRPC))
+	if err != nil {
+		hlog.Fatal(err)
+	}
+}
+
 func initUserClient() {
 	UserClient, err = userservice.NewClient("user", commonSuite)
 	if err != nil {
@@ -110,6 +138,20 @@ func initCartClient() {
 
 func initOrderClient() {
 	OrderClient, err = orderservice.NewClient("order", commonSuite)
+	if err != nil {
+		hlog.Fatal(err)
+	}
+}
+
+func initCheckoutClient() {
+	CheckoutClient, err = checkoutservice.NewClient("checkout", commonSuite)
+	if err != nil {
+		hlog.Fatal(err)
+	}
+}
+
+func initPaymentClient() {
+	PaymentClient, err = paymentservice.NewClient("payment", commonSuite)
 	if err != nil {
 		hlog.Fatal(err)
 	}

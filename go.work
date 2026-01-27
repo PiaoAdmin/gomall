@@ -8,4 +8,6 @@ use (
 	./rpc_gen
 	./app/cart
 	./app/order
+	./app/checkout
+	./app/payment
 )

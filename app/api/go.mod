@@ -11,6 +11,7 @@ require github.com/PiaoAdmin/pmall/rpc_gen v0.0.0-00010101000000-000000000000
 require github.com/PiaoAdmin/pmall/common v0.0.0-00010101000000-000000000000
 
 require (
+	github.com/PiaoAdmin/pmall/app/user v0.0.0-00010101000000-000000000000
 	github.com/cloudwego/hertz v0.10.3
 	github.com/cloudwego/kitex v0.15.4
 	github.com/elastic/pkcs8 v1.0.0
@@ -66,7 +67,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
-	github.com/stretchr/testify v1.10.0 // indirect
+	github.com/stretchr/testify v1.11.1 // indirect
 	github.com/swaggo/files v0.0.0-20220610200504-28940afbdbfe // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.46.0 // indirect
@@ -102,3 +103,5 @@ require (
 	gopkg.in/validator.v2 v2.0.1
 	gopkg.in/yaml.v2 v2.4.0
 )
+
+replace github.com/PiaoAdmin/pmall/app/user => ../../app/user
