@@ -37,6 +37,7 @@ message CheckoutRequest {
   uint64 user_id = 1;
   repeated CheckoutItem items = 2;
   Address shipping_address = 3;
+  string credit_card = 4;
 }
 
 message CheckoutResponse {

@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/PiaoAdmin/pmall/app/order/biz/dal"
+	"github.com/PiaoAdmin/pmall/app/order/biz/rpc"
 	"github.com/PiaoAdmin/pmall/app/order/conf"
 	order "github.com/PiaoAdmin/pmall/rpc_gen/order/orderservice"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -17,6 +18,7 @@ import (
 
 func main() {
 	dal.Init()
+	rpc.Init()
 	opts := kitexInit()
 
 	logFile, err := os.OpenFile(conf.GetConf().Kitex.LogFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)

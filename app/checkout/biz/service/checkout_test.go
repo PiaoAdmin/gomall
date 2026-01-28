@@ -210,9 +210,7 @@ func TestCheckoutServicePaymentFail(t *testing.T) {
 	}()
 
 	prodMock := &productClientMock{
-		getResp:     &product.GetSkusByIdsResponse{Skus: map[uint64]*product.ProductSKU{1001: {Id: 1001, Name: "sku-1", Price: "10.00", Stock: 10}}},
-		deductResp:  &product.DeductStockResponse{Success: true},
-		releaseResp: &product.ReleaseStockResponse{Success: true},
+		getResp: &product.GetSkusByIdsResponse{Skus: map[uint64]*product.ProductSKU{1001: {Id: 1001, Name: "sku-1", Price: "10.00", Stock: 10}}},
 	}
 	orderMock := &orderClientMock{placeResp: &order.PlaceOrderResp{Order: &order.OrderResult{OrderId: "oid-2"}}}
 
@@ -229,12 +227,6 @@ func TestCheckoutServicePaymentFail(t *testing.T) {
 	})
 	if err == nil {
 		t.Fatalf("expected error, got nil")
-	}
-	if !prodMock.releaseCalled {
-		t.Fatalf("release stock not called")
-	}
-	if prodMock.releaseReq == nil || prodMock.releaseReq.OrderSn != "oid-2" {
-		t.Fatalf("release stock order_sn not set")
 	}
 	if !orderMock.cancelCalled {
 		t.Fatalf("cancel order not called")

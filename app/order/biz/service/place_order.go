@@ -7,9 +7,11 @@ import (
 
 	"github.com/PiaoAdmin/pmall/app/order/biz/dal/mysql"
 	"github.com/PiaoAdmin/pmall/app/order/biz/model"
+	"github.com/PiaoAdmin/pmall/app/order/biz/rpc"
 	"github.com/PiaoAdmin/pmall/common/errs"
 	"github.com/PiaoAdmin/pmall/common/uniqueid"
 	order "github.com/PiaoAdmin/pmall/rpc_gen/order"
+	"github.com/PiaoAdmin/pmall/rpc_gen/product"
 	"gorm.io/gorm"
 )
 
@@ -30,6 +32,24 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (*order.PlaceOrderResp
 	}
 
 	newOrderId := fmt.Sprintf("%d", uniqueid.GenId())
+
+	deductItems := make([]*product.SkuDeductItem, 0, len(req.Items))
+	for _, it := range req.Items {
+		if it == nil || it.GetSkuId() == 0 || it.GetQuantity() <= 0 {
+			return nil, errs.New(errs.ErrParam.Code, "invalid sku_id or quantity")
+		}
+		deductItems = append(deductItems, &product.SkuDeductItem{
+			SkuId: it.GetSkuId(),
+			Count: it.GetQuantity(),
+		})
+	}
+
+	if _, err := rpc.ProductClient.DeductStock(s.ctx, &product.DeductStockRequest{
+		OrderSn: newOrderId,
+		Items:   deductItems,
+	}); err != nil {
+		return nil, errs.New(errs.ErrInternal.Code, "deduct stock failed: "+err.Error())
+	}
 
 	o := &model.Order{
 		OrderId: newOrderId,
@@ -57,10 +77,7 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (*order.PlaceOrderResp
 					price = p
 				}
 			}
-			qty := int32(1)
-			if it != nil && it.GetQuantity() > 0 {
-				qty = it.GetQuantity()
-			}
+			qty := it.GetQuantity()
 			oi := &model.OrderItem{
 				OrderId:  newOrderId,
 				SkuId:    it.GetSkuId(),
@@ -76,6 +93,12 @@ func (s *PlaceOrderService) Run(req *order.PlaceOrderReq) (*order.PlaceOrderResp
 	})
 
 	if err != nil {
+		if _, relErr := rpc.ProductClient.ReleaseStock(s.ctx, &product.ReleaseStockRequest{
+			OrderSn: newOrderId,
+			Items:   deductItems,
+		}); relErr != nil {
+			return nil, errs.New(errs.ErrInternal.Code, "place order failed and release stock failed: "+relErr.Error())
+		}
 		if e, ok := err.(*errs.Error); ok {
 			return nil, e
 		}

@@ -93,30 +93,7 @@ definitions:
   cart.AddToCartResp:
     properties:
       cart_item:
-        $ref: '#/definitions/cart.CartItem'
-    type: object
-  cart.CartItem:
-    properties:
-      market_price:
-        type: string
-      price:
-        type: string
-      quantity:
-        type: integer
-      sku_id:
-        type: integer
-      sku_image:
-        type: string
-      sku_name:
-        type: string
-      sku_spec_data:
-        type: string
-      spu_id:
-        type: integer
-      spu_name:
-        type: string
-      stock:
-        type: integer
+        $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_cart.CartItem'
     type: object
   cart.ClearCartResp:
     properties:
@@ -127,7 +104,7 @@ definitions:
     properties:
       items:
         items:
-          $ref: '#/definitions/cart.CartItem'
+          $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_cart.CartItem'
         type: array
       total_amount:
         type: string
@@ -178,6 +155,8 @@ definitions:
     type: object
   checkout.CheckoutReq:
     properties:
+      credit_card:
+        type: string
       shipping_address:
         $ref: '#/definitions/checkout.AddressDTO'
     type: object
@@ -192,6 +171,118 @@ definitions:
       total_amount:
         type: string
     type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_cart.CartItem:
+    properties:
+      market_price:
+        type: string
+      price:
+        type: string
+      quantity:
+        type: integer
+      sku_id:
+        type: integer
+      sku_image:
+        type: string
+      sku_name:
+        type: string
+      sku_spec_data:
+        type: string
+      spu_id:
+        type: integer
+      spu_name:
+        type: string
+      stock:
+        type: integer
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.CancelOrderResp:
+    properties:
+      success:
+        type: boolean
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.ListOrderResp:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/order.OrderDTO'
+        type: array
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderReq:
+    properties:
+      email:
+        type: string
+      shipping_address:
+        $ref: '#/definitions/order.AddressDTO'
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderResp:
+    properties:
+      order:
+        $ref: '#/definitions/order.OrderResultDTO'
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuRequest:
+    properties:
+      items:
+        items:
+          $ref: '#/definitions/product.UpdateSkuItem'
+        type: array
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+      updated_count:
+        description: 实际更新数量
+        type: integer
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductRequest:
+    properties:
+      detail:
+        $ref: '#/definitions/product.CreateProductDetail'
+      skus:
+        items:
+          $ref: '#/definitions/product.CreateProductSKU'
+        type: array
+      spu:
+        $ref: '#/definitions/product.CreateProductSPU'
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductResponse:
+    properties:
+      message:
+        type: string
+      spu_id:
+        type: integer
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.GetProductDetailResponse:
+    properties:
+      product:
+        $ref: '#/definitions/product.ProductDetailDTO'
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListBrandsResponse:
+    properties:
+      brands:
+        items:
+          $ref: '#/definitions/product.BrandDTO'
+        type: array
+      total:
+        type: integer
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListCategoriesResponse:
+    properties:
+      categories:
+        items:
+          $ref: '#/definitions/product.CategoryDTO'
+        type: array
+    type: object
+  github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.SearchProductsResponse:
+    properties:
+      list:
+        items:
+          $ref: '#/definitions/product.SearchSkuDTO'
+        type: array
+      total:
+        type: integer
+    type: object
   home.Empty:
     type: object
   order.AddressDTO:
@@ -204,18 +295,6 @@ definitions:
         type: string
       zip_code:
         type: integer
-    type: object
-  order.CancelOrderResp:
-    properties:
-      success:
-        type: boolean
-    type: object
-  order.ListOrderResp:
-    properties:
-      orders:
-        items:
-          $ref: '#/definitions/order.OrderDTO'
-        type: array
     type: object
   order.OrderDTO:
     properties:
@@ -250,21 +329,11 @@ definitions:
       order_id:
         type: string
     type: object
-  order.PlaceOrderReq:
-    properties:
-      email:
-        type: string
-      shipping_address:
-        $ref: '#/definitions/order.AddressDTO'
-    type: object
-  order.PlaceOrderResp:
-    properties:
-      order:
-        $ref: '#/definitions/order.OrderResultDTO'
-    type: object
   payment.PayReq:
     properties:
       amount:
+        type: string
+      credit_card:
         type: string
       order_id:
         type: string
@@ -275,23 +344,6 @@ definitions:
         type: boolean
       trade_no:
         type: string
-    type: object
-  product.BatchUpdateSkuRequest:
-    properties:
-      items:
-        items:
-          $ref: '#/definitions/product.UpdateSkuItem'
-        type: array
-    type: object
-  product.BatchUpdateSkuResponse:
-    properties:
-      message:
-        type: string
-      success:
-        type: boolean
-      updated_count:
-        description: 实际更新数量
-        type: integer
     type: object
   product.BrandDTO:
     properties:
@@ -343,24 +395,6 @@ definitions:
         items:
           type: string
         type: array
-    type: object
-  product.CreateProductRequest:
-    properties:
-      detail:
-        $ref: '#/definitions/product.CreateProductDetail'
-      skus:
-        items:
-          $ref: '#/definitions/product.CreateProductSKU'
-        type: array
-      spu:
-        $ref: '#/definitions/product.CreateProductSPU'
-    type: object
-  product.CreateProductResponse:
-    properties:
-      message:
-        type: string
-      spu_id:
-        type: integer
     type: object
   product.CreateProductSKU:
     properties:
@@ -430,11 +464,6 @@ definitions:
       total:
         type: integer
     type: object
-  product.GetProductDetailResponse:
-    properties:
-      product:
-        $ref: '#/definitions/product.ProductDetailDTO'
-    type: object
   product.HomeSpuDTO:
     properties:
       high_price:
@@ -451,22 +480,6 @@ definitions:
         type: integer
       sub_title:
         type: string
-    type: object
-  product.ListBrandsResponse:
-    properties:
-      brands:
-        items:
-          $ref: '#/definitions/product.BrandDTO'
-        type: array
-      total:
-        type: integer
-    type: object
-  product.ListCategoriesResponse:
-    properties:
-      categories:
-        items:
-          $ref: '#/definitions/product.CategoryDTO'
-        type: array
     type: object
   product.ProductDetailDTO:
     properties:
@@ -496,15 +509,6 @@ definitions:
         type: array
       sub_title:
         type: string
-    type: object
-  product.SearchProductsResponse:
-    properties:
-      list:
-        items:
-          $ref: '#/definitions/product.SearchSkuDTO'
-        type: array
-      total:
-        type: integer
     type: object
   product.SearchSkuDTO:
     properties:
@@ -632,7 +636,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/product.CreateProductRequest'
+          $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductRequest'
       produces:
       - application/json
       responses:
@@ -643,7 +647,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/product.CreateProductResponse'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductResponse'
               type: object
         "400":
           description: Bad Request
@@ -677,7 +681,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/product.BatchUpdateSkuRequest'
+          $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuRequest'
       produces:
       - application/json
       responses:
@@ -688,7 +692,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/product.BatchUpdateSkuResponse'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuResponse'
               type: object
         "400":
           description: Bad Request
@@ -887,7 +891,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/product.ListBrandsResponse'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListBrandsResponse'
               type: object
         "400":
           description: Bad Request
@@ -1103,7 +1107,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/product.ListCategoriesResponse'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListCategoriesResponse'
               type: object
         "400":
           description: Bad Request
@@ -1273,7 +1277,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/order.ListOrderResp'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.ListOrderResp'
               type: object
         "400":
           description: Bad Request
@@ -1309,7 +1313,7 @@ paths:
         name: req
         required: true
         schema:
-          $ref: '#/definitions/order.PlaceOrderReq'
+          $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderReq'
       responses:
         "200":
           description: OK
@@ -1318,7 +1322,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/order.PlaceOrderResp'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderResp'
               type: object
         "400":
           description: Bad Request
@@ -1363,7 +1367,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/order.CancelOrderResp'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.CancelOrderResp'
               type: object
         "400":
           description: Bad Request
@@ -1455,7 +1459,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/product.GetProductDetailResponse'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.GetProductDetailResponse'
               type: object
         "400":
           description: Bad Request
@@ -1592,7 +1596,7 @@ paths:
             - $ref: '#/definitions/response.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/product.SearchProductsResponse'
+                  $ref: '#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.SearchProductsResponse'
               type: object
         "400":
           description: Bad Request

@@ -9,6 +9,7 @@ option go_package = "/api/payment";
 message PayReq {
   string order_id = 1 [(api.body) = "order_id"];
   string amount = 2 [(api.body) = "amount"];
+  string credit_card = 3 [(api.body) = "credit_card"];
 }
 
 message PayResp {

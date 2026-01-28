@@ -27,6 +27,10 @@ func (s *MarkOrderPaidService) Run(req *order.MarkOrderPaidReq) (*order.MarkOrde
 		return nil, errs.New(errs.ErrRecordNotFound.Code, err.Error())
 	}
 
+	if ord.Status == model.OrderStateCanceled {
+		return nil, errs.New(errs.ErrParam.Code, "order already canceled")
+	}
+
 	if err := mysql.DB.Model(&model.Order{}).Where("order_id = ?", req.OrderId).Update("status", model.OrderStatePaid).Error; err != nil {
 		return nil, errs.New(errs.ErrInternal.Code, "mark paid failed: "+err.Error())
 	}

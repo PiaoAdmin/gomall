@@ -26,6 +26,7 @@ message CheckoutItemDTO {
 
 message CheckoutReq {
   AddressDTO shipping_address = 1 [(api.body) = "shipping_address"];
+  string credit_card = 2 [(api.body) = "credit_card"];
 }
 
 message CheckoutResp {

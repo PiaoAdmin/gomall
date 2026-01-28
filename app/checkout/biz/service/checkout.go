@@ -11,6 +11,7 @@ import (
 	"github.com/PiaoAdmin/pmall/rpc_gen/payment"
 	"github.com/PiaoAdmin/pmall/rpc_gen/product"
 	"github.com/PiaoAdmin/pmall/rpc_gen/user"
+	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/klog"
 )
 
@@ -107,49 +108,17 @@ func (s *CheckoutService) Run(req *checkout.CheckoutRequest) (*checkout.Checkout
 		return nil, errs.New(errs.ErrInternal.Code, "place order failed: empty order_id")
 	}
 
-	deductItems := make([]*product.SkuDeductItem, 0, len(skuOrder))
-	for _, skuID := range skuOrder {
-		deductItems = append(deductItems, &product.SkuDeductItem{
-			SkuId: skuID,
-			Count: qtyMap[skuID],
-		})
-	}
-
-	deductResp, err := rpc.ProductClient.DeductStock(s.ctx, &product.DeductStockRequest{
-		OrderSn: placeResp.Order.OrderId,
-		Items:   deductItems,
-	})
-	if err != nil || deductResp == nil || !deductResp.Success {
-		if err != nil {
-			klog.CtxErrorf(s.ctx, "DeductStock failed: %v", err)
-		} else {
-			klog.CtxErrorf(s.ctx, "DeductStock failed: empty response")
-		}
-		if _, cancelErr := rpc.OrderClient.CancelOrder(s.ctx, &order.CancelOrderReq{OrderId: placeResp.Order.OrderId}); cancelErr != nil {
-			klog.CtxWarnf(s.ctx, "CancelOrder failed: %v", cancelErr)
-		}
-		if err != nil {
-			return nil, wrapRPC(err, "deduct stock failed")
-		}
-		return nil, errs.New(errs.ErrInternal.Code, "deduct stock failed")
-	}
-
 	payResp, err := rpc.PaymentClient.Pay(s.ctx, &payment.PayRequest{
-		OrderId: placeResp.Order.OrderId,
-		UserId:  req.UserId,
-		Amount:  strconv.FormatFloat(totalAmount, 'f', 2, 64),
+		OrderId:    placeResp.Order.OrderId,
+		UserId:     req.UserId,
+		Amount:     strconv.FormatFloat(totalAmount, 'f', 2, 64),
+		CreditCard: req.CreditCard,
 	})
 	if err != nil || payResp == nil || !payResp.Success {
 		if err != nil {
 			klog.CtxErrorf(s.ctx, "Pay failed: %v", err)
 		} else {
 			klog.CtxErrorf(s.ctx, "Pay failed: empty response")
-		}
-		if _, relErr := rpc.ProductClient.ReleaseStock(s.ctx, &product.ReleaseStockRequest{
-			OrderSn: placeResp.Order.OrderId,
-			Items:   deductItems,
-		}); relErr != nil {
-			klog.CtxWarnf(s.ctx, "ReleaseStock failed: %v", relErr)
 		}
 		if _, cancelErr := rpc.OrderClient.CancelOrder(s.ctx, &order.CancelOrderReq{OrderId: placeResp.Order.OrderId}); cancelErr != nil {
 			klog.CtxWarnf(s.ctx, "CancelOrder failed: %v", cancelErr)
@@ -197,6 +166,10 @@ func (s *CheckoutService) normalizeItems(items []*checkout.CheckoutItem) ([]uint
 func wrapRPC(err error, msg string) error {
 	if err == nil {
 		return nil
+	}
+	if bizErr, ok := kerrors.FromBizStatusError(err); ok {
+		code := errs.ErrorType(bizErr.BizStatusCode())
+		return errs.New(code, bizErr.BizMessage())
 	}
 	if e, ok := err.(*errs.Error); ok {
 		return e

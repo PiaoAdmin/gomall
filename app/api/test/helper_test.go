@@ -183,3 +183,33 @@ func createTestProduct(t *testing.T, client *http.Client, baseURL string, suffix
 
 	return spuID, skuID
 }
+
+type productDetailResp struct {
+	Product struct {
+		SaleCount int32 `json:"sale_count"`
+		Skus      []struct {
+			Id    uint64 `json:"id"`
+			Stock int32  `json:"stock"`
+		} `json:"skus"`
+	} `json:"product"`
+}
+
+func getProductStockAndSales(t *testing.T, client *http.Client, baseURL string, spuID, skuID uint64) (int32, int32) {
+	t.Helper()
+	detailURL := fmt.Sprintf("%s/products/%d", baseURL, spuID)
+	detailEnv := getJSON[productDetailResp](t, client, detailURL, nil)
+	if detailEnv.Code != uint64(perrors.Success.Code) {
+		t.Fatalf("product detail failed: code=%d msg=%s", detailEnv.Code, detailEnv.Message)
+	}
+	stock := int32(-1)
+	for _, sku := range detailEnv.Data.Product.Skus {
+		if sku.Id == skuID {
+			stock = sku.Stock
+			break
+		}
+	}
+	if stock < 0 {
+		t.Fatalf("sku not found in product detail: sku_id=%d", skuID)
+	}
+	return stock, detailEnv.Data.Product.SaleCount
+}

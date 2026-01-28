@@ -100,7 +100,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/product.CreateProductRequest"
+                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductRequest"
                         }
                     }
                 ],
@@ -116,7 +116,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/product.CreateProductResponse"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductResponse"
                                         }
                                     }
                                 }
@@ -182,7 +182,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/product.BatchUpdateSkuRequest"
+                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuRequest"
                         }
                     }
                 ],
@@ -198,7 +198,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/product.BatchUpdateSkuResponse"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuResponse"
                                         }
                                     }
                                 }
@@ -558,7 +558,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/product.ListBrandsResponse"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListBrandsResponse"
                                         }
                                     }
                                 }
@@ -952,7 +952,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/product.ListCategoriesResponse"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListCategoriesResponse"
                                         }
                                     }
                                 }
@@ -1259,7 +1259,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/order.ListOrderResp"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.ListOrderResp"
                                         }
                                     }
                                 }
@@ -1324,7 +1324,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/order.PlaceOrderReq"
+                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderReq"
                         }
                     }
                 ],
@@ -1340,7 +1340,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/order.PlaceOrderResp"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderResp"
                                         }
                                     }
                                 }
@@ -1421,7 +1421,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/order.CancelOrderResp"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.CancelOrderResp"
                                         }
                                     }
                                 }
@@ -1733,7 +1733,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/product.SearchProductsResponse"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.SearchProductsResponse"
                                         }
                                     }
                                 }
@@ -1814,7 +1814,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/product.GetProductDetailResponse"
+                                            "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.GetProductDetailResponse"
                                         }
                                     }
                                 }
@@ -2150,42 +2150,7 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "cart_item": {
-                    "$ref": "#/definitions/cart.CartItem"
-                }
-            }
-        },
-        "cart.CartItem": {
-            "type": "object",
-            "properties": {
-                "market_price": {
-                    "type": "string"
-                },
-                "price": {
-                    "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
-                },
-                "sku_id": {
-                    "type": "integer"
-                },
-                "sku_image": {
-                    "type": "string"
-                },
-                "sku_name": {
-                    "type": "string"
-                },
-                "sku_spec_data": {
-                    "type": "string"
-                },
-                "spu_id": {
-                    "type": "integer"
-                },
-                "spu_name": {
-                    "type": "string"
-                },
-                "stock": {
-                    "type": "integer"
+                    "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_cart.CartItem"
                 }
             }
         },
@@ -2203,7 +2168,7 @@ const docTemplate = `{
                 "items": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/cart.CartItem"
+                        "$ref": "#/definitions/github_com_PiaoAdmin_pmall_app_api_biz_model_api_cart.CartItem"
                     }
                 },
                 "total_amount": {
@@ -2282,6 +2247,9 @@ const docTemplate = `{
         "checkout.CheckoutReq": {
             "type": "object",
             "properties": {
+                "credit_card": {
+                    "type": "string"
+                },
                 "shipping_address": {
                     "$ref": "#/definitions/checkout.AddressDTO"
                 }
@@ -2304,6 +2272,180 @@ const docTemplate = `{
                 }
             }
         },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_cart.CartItem": {
+            "type": "object",
+            "properties": {
+                "market_price": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "string"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "sku_id": {
+                    "type": "integer"
+                },
+                "sku_image": {
+                    "type": "string"
+                },
+                "sku_name": {
+                    "type": "string"
+                },
+                "sku_spec_data": {
+                    "type": "string"
+                },
+                "spu_id": {
+                    "type": "integer"
+                },
+                "spu_name": {
+                    "type": "string"
+                },
+                "stock": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.CancelOrderResp": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.ListOrderResp": {
+            "type": "object",
+            "properties": {
+                "orders": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/order.OrderDTO"
+                    }
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderReq": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "shipping_address": {
+                    "$ref": "#/definitions/order.AddressDTO"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_order.PlaceOrderResp": {
+            "type": "object",
+            "properties": {
+                "order": {
+                    "$ref": "#/definitions/order.OrderResultDTO"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuRequest": {
+            "type": "object",
+            "properties": {
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.UpdateSkuItem"
+                    }
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.BatchUpdateSkuResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                },
+                "updated_count": {
+                    "description": "实际更新数量",
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductRequest": {
+            "type": "object",
+            "properties": {
+                "detail": {
+                    "$ref": "#/definitions/product.CreateProductDetail"
+                },
+                "skus": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.CreateProductSKU"
+                    }
+                },
+                "spu": {
+                    "$ref": "#/definitions/product.CreateProductSPU"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.CreateProductResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "spu_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.GetProductDetailResponse": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "$ref": "#/definitions/product.ProductDetailDTO"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListBrandsResponse": {
+            "type": "object",
+            "properties": {
+                "brands": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.BrandDTO"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.ListCategoriesResponse": {
+            "type": "object",
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.CategoryDTO"
+                    }
+                }
+            }
+        },
+        "github_com_PiaoAdmin_pmall_app_api_biz_model_api_product.SearchProductsResponse": {
+            "type": "object",
+            "properties": {
+                "list": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/product.SearchSkuDTO"
+                    }
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "home.Empty": {
             "type": "object"
         },
@@ -2321,25 +2463,6 @@ const docTemplate = `{
                 },
                 "zip_code": {
                     "type": "integer"
-                }
-            }
-        },
-        "order.CancelOrderResp": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "order.ListOrderResp": {
-            "type": "object",
-            "properties": {
-                "orders": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/order.OrderDTO"
-                    }
                 }
             }
         },
@@ -2394,29 +2517,13 @@ const docTemplate = `{
                 }
             }
         },
-        "order.PlaceOrderReq": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "shipping_address": {
-                    "$ref": "#/definitions/order.AddressDTO"
-                }
-            }
-        },
-        "order.PlaceOrderResp": {
-            "type": "object",
-            "properties": {
-                "order": {
-                    "$ref": "#/definitions/order.OrderResultDTO"
-                }
-            }
-        },
         "payment.PayReq": {
             "type": "object",
             "properties": {
                 "amount": {
+                    "type": "string"
+                },
+                "credit_card": {
                     "type": "string"
                 },
                 "order_id": {
@@ -2432,32 +2539,6 @@ const docTemplate = `{
                 },
                 "trade_no": {
                     "type": "string"
-                }
-            }
-        },
-        "product.BatchUpdateSkuRequest": {
-            "type": "object",
-            "properties": {
-                "items": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.UpdateSkuItem"
-                    }
-                }
-            }
-        },
-        "product.BatchUpdateSkuResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                },
-                "updated_count": {
-                    "description": "实际更新数量",
-                    "type": "integer"
                 }
             }
         },
@@ -2533,34 +2614,6 @@ const docTemplate = `{
                     "items": {
                         "type": "string"
                     }
-                }
-            }
-        },
-        "product.CreateProductRequest": {
-            "type": "object",
-            "properties": {
-                "detail": {
-                    "$ref": "#/definitions/product.CreateProductDetail"
-                },
-                "skus": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.CreateProductSKU"
-                    }
-                },
-                "spu": {
-                    "$ref": "#/definitions/product.CreateProductSPU"
-                }
-            }
-        },
-        "product.CreateProductResponse": {
-            "type": "object",
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "spu_id": {
-                    "type": "integer"
                 }
             }
         },
@@ -2665,14 +2718,6 @@ const docTemplate = `{
                 }
             }
         },
-        "product.GetProductDetailResponse": {
-            "type": "object",
-            "properties": {
-                "product": {
-                    "$ref": "#/definitions/product.ProductDetailDTO"
-                }
-            }
-        },
         "product.HomeSpuDTO": {
             "type": "object",
             "properties": {
@@ -2696,31 +2741,6 @@ const docTemplate = `{
                 },
                 "sub_title": {
                     "type": "string"
-                }
-            }
-        },
-        "product.ListBrandsResponse": {
-            "type": "object",
-            "properties": {
-                "brands": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.BrandDTO"
-                    }
-                },
-                "total": {
-                    "type": "integer"
-                }
-            }
-        },
-        "product.ListCategoriesResponse": {
-            "type": "object",
-            "properties": {
-                "categories": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.CategoryDTO"
-                    }
                 }
             }
         },
@@ -2765,20 +2785,6 @@ const docTemplate = `{
                 },
                 "sub_title": {
                     "type": "string"
-                }
-            }
-        },
-        "product.SearchProductsResponse": {
-            "type": "object",
-            "properties": {
-                "list": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/product.SearchSkuDTO"
-                    }
-                },
-                "total": {
-                    "type": "integer"
                 }
             }
         },

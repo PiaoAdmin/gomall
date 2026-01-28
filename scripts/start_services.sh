@@ -7,7 +7,7 @@ pids=()
 
 clean_logs() {
   rm -f "${ROOT_DIR}"/tmp_*.log
-  for svc in user product cart order checkout payment api; do
+  for svc in user product cart order checkout payment; do
     rm -f "${ROOT_DIR}/app/${svc}/log/kitex.log"
   done
 }
@@ -32,11 +32,18 @@ cleanup() {
   echo "Stopping services..."
   for pid in "${pids[@]:-}"; do
     if kill -0 "$pid" 2>/dev/null; then
-      kill "$pid" 2>/dev/null || true
+      kill -TERM "$pid" 2>/dev/null || true
+    fi
+  done
+
+  for pid in "${pids[@]:-}"; do
+    if kill -0 "$pid" 2>/dev/null; then
+      wait "$pid" 2>/dev/null || true
     fi
   done
 }
-trap cleanup EXIT
+
+trap cleanup INT TERM EXIT
 
 start_service "user" "${ROOT_DIR}/app/user"
 start_service "product" "${ROOT_DIR}/app/product"
@@ -44,9 +51,8 @@ start_service "cart" "${ROOT_DIR}/app/cart"
 start_service "order" "${ROOT_DIR}/app/order"
 start_service "checkout" "${ROOT_DIR}/app/checkout"
 start_service "payment" "${ROOT_DIR}/app/payment"
+# start_service "api" "${ROOT_DIR}/app/api"
 
-echo "Waiting for services to boot..."
-sleep 6
+echo "All services started. Press Ctrl+C to stop."
 
-cd "${ROOT_DIR}/app/api"
-GO_ENV=test go test ./test -run TestCheckoutFlow -count=1
+wait

@@ -118,3 +118,20 @@ func AddSaleCount(ctx context.Context, db *gorm.DB, spuid uint64, count int) err
 	result := db.WithContext(ctx).Model(&ProductSPU{}).Where("id = ?", spuid).Updates(updates)
 	return result.Error
 }
+
+func DecreaseSaleCount(ctx context.Context, db *gorm.DB, spuid uint64, count int) error {
+	if count <= 0 {
+		return nil
+	}
+	updates := map[string]interface{}{
+		"sale_count": gorm.Expr("GREATEST(sale_count - ?, 0)", count),
+	}
+	result := db.WithContext(ctx).Model(&ProductSPU{}).Where("id = ?", spuid).Updates(updates)
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
+}

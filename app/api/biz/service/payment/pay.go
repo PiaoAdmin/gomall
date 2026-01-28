@@ -24,9 +24,10 @@ func (s *PayService) Run(req *apiPayment.PayReq) (*apiPayment.PayResp, error) {
 	userID := uint64(claims[jwt.JwtMiddleware.IdentityKey].(float64))
 
 	rpcResp, err := rpc.PaymentClient.Pay(s.Context, &paymentrpc.PayRequest{
-		OrderId: req.OrderId,
-		UserId:  userID,
-		Amount:  req.Amount,
+		OrderId:    req.OrderId,
+		UserId:     userID,
+		Amount:     req.Amount,
+		CreditCard: req.CreditCard,
 	})
 	if err != nil {
 		return nil, err

@@ -53,6 +53,9 @@ func (s *CheckoutService) Run(req *apiCheckout.CheckoutReq) (*apiCheckout.Checko
 			ZipCode:       req.ShippingAddress.ZipCode,
 		}
 	}
+	if req.CreditCard != "" {
+		rpcReq.CreditCard = req.CreditCard
+	}
 
 	rpcResp, err := rpc.CheckoutClient.Checkout(s.Context, rpcReq)
 	if err != nil {

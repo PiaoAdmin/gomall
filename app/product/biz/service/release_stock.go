@@ -40,6 +40,19 @@ func (s *ReleaseStockService) Run(req *product.ReleaseStockRequest) (*product.Re
 				}
 				return err
 			}
+			sku, err := model.GetSKUByID(s.ctx, tx, item.SkuId)
+			if err != nil {
+				return err
+			}
+			if sku == nil {
+				return errs.New(errs.ErrRecordNotFound.Code, "sku not found")
+			}
+			if err := model.DecreaseSaleCount(s.ctx, tx, sku.SpuID, int(item.Count)); err != nil {
+				if err == gorm.ErrRecordNotFound {
+					return errs.New(errs.ErrInternal.Code, "sale count not enough or spu not found")
+				}
+				return err
+			}
 		}
 		return nil
 	})
