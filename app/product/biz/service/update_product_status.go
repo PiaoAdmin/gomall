@@ -4,10 +4,12 @@ import (
 	"context"
 
 	"github.com/PiaoAdmin/pmall/app/product/biz/dal/mysql"
+	"github.com/PiaoAdmin/pmall/app/product/biz/dal/redis"
 	"github.com/PiaoAdmin/pmall/app/product/biz/model"
 	"github.com/PiaoAdmin/pmall/app/product/biz/utils"
 	"github.com/PiaoAdmin/pmall/common/errs"
 	product "github.com/PiaoAdmin/pmall/rpc_gen/product"
+	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 type UpdateProductStatusService struct {
@@ -49,6 +51,21 @@ func (s *UpdateProductStatusService) Run(req *product.UpdateProductStatusRequest
 	if err != nil {
 		return nil, errs.New(errs.ErrInternal.Code, "update product status failed: "+err.Error())
 	}
+
+	// 异步清除相关商品缓存
+	go func() {
+		if err := redis.BatchDeleteProductDetailCache(s.ctx, req.Ids); err != nil {
+			klog.Warnf("Failed to batch delete product detail cache: %v", err)
+		}
+		// 清除商品列表缓存
+		if err := redis.InvalidateProductListCache(s.ctx); err != nil {
+			klog.Warnf("Failed to invalidate product list cache: %v", err)
+		}
+		// 清除热门商品缓存（状态变更可能影响热门商品列表）
+		if err := redis.DeleteHotProductsCache(s.ctx); err != nil {
+			klog.Warnf("Failed to delete hot products cache: %v", err)
+		}
+	}()
 
 	return &product.UpdateProductStatusResponse{
 		Success: true,

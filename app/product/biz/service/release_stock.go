@@ -4,9 +4,11 @@ import (
 	"context"
 
 	"github.com/PiaoAdmin/pmall/app/product/biz/dal/mysql"
+	"github.com/PiaoAdmin/pmall/app/product/biz/dal/redis"
 	"github.com/PiaoAdmin/pmall/app/product/biz/model"
 	"github.com/PiaoAdmin/pmall/common/errs"
 	product "github.com/PiaoAdmin/pmall/rpc_gen/product"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"gorm.io/gorm"
 )
 
@@ -26,6 +28,9 @@ func (s *ReleaseStockService) Run(req *product.ReleaseStockRequest) (*product.Re
 	if len(req.Items) == 0 {
 		return nil, errs.New(errs.ErrParam.Code, "items is empty")
 	}
+
+	// 用于记录需要更新缓存的商品ID和销量减少量
+	spuSaleUpdates := make(map[uint64]int)
 
 	err := mysql.DB.Transaction(func(tx *gorm.DB) error {
 		for _, item := range req.Items {
@@ -53,6 +58,8 @@ func (s *ReleaseStockService) Run(req *product.ReleaseStockRequest) (*product.Re
 				}
 				return err
 			}
+			// 记录销量减少量
+			spuSaleUpdates[sku.SpuID] += int(item.Count)
 		}
 		return nil
 	})
@@ -63,6 +70,24 @@ func (s *ReleaseStockService) Run(req *product.ReleaseStockRequest) (*product.Re
 		}
 		return nil, errs.New(errs.ErrInternal.Code, "release stock failed: "+err.Error())
 	}
+
+	// 异步更新热门商品排行榜和缓存
+	go func() {
+		for spuID, decrement := range spuSaleUpdates {
+			// 减少热门商品排行榜中的销量分数
+			if err := redis.IncrementProductSaleCount(s.ctx, spuID, -decrement); err != nil {
+				klog.Warnf("Failed to update hot product score for SPU %d: %v", spuID, err)
+			}
+			// 删除商品详情缓存（库存变化）
+			if err := redis.DeleteProductDetailCache(s.ctx, spuID); err != nil {
+				klog.Warnf("Failed to delete product detail cache for SPU %d: %v", spuID, err)
+			}
+		}
+		// 清除热门商品列表缓存
+		if err := redis.DeleteHotProductsCache(s.ctx); err != nil {
+			klog.Warnf("Failed to delete hot products cache: %v", err)
+		}
+	}()
 
 	return &product.ReleaseStockResponse{
 		Success: true,

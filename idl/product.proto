@@ -40,6 +40,10 @@ service ProductService {
 
   // 5. C端商品搜索 (返回可购买的 SKU)
   rpc SearchProducts(SearchProductsRequest) returns (SearchProductsResponse);
+
+  // 6. 热门商品 (Hot Products)
+  // 获取热门商品列表（基于销量排序）
+  rpc GetHotProducts(GetHotProductsRequest) returns (GetHotProductsResponse);
 }
 
 // 消息结构定义 (Messages)
@@ -255,4 +259,22 @@ message SearchProductItem {
   uint64 category_id = 6; // 分类 ID
   string category_name = 7; // 分类名称
   int32 spu_sale_count = 8; // SPU 总销量
+}
+
+// 14. GetHotProducts (获取热门商品)
+message GetHotProductsRequest {
+  int32 limit = 1; // 返回数量限制，默认10，最大100
+}
+message GetHotProductsResponse {
+  repeated HotProductInfo products = 1;
+}
+
+// 热门商品信息
+message HotProductInfo {
+  uint64 id = 1;
+  string name = 2;
+  string sub_title = 3;
+  string main_image = 4;
+  double low_price = 5;
+  int32 sale_count = 6;
 }

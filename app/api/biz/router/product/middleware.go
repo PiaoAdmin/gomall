@@ -60,3 +60,8 @@ func _getproductdetailMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _gethotproductsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

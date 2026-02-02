@@ -23,11 +23,14 @@ func (s *CreateProductService) Run(req *product.CreateProductRequest) (resp *pro
 		return nil, errs.New(errs.ErrParam.Code, "invalid request")
 	}
 	newSPU := &model.ProductSPU{
-		Name:       req.Spu.Name,
-		CategoryID: req.Spu.CategoryId,
-		BrandID:    req.Spu.BrandId,
-		SubTitle:   req.Spu.SubTitle,
-		MainImage:  req.Spu.MainImage,
+		Name:          req.Spu.Name,
+		CategoryID:    req.Spu.CategoryId,
+		BrandID:       req.Spu.BrandId,
+		SubTitle:      req.Spu.SubTitle,
+		MainImage:     req.Spu.MainImage,
+		PublishStatus: 1,
+		VerifyStatus:  1,
+		ServiceBits:   req.Spu.ServiceBits,
 	}
 	newDetail := &model.ProductDetail{
 		Description:   req.Detail.Description,
@@ -54,16 +57,18 @@ func (s *CreateProductService) Run(req *product.CreateProductRequest) (resp *pro
 			return nil, errs.New(errs.ErrParam.Code, "sku market price cannot be negative")
 		}
 		newSKU := &model.ProductSKU{
-			SkuCode:     sku.SkuCode,
-			Name:        sku.Name,
-			SubTitle:    sku.SubTitle,
-			MainImage:   sku.MainImage,
-			Price:       price,
-			MarketPrice: markerPrice,
-			Stock:       int(sku.Stock),
-			LockStock:   0,
-			SkuSpecData: sku.SkuSpecData,
-			Version:     1,
+			SkuCode:       sku.SkuCode,
+			Name:          sku.Name,
+			SubTitle:      sku.SubTitle,
+			MainImage:     sku.MainImage,
+			Price:         price,
+			MarketPrice:   markerPrice,
+			Stock:         int(sku.Stock),
+			LockStock:     0,
+			SkuSpecData:   sku.SkuSpecData,
+			Version:       1,
+			PublishStatus: 1,
+			VerifyStatus:  1,
 		}
 		newSKUs = append(newSKUs, newSKU)
 	}

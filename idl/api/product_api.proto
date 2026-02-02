@@ -29,6 +29,10 @@ service ProductService {
   rpc ListBrands(ListBrandsRequest) returns (ListBrandsResponse) {
     option (api.get) = "/brands";
   }
+  // 热门商品（基于销量排序）
+  rpc GetHotProducts(GetHotProductsRequest) returns (GetHotProductsResponse) {
+    option (api.get) = "/products/hot";
+  }
 
   // === 后台管理服务 ===
   // 创建商品
@@ -254,4 +258,22 @@ message BatchUpdateSkuResponse {
   bool success = 1;
   int32 updated_count = 2; // 实际更新数量
   string message = 3;
+}
+
+// 8. GetHotProducts - 热门商品列表
+message GetHotProductsRequest {
+  int32 limit = 1 [(api.query) = "limit"]; // 返回数量限制，默认10，最大100
+}
+message GetHotProductsResponse {
+  repeated HotProductDTO products = 1;
+}
+
+// 热门商品 DTO
+message HotProductDTO {
+  uint64 spu_id = 1;
+  string name = 2;
+  string sub_title = 3;
+  string main_image = 4;
+  string low_price = 5; // 使用 string 传输价格
+  int32 sale_count = 6;
 }

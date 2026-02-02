@@ -87,3 +87,9 @@ func (s *ProductServiceImpl) GetSkusByIds(ctx context.Context, req *product.GetS
 	resp, err = service.NewGetSkusByIdsService(ctx).Run(req)
 	return
 }
+
+// GetHotProducts implements the ProductServiceImpl interface.
+func (s *ProductServiceImpl) GetHotProducts(ctx context.Context, req *product.GetHotProductsRequest) (resp *product.GetHotProductsResponse, err error) {
+	resp, err = service.NewGetHotProductsService(ctx).Run(req)
+	return
+}

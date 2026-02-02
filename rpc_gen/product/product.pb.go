@@ -1226,6 +1226,103 @@ func (x *SearchProductItem) GetSpuSaleCount() int32 {
 	return 0
 }
 
+// 14. GetHotProducts (获取热门商品)
+type GetHotProductsRequest struct {
+	Limit int32 `protobuf:"varint,1,opt,name=limit" json:"limit,omitempty"` // 返回数量限制，默认10，最大100
+}
+
+func (x *GetHotProductsRequest) Reset() { *x = GetHotProductsRequest{} }
+
+func (x *GetHotProductsRequest) Marshal(in []byte) ([]byte, error) {
+	return prutal.MarshalAppend(in, x)
+}
+
+func (x *GetHotProductsRequest) Unmarshal(in []byte) error { return prutal.Unmarshal(in, x) }
+
+func (x *GetHotProductsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type GetHotProductsResponse struct {
+	Products []*HotProductInfo `protobuf:"bytes,1,rep,name=products" json:"products,omitempty"`
+}
+
+func (x *GetHotProductsResponse) Reset() { *x = GetHotProductsResponse{} }
+
+func (x *GetHotProductsResponse) Marshal(in []byte) ([]byte, error) {
+	return prutal.MarshalAppend(in, x)
+}
+
+func (x *GetHotProductsResponse) Unmarshal(in []byte) error { return prutal.Unmarshal(in, x) }
+
+func (x *GetHotProductsResponse) GetProducts() []*HotProductInfo {
+	if x != nil {
+		return x.Products
+	}
+	return nil
+}
+
+// 热门商品信息
+type HotProductInfo struct {
+	Id        uint64  `protobuf:"varint,1,opt,name=id" json:"id,omitempty"`
+	Name      string  `protobuf:"bytes,2,opt,name=name" json:"name,omitempty"`
+	SubTitle  string  `protobuf:"bytes,3,opt,name=sub_title" json:"sub_title,omitempty"`
+	MainImage string  `protobuf:"bytes,4,opt,name=main_image" json:"main_image,omitempty"`
+	LowPrice  float64 `protobuf:"fixed64,5,opt,name=low_price" json:"low_price,omitempty"`
+	SaleCount int32   `protobuf:"varint,6,opt,name=sale_count" json:"sale_count,omitempty"`
+}
+
+func (x *HotProductInfo) Reset() { *x = HotProductInfo{} }
+
+func (x *HotProductInfo) Marshal(in []byte) ([]byte, error) { return prutal.MarshalAppend(in, x) }
+
+func (x *HotProductInfo) Unmarshal(in []byte) error { return prutal.Unmarshal(in, x) }
+
+func (x *HotProductInfo) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *HotProductInfo) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *HotProductInfo) GetSubTitle() string {
+	if x != nil {
+		return x.SubTitle
+	}
+	return ""
+}
+
+func (x *HotProductInfo) GetMainImage() string {
+	if x != nil {
+		return x.MainImage
+	}
+	return ""
+}
+
+func (x *HotProductInfo) GetLowPrice() float64 {
+	if x != nil {
+		return x.LowPrice
+	}
+	return 0
+}
+
+func (x *HotProductInfo) GetSaleCount() int32 {
+	if x != nil {
+		return x.SaleCount
+	}
+	return 0
+}
+
 type ProductService interface {
 	CreateProduct(ctx context.Context, req *CreateProductRequest) (res *CreateProductResponse, err error)
 	UpdateProduct(ctx context.Context, req *UpdateProductRequest) (res *UpdateProductResponse, err error)
@@ -1240,4 +1337,5 @@ type ProductService interface {
 	ListCategories(ctx context.Context, req *ListCategoriesRequest) (res *ListCategoriesResponse, err error)
 	ListBrands(ctx context.Context, req *ListBrandsRequest) (res *ListBrandsResponse, err error)
 	SearchProducts(ctx context.Context, req *SearchProductsRequest) (res *SearchProductsResponse, err error)
+	GetHotProducts(ctx context.Context, req *GetHotProductsRequest) (res *GetHotProductsResponse, err error)
 }

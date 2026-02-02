@@ -4,9 +4,11 @@ import (
 	"context"
 
 	"github.com/PiaoAdmin/pmall/app/product/biz/dal/mysql"
+	"github.com/PiaoAdmin/pmall/app/product/biz/dal/redis"
 	"github.com/PiaoAdmin/pmall/app/product/biz/model"
 	"github.com/PiaoAdmin/pmall/common/errs"
 	product "github.com/PiaoAdmin/pmall/rpc_gen/product"
+	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 type UpdateProductService struct {
@@ -77,6 +79,17 @@ func (s *UpdateProductService) Run(req *product.UpdateProductRequest) (*product.
 			}
 		}
 	}
+
+	// 异步清除商品缓存
+	go func() {
+		if err := redis.DeleteProductDetailCache(s.ctx, req.Spu.Id); err != nil {
+			klog.Warnf("Failed to delete product detail cache: %v", err)
+		}
+		// 清除商品列表缓存
+		if err := redis.InvalidateProductListCache(s.ctx); err != nil {
+			klog.Warnf("Failed to invalidate product list cache: %v", err)
+		}
+	}()
 
 	return &product.UpdateProductResponse{
 		Success: true,

@@ -106,6 +106,13 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingUnary),
 	),
+	"GetHotProducts": kitex.NewMethodInfo(
+		getHotProductsHandler,
+		newGetHotProductsArgs,
+		newGetHotProductsResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingUnary),
+	),
 }
 
 var (
@@ -1615,6 +1622,117 @@ func (p *SearchProductsResult) GetResult() interface{} {
 	return p.Success
 }
 
+func getHotProductsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	switch s := arg.(type) {
+	case *streaming.Args:
+		st := s.Stream
+		req := new(product.GetHotProductsRequest)
+		if err := st.RecvMsg(req); err != nil {
+			return err
+		}
+		resp, err := handler.(product.ProductService).GetHotProducts(ctx, req)
+		if err != nil {
+			return err
+		}
+		return st.SendMsg(resp)
+	case *GetHotProductsArgs:
+		success, err := handler.(product.ProductService).GetHotProducts(ctx, s.Req)
+		if err != nil {
+			return err
+		}
+		realResult := result.(*GetHotProductsResult)
+		realResult.Success = success
+		return nil
+	default:
+		return errInvalidMessageType
+	}
+}
+func newGetHotProductsArgs() interface{} {
+	return &GetHotProductsArgs{}
+}
+
+func newGetHotProductsResult() interface{} {
+	return &GetHotProductsResult{}
+}
+
+type GetHotProductsArgs struct {
+	Req *product.GetHotProductsRequest
+}
+
+func (p *GetHotProductsArgs) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetReq() {
+		return out, nil
+	}
+	return proto.Marshal(p.Req)
+}
+
+func (p *GetHotProductsArgs) Unmarshal(in []byte) error {
+	msg := new(product.GetHotProductsRequest)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Req = msg
+	return nil
+}
+
+var GetHotProductsArgs_Req_DEFAULT *product.GetHotProductsRequest
+
+func (p *GetHotProductsArgs) GetReq() *product.GetHotProductsRequest {
+	if !p.IsSetReq() {
+		return GetHotProductsArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+func (p *GetHotProductsArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GetHotProductsArgs) GetFirstArgument() interface{} {
+	return p.Req
+}
+
+type GetHotProductsResult struct {
+	Success *product.GetHotProductsResponse
+}
+
+var GetHotProductsResult_Success_DEFAULT *product.GetHotProductsResponse
+
+func (p *GetHotProductsResult) Marshal(out []byte) ([]byte, error) {
+	if !p.IsSetSuccess() {
+		return out, nil
+	}
+	return proto.Marshal(p.Success)
+}
+
+func (p *GetHotProductsResult) Unmarshal(in []byte) error {
+	msg := new(product.GetHotProductsResponse)
+	if err := proto.Unmarshal(in, msg); err != nil {
+		return err
+	}
+	p.Success = msg
+	return nil
+}
+
+func (p *GetHotProductsResult) GetSuccess() *product.GetHotProductsResponse {
+	if !p.IsSetSuccess() {
+		return GetHotProductsResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+func (p *GetHotProductsResult) SetSuccess(x interface{}) {
+	p.Success = x.(*product.GetHotProductsResponse)
+}
+
+func (p *GetHotProductsResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GetHotProductsResult) GetResult() interface{} {
+	return p.Success
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -1750,6 +1868,16 @@ func (p *kClient) SearchProducts(ctx context.Context, Req *product.SearchProduct
 	_args.Req = Req
 	var _result SearchProductsResult
 	if err = p.c.Call(ctx, "SearchProducts", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetHotProducts(ctx context.Context, Req *product.GetHotProductsRequest) (r *product.GetHotProductsResponse, err error) {
+	var _args GetHotProductsArgs
+	_args.Req = Req
+	var _result GetHotProductsResult
+	if err = p.c.Call(ctx, "GetHotProducts", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

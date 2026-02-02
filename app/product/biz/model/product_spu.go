@@ -111,6 +111,21 @@ func GetProductsByIds(ctx context.Context, db *gorm.DB, ids []uint64) ([]*Produc
 	return spus, err
 }
 
+// ListProductsBySaleCount 按销量排序获取商品列表（用于热门商品）
+func ListProductsBySaleCount(ctx context.Context, db *gorm.DB, limit int) ([]*ProductSPU, int64, error) {
+	var spus []*ProductSPU
+	var total int64
+
+	query := db.WithContext(ctx).Model(&ProductSPU{})
+
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+
+	err := query.Order("sale_count DESC, sort DESC").Limit(limit).Find(&spus).Error
+	return spus, total, err
+}
+
 func AddSaleCount(ctx context.Context, db *gorm.DB, spuid uint64, count int) error {
 	updates := map[string]interface{}{
 		"sale_count": gorm.Expr("sale_count + ?", count),

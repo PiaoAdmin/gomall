@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"io"
 	"log"
 	"net"
 	"os"
 
 	"github.com/PiaoAdmin/pmall/app/product/biz/dal"
+	"github.com/PiaoAdmin/pmall/app/product/biz/service"
 	"github.com/PiaoAdmin/pmall/app/product/conf"
 	product "github.com/PiaoAdmin/pmall/rpc_gen/product/productservice"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -30,6 +32,21 @@ func main() {
 
 	// 设置日志级别
 	klog.SetLevel(conf.LogLevel())
+
+	// 缓存预热
+	go func() {
+		ctx := context.Background()
+		warmupService := service.NewCacheWarmUpService(ctx)
+		if err := warmupService.WarmUpHotProducts(); err != nil {
+			klog.Warnf("Hot products cache warm-up failed: %v", err)
+		}
+		// 预热前20个热门商品的详情
+		if err := warmupService.WarmUpTopProductDetails(20); err != nil {
+			klog.Warnf("Product details cache warm-up failed: %v", err)
+		}
+		// 启动定时刷新任务
+		service.StartCacheRefreshTask(ctx)
+	}()
 
 	svr := product.NewServer(new(ProductServiceImpl), opts...)
 	err = svr.Run()

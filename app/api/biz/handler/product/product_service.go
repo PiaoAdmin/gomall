@@ -226,3 +226,32 @@ func BatchUpdateSku(ctx context.Context, c *app.RequestContext) {
 
 	response.Success(c, resp)
 }
+
+// GetHotProducts .
+// @Summary      获取热门商品列表
+// @Description  Get hot products list sorted by sales count
+// @Tags         Product
+// @Accept       json
+// @Produce      json
+// @Param        limit  query     int32   false  "Limit (default 10, max 100)"
+// @Success      200  {object}  response.Response{data=product.GetHotProductsResponse}
+// @Failure      400  {object}  response.Response{data=string}  "Bad Request"
+// @Failure      500  {object}  response.Response{data=string}  "Internal Server Error"
+// @Router       /products/hot [GET]
+func GetHotProducts(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req product.GetHotProductsRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		_ = c.Error(err).SetType(herrors.ErrorTypeBind)
+		return
+	}
+
+	resp, err := service.NewGetHotProductsService(ctx, c).Run(&req)
+	if err != nil {
+		_ = c.Error(err)
+		return
+	}
+
+	response.Success(c, resp)
+}
