@@ -19,11 +19,20 @@ type Config struct {
 	Env      string
 	Kitex    Kitex    `yaml:"kitex"`
 	MySQL    MySQL    `yaml:"mysql"`
+	RabbitMQ RabbitMQ `yaml:"rabbitmq"`
 	Registry Registry `yaml:"registry"`
 }
 
 type MySQL struct {
 	DSN string `yaml:"dsn"`
+}
+
+type RabbitMQ struct {
+	URL           string `yaml:"url"`
+	OrderQueue    string `yaml:"order_queue"`
+	OrderExchange string `yaml:"order_exchange"`
+	PrefetchCount int    `yaml:"prefetch_count"`
+	WorkerCount   int    `yaml:"worker_count"`
 }
 
 type Registry struct {

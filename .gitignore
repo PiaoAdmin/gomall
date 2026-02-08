@@ -46,3 +46,4 @@ coverage.*
 
 go.work.sum
 .env
+/dmeo

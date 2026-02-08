@@ -19,5 +19,5 @@ mysql:
 redis:
   address: "10.161.105.212:6379"
   username: ""
-  password: ""
+  password: "123456"
   db: 0

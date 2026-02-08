@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/PiaoAdmin/pmall/app/api/biz/dal"
+	"github.com/PiaoAdmin/pmall/app/api/conf"
 	_ "github.com/PiaoAdmin/pmall/app/api/docs"
 	mwError "github.com/PiaoAdmin/pmall/app/api/md/error"
 	"github.com/PiaoAdmin/pmall/app/api/md/jwt"
@@ -27,7 +28,7 @@ func main() {
 	dal.Init()
 	rpc.Init()
 	jwt.Init()
-	// address := conf.GetConf().Hertz.Address
+	address := conf.GetConf().Hertz.Address
 	f, err := os.OpenFile("./output.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
@@ -35,13 +36,9 @@ func main() {
 	defer f.Close()
 	fileWriter := io.MultiWriter(f, os.Stdout)
 	hlog.SetOutput(fileWriter)
-	h := server.New()
+	h := server.New(server.WithHostPorts(address))
 	h.Use(mwError.GlobalErrorHandler())
-	// h := server.New(
-	// 	server.WithHostPorts(address),
-	// )
-	// // Enable CORS middleware
-	// h.Use(cors.Default())
+
 	// Swagger API docs route
 	h.GET("/swagger/*any", adaptor.HertzHandler(
 		httpSwagger.WrapHandler,

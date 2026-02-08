@@ -16,3 +16,10 @@ registry:
 mysql:
   dsn: "root:123456@tcp(10.161.105.212:3306)/p_order?charset=utf8mb4&parseTime=True&loc=Local"
 
+rabbitmq:
+  url: "amqp://admin:123456@127.0.0.1:5672/"
+  order_queue: "order_create_queue"
+  order_exchange: "order_exchange"
+  prefetch_count: 10
+  worker_count: 5
+

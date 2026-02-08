@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
 	"io"
 	"net"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/PiaoAdmin/pmall/app/order/biz/dal"
+	"github.com/PiaoAdmin/pmall/app/order/biz/dal/rabbitmq"
 	"github.com/PiaoAdmin/pmall/app/order/biz/rpc"
 	"github.com/PiaoAdmin/pmall/app/order/conf"
 	order "github.com/PiaoAdmin/pmall/rpc_gen/order/orderservice"
@@ -29,6 +33,26 @@ func main() {
 	fileWriter := io.MultiWriter(logFile, os.Stdout)
 	klog.SetOutput(fileWriter)
 	klog.SetLevel(conf.LogLevel())
+
+	// 启动 RabbitMQ 消费者处理异步订单
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	rabbitmq.StartConsumer(ctx)
+
+	// 启动订单取消消费者（处理延迟取消消息）
+	rabbitmq.StartCancelConsumer(ctx)
+
+	// 优雅关闭
+	go func() {
+		sigChan := make(chan os.Signal, 1)
+		signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+		<-sigChan
+		klog.Info("Received shutdown signal")
+		rabbitmq.StopConsumer()
+		rabbitmq.StopCancelConsumer()
+		dal.Close()
+		cancel()
+	}()
 
 	svr := order.NewServer(new(OrderServiceImpl), opts...)
 
