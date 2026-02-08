@@ -1,0 +1,25 @@
+[project]
+name = "pmall-agent"
+version = "0.1.0"
+description = "LangChain + Qwen agents for pmall."
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi==0.115.8",
+  "uvicorn==0.30.6",
+  "pydantic==2.10.6",
+  "requests==2.32.3",
+  "langgraph>=0.2.0",
+  "langchain==0.2.16",
+  "langchain-community==0.2.16",
+  "langchain-core==0.2.38",
+  "dashscope==1.20.11",
+  "python-dotenv==1.0.1",
+  "langchain-openai>=0.1.23",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["cli", "common", "merchant_agent", "server", "shopper_agent"]
