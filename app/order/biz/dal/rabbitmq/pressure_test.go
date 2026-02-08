@@ -28,7 +28,7 @@ var testConfig = struct {
 	TotalOrders int // 总订单数
 }{
 	RabbitMQURL: "amqp://admin:123456@localhost:5672/",
-	MySQLDSN:    "root:123456@tcp(10.161.105.212:3306)/p_order?charset=utf8mb4&parseTime=True&loc=Local",
+	MySQLDSN:    "root:123456@tcp(piaohost:3306)/p_order?charset=utf8mb4&parseTime=True&loc=Local",
 	OrderQueue:  "order_test_queue",
 	Exchange:    "order_test_exchange",
 	WorkerCount: 5,

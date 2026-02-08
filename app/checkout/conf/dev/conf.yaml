@@ -9,7 +9,7 @@ kitex:
 
 registry:
   registry_address:
-    - 10.161.105.212:8500
+    - piaohost:8500
   username: ""
   password: ""
 

@@ -15,7 +15,7 @@ func TestMain(m *testing.M) {
 	// 初始化测试用 Redis 客户端
 	// 使用与实际配置相同的 Redis 地址
 	testRedisClient = redis.NewClient(&redis.Options{
-		Addr:     "10.161.105.212:6379",
+		Addr:     "piaohost:6379",
 		Password: "123456",
 		DB:       15, // 使用独立的DB避免影响正式数据
 	})

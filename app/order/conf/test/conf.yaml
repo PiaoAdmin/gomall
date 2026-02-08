@@ -9,12 +9,12 @@ kitex:
 
 registry:
   registry_address:
-    - 10.161.105.212:8500
+    - piaohost:8500
   username: ""
   password: ""
 
 mysql:
-  dsn: "root:123456@tcp(10.161.105.212:3306)/p_order?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "root:123456@tcp(piaohost:3306)/p_order?charset=utf8mb4&parseTime=True&loc=Local"
 
 rabbitmq:
   url: "amqp://admin:123456@127.0.0.1:5672/"
